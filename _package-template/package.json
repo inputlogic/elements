@@ -1,6 +1,6 @@
 {
-  "name": "@app-elements/image",
-  "version": "1.0.1",
+  "name": "@app-elements/<package-name>",
+  "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -15,6 +15,5 @@
   },
   "keywords": ["react", "react-component", "preact", "component", "ui"],
   "author": "Input Logic Team",
-  "license": "ISC",
-  "gitHead": "4066c5ce9f8bc739cfae6f768cd0c90e38a27de0"
+  "license": "ISC"
 }
