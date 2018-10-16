@@ -1,5 +1,5 @@
 {
-  "name": "Tooltip",
+  "name": "@app-elements/tooltip",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -11,5 +11,6 @@
   "license": "ISC",
   "peerDependencies": {
     "wasmuth": "2.0.6"
-  }
+  },
+  "gitHead": "ae8f28d6f9f044fd622b83b66fd9d46b067be0c5"
 }
