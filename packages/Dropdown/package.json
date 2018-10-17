@@ -25,6 +25,5 @@
   "peerDependencies": {
     "unistore": "3.1.0",
     "wasmuth": "2.0.6"
-  },
-  "gitHead": "a16a1868f1a5977a91d2c90334ec25c099560f57"
+  }
 }
