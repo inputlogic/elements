@@ -13,11 +13,9 @@ const getStoreReference = actions => store => {
   return actions
 }
 
-const actions = getStoreReference({
-  setDropdown: (state, dropdown) => ({dropdown}),
-  handleClick: uid => (state, event) => {
-    event.preventDefault()
-    const isOpen = state.dropdown === uid
+export const actions = getStoreReference({
+  toggle: ({dropdown}, uid) => {
+    const isOpen = dropdown === uid
     return {dropdown: isOpen ? null : uid}
   }
 })
@@ -32,8 +30,7 @@ const mapper = ({dropdown}, {uid}) => {
 const Dropdown = connect(mapper, actions)(({
   // Store
   isOpen,
-  setDropdown,
-  handleClick,
+  toggle,
 
   // Props
   Trigger,
@@ -50,10 +47,10 @@ const Dropdown = connect(mapper, actions)(({
   return (
     <div>
       {Trigger === undefined
-        ? <button className='btn btn-dropdown black-ghost-btn' onClick={handleClick(uid)}>
+        ? <button className='btn btn-dropdown black-ghost-btn' onClick={ev => toggle(uid)}>
           <Level noPadding>{buttonText}</Level>
         </button>
-        : <Trigger className='btn-dropdown' onClick={handleClick(uid)} />}
+        : <Trigger className='btn-dropdown' onClick={ev => toggle(uid)} />}
       {noWrapper
         ? isOpen && children
         : <div className={cls}>
@@ -75,7 +72,6 @@ try {
   document.body.addEventListener('click', (ev) => {
     if (!storeRef) return
     const activeDropdown = W.path('dropdown', storeRef.getState())
-    console.log({activeDropdown})
     if (!activeDropdown) {
       return
     }
