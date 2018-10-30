@@ -1,7 +1,7 @@
 {
-  "name": "@app-elements/dropdown",
-  "version": "1.0.1",
-  "description": "Simple dropdown menus.",
+  "name": "@app-elements/modal",
+  "version": "1.0.0",
+  "description": "Display modals from anywhere in your component tree. (Preact only)",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -13,19 +13,9 @@
   "bugs": {
     "url": "https://github.com/inputlogic/elements/issues"
   },
-  "keywords": [
-    "react",
-    "react-component",
-    "preact",
-    "component",
-    "ui"
-  ],
+  "keywords": ["preact", "preact-component", "component", "ui"],
   "author": "Input Logic Team",
   "license": "ISC",
-  "peerDependencies": {
-    "unistore": "3.1.0",
-    "wasmuth": "2.0.6"
-  },
   "publishConfig": {
     "access": "public"
   }

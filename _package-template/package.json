@@ -15,5 +15,8 @@
   },
   "keywords": ["react", "react-component", "preact", "component", "ui"],
   "author": "Input Logic Team",
-  "license": "ISC"
+  "license": "ISC",
+  "publishConfig": {
+    "access": "public"
+  }
 }

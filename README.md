@@ -14,7 +14,5 @@ Fun!
 ## Publishing Changes
 
 1. `node_modules/.bin/lerna publish`
-2. If a new package has been created, it will fail to publish to NPM.
-3. cd to that packages dir, and run `npm publish --access public`
 
 More details may be needed...
