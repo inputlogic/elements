@@ -43,8 +43,12 @@ export default function makeRequest ({
   headers,
   noAuth = false
 }) {
-  if (endpoint != null) {
+  if (endpoint != null && endpoint.indexOf('http') === -1) {
     url = `${apiUrl}/${endpoint}`
+  }
+
+  if (url == null) {
+    url = endpoint
   }
 
   const xhr = new window.XMLHttpRequest()
@@ -54,8 +58,8 @@ export default function makeRequest ({
     xhr.onreadystatechange = () => {
       if (xhr.readyState !== 4) return
       xhr.status >= 400
-        ? reject(makeErr(xhr.status, safelyParse(xhr._response, 'detail')))
-        : resolve(safelyParse(xhr._response))
+        ? reject(makeErr(xhr.status, safelyParse(xhr.response, 'detail')))
+        : resolve(safelyParse(xhr.response))
     }
     xhr.onerror = () => reject(xhr)
     xhr.setRequestHeader('Content-Type', 'application/json')
