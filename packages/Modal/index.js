@@ -51,9 +51,13 @@ export default Modal
 *     <AnotherModal />
 *   </Modals>
 */
-const prevState = {}
-const Modals = connect('route, modal', actions)(({route, modal, closeModal, children}) => {
+let prevState = {}
+export const Modals = connect('route, modal', actions)(({route, modal, closeModal, children}) => {
   const prevModal = prevState.modal
+  const prevRouteName = W.path('route.name', prevState)
+
+  prevState = {route, modal}
+
   if (!modal) {
     if (prevModal != null) {
       document.body.classList.remove('modal-open')
@@ -63,14 +67,10 @@ const Modals = connect('route, modal', actions)(({route, modal, closeModal, chil
     document.body.classList.add('modal-open')
   }
 
-  const prevRouteName = W.path('route.name', prevState)
-  if (W.path('name', route) !== prevRouteName) {
+  if (W.path('name', route || {}) !== prevRouteName) {
     closeModal()
   }
+
   const child = W.find(c => W.pathEq('nodeName.name', modal, c), children)
   return child
 })
-
-Modals.defaultProps = {
-  mapper: ({modal, route}) => ({modal, route})
-}
