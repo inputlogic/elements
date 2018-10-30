@@ -13,7 +13,12 @@
   "bugs": {
     "url": "https://github.com/inputlogic/elements/issues"
   },
-  "keywords": ["preact", "preact-component", "component", "ui"],
+  "keywords": [
+    "preact",
+    "preact-component",
+    "component",
+    "ui"
+  ],
   "author": "Input Logic Team",
   "license": "ISC",
   "publishConfig": {
