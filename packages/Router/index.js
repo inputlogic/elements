@@ -65,20 +65,20 @@ export const exec = (url, route) => {
 
 // Our Router actions
 export const actions = getStoreReference({
-  setRoute: (newRoute) => ({route: newRoute})
+  setRoute: (state, newRoute) => ({currentRoute: newRoute})
 })
 
-const mapper = ({currentPath, route}, {routes}) => {
+const mapper = ({currentPath, currentRoute}, {routes}) => {
   if (!routes) {
     console.warn('<Router> must include a routes prop.')
   }
-  return {currentPath, route}
+  return {currentPath, currentRoute}
 }
 
 const Router = connect(mapper, actions)(({
   // state
   currentPath,
-  route,
+  currentRoute,
 
   // actions
   setRoute,
@@ -103,7 +103,7 @@ const Router = connect(mapper, actions)(({
           path: routes[route].path,
           args: routeArgs
         }
-        if (!equal(newRoute, route)) {
+        if (!equal(newRoute, currentRoute)) {
           setRoute(newRoute)
         }
         const Component = routes[route].component
@@ -123,8 +123,11 @@ if (typeof window !== 'undefined') {
       ev.stopImmediatePropagation()
       window.scrollTo(0, 0)
       const url = ev.target.getAttribute('href')
-      window.history['pushState'](null, null, url)
-      storeRef.setState({currentPath: url})
+      const currentPath = storeRef.getState().currentPath
+      if (currentPath !== url) {
+        window.history['pushState'](null, null, url)
+        storeRef.setState({currentPath: url})
+      }
     }
   })
 }
