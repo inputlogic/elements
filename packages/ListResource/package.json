@@ -13,7 +13,13 @@
   "bugs": {
     "url": "https://github.com/inputlogic/elements/issues"
   },
-  "keywords": ["react", "react-component", "preact", "component", "ui"],
+  "keywords": [
+    "react",
+    "react-component",
+    "preact",
+    "component",
+    "ui"
+  ],
   "author": "Input Logic Team",
   "license": "ISC",
   "publishConfig": {
@@ -22,7 +28,7 @@
   "dependencies": {
     "@app-elements/pagination": "1.0.2",
     "@app-elements/router": "1.0.2",
-    "@app-elements/with-request": "1.0.0"
+    "@app-elements/with-request": "^1.0.0"
   },
   "peerDependencies": {
     "unistore": "3.1.0",

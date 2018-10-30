@@ -13,7 +13,14 @@
   "bugs": {
     "url": "https://github.com/inputlogic/elements/issues"
   },
-  "keywords": ["helmet", "react", "react-component", "preact", "component", "ui"],
+  "keywords": [
+    "helmet",
+    "react",
+    "react-component",
+    "preact",
+    "component",
+    "ui"
+  ],
   "author": "Input Logic Team",
   "license": "ISC",
   "publishConfig": {

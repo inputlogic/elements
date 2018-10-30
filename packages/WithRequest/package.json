@@ -13,7 +13,13 @@
   "bugs": {
     "url": "https://github.com/inputlogic/elements/issues"
   },
-  "keywords": ["react", "react-component", "preact", "component", "ui"],
+  "keywords": [
+    "react",
+    "react-component",
+    "preact",
+    "component",
+    "ui"
+  ],
   "author": "Input Logic Team",
   "license": "ISC",
   "publishConfig": {
@@ -21,7 +27,5 @@
   },
   "dependencies": {
     "@app-elements/router": "1.0.2"
-  },
-  "peerDependencies": {
   }
 }
