@@ -25,8 +25,5 @@
   "peerDependencies": {
     "unistore": "3.1.0",
     "wasmuth": "2.0.6"
-  },
-  "publishConfig": {
-    "access": "public"
   }
 }

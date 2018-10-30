@@ -21,8 +21,5 @@
     "ui"
   ],
   "author": "Input Logic Team",
-  "license": "ISC",
-  "publishConfig": {
-    "access": "public"
-  }
+  "license": "ISC"
 }
