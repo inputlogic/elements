@@ -25,6 +25,9 @@
   "publishConfig": {
     "access": "public"
   },
+  "dependencies": {
+    "@app-elements/router": "1.0.1"
+  },
   "peerDependencies": {
     "wasmuth": "2.0.6"
   }
