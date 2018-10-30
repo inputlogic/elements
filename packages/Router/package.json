@@ -1,5 +1,5 @@
 {
-  "name": "@app-elements/Router",
+  "name": "@app-elements/router",
   "version": "1.0.0",
   "description": "The best router.",
   "main": "index.js",
