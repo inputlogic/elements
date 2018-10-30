@@ -78,8 +78,8 @@ export default ({routes}) =>
               path: routes[route].path,
               args: routeArgs
             }
-            if (!equal(newRoute, store.getState().route)) {
-              store.setState({route: newRoute})
+            if (!equal(newRoute, store.getState().currentRoute)) {
+              store.setState({currentRoute: newRoute})
             }
             const Component = routes[route].component
             return <Component {...routeArgs} />
