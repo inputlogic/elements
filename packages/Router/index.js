@@ -1,17 +1,11 @@
 import React from 'react' // Can be aliased to `preact` in host project
-import {connect} from 'unistore/react' // Can alias to `unistore/preact` in host project
+
+import WithState from '@app-elements/with-state'
 
 import equal from './equal'
 import qs from './qs'
 
-// utils
 let storeRef
-
-// populate `storeRef` so our DOM event can interact with the store
-const getStoreReference = actions => store => {
-  storeRef = store
-  return actions
-}
 
 const segmentize = (url) => {
   return url.replace(/(^\/+|\/+$)/g, '').split('/')
@@ -63,57 +57,37 @@ export const exec = (url, route) => {
   return matches
 }
 
-// Our Router actions
-export const actions = getStoreReference({
-  setRoute: (state, newRoute) => ({currentRoute: newRoute})
-})
-
-const mapper = ({currentPath, currentRoute}, {routes}) => {
-  if (!routes) {
-    console.warn('<Router> must include a routes prop.')
-  }
-  return {currentPath, currentRoute}
-}
-
-const Router = connect(mapper, actions)(({
-  // state
-  currentPath,
-  currentRoute,
-
-  // actions
-  setRoute,
-
-  // props
-  routes
-}) => {
-  for (let route in routes) {
-    if (routes[route].hasOwnProperty('routes')) {
-      const shouldRender = Object
-        .values(routes[route].routes)
-        .some(({path}) => path && exec(currentPath, path))
-      if (shouldRender) {
-        const App = routes[route].component
-        return <App />
-      }
-    } else {
-      const routeArgs = exec(currentPath, routes[route].path)
-      if (routeArgs) {
-        const newRoute = {
-          name: route,
-          path: routes[route].path,
-          args: routeArgs
+export default ({routes}) =>
+  <WithState mapper={({currentPath}) => ({currentPath})}>
+    {({currentPath, store}) => {
+      if (!storeRef) storeRef = store
+      for (let route in routes) {
+        if (routes[route].hasOwnProperty('routes')) {
+          const shouldRender = Object
+            .values(routes[route].routes)
+            .some(({path}) => path && exec(currentPath, path))
+          if (shouldRender) {
+            const App = routes[route].component
+            return <App />
+          }
+        } else {
+          const routeArgs = exec(currentPath, routes[route].path)
+          if (routeArgs) {
+            const newRoute = {
+              name: route,
+              path: routes[route].path,
+              args: routeArgs
+            }
+            if (!equal(newRoute, store.getState().route)) {
+              store.setState({route: newRoute})
+            }
+            const Component = routes[route].component
+            return <Component {...routeArgs} />
+          }
         }
-        if (!equal(newRoute, currentRoute)) {
-          setRoute(newRoute)
-        }
-        const Component = routes[route].component
-        return <Component {...routeArgs} />
       }
-    }
-  }
-})
-
-export default Router
+    }}
+  </WithState>
 
 if (typeof window !== 'undefined') {
   document.addEventListener('click', ev => {

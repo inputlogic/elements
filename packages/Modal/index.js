@@ -52,11 +52,11 @@ export default Modal
 *   </Modals>
 */
 let prevState = {}
-export const Modals = connect('route, modal', actions)(({route, modal, closeModal, children}) => {
+export const Modals = connect('currentRoute, modal', actions)(({currentRoute, modal, closeModal, children}) => {
   const prevModal = prevState.modal
-  const prevRouteName = W.path('route.name', prevState)
+  const prevRouteName = W.path('currentRoute.name', prevState)
 
-  prevState = {route, modal}
+  prevState = {currentRoute, modal}
 
   if (!modal) {
     if (prevModal != null) {
@@ -67,7 +67,7 @@ export const Modals = connect('route, modal', actions)(({route, modal, closeModa
     document.body.classList.add('modal-open')
   }
 
-  if (W.path('name', route || {}) !== prevRouteName) {
+  if (W.path('name', currentRoute || {}) !== prevRouteName) {
     closeModal()
   }
 
