@@ -13,6 +13,7 @@ Fun!
 
 ## Publishing Changes
 
-1. `node_modules/.bin/lerna publish`
+1. `node_modules/.bin/lerna changed` to see what would be published
+2. `node_modules/.bin/lerna publish`
 
 More details may be needed...
