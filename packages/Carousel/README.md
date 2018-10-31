@@ -26,10 +26,10 @@ const items = ['fff', 'a7c', '09d', '411', '111']
 
 ## Props
 
-| Prop                   | Type       | Description         |
-|------------------------|------------|---------------------|
-| **`className`**        | _String_   | className given to each slide element. Default: `'carousel-slide'`
-| **`wrapperClass`**     | _String_   | className given to top-level carousel div. Default: `''`
-| **`noNav`**            | _Boolean_  | Set to `true` to skip rendering prev/next elements. Default: `false`
-| **`withDots`**         | _Boolean_  | If `true`, renders indicator dots below slides. Default: `false`
-| **`children`**         | _Array_    | Each child is one of the slides in the Carousel.
+| Prop                   | Type       | Default       | Description         |
+|------------------------|------------|------------|---------------------|
+| **`className`**        | _String_   | `'carousel-slide'` | className given to each slide element.
+| **`wrapperClass`**     | _String_   | `''`               | className given to top-level carousel div.
+| **`noNav`**            | _Boolean_  | `false`            | Set to `true` to skip rendering prev/next elements.
+| **`withDots`**         | _Boolean_  | `false`            | If `true`, renders indicator dots below slides.
+| **`children`**         | _Array_    | _None_             | Each child is one of the slides in the Carousel.
