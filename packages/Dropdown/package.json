@@ -22,6 +22,9 @@
   ],
   "author": "Input Logic Team",
   "license": "ISC",
+  "dependencies": {
+    "@app-elements/level": "1.0.0"
+  },
   "peerDependencies": {
     "unistore": "3.1.0",
     "wasmuth": "2.0.6"

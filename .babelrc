@@ -1,0 +1,23 @@
+{
+  "presets": [
+    ["env"],
+    "react"
+  ],
+  "plugins": [
+    ["babel-plugin-transform-require-ignore", {
+      "extensions": [".less"]
+    }],
+    ["module-resolver/lib/index.js", {
+      "alias": {
+        "react": "preact",
+        "unistore/react": "unistore/preact",
+        "": "./src"
+      }
+    }],
+    ["jsx-import/src/index.js", {
+      "identifier": "Preact",
+      "moduleName": "preact"
+    }],
+    ["transform-react-jsx", {"pragma": "Preact.h"}]
+  ]
+}
