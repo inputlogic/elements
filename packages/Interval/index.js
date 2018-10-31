@@ -3,7 +3,7 @@ import React from 'react'
 export default class Interval extends React.Component {
   componentDidMount () {
     if (typeof window !== 'undefined') {
-      this._pollId = window.setInterval(this.props.function, this.props.interval)
+      this._intervalId = window.setInterval(this.props.function, this.props.interval)
     }
   }
 
