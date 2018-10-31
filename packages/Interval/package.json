@@ -1,5 +1,5 @@
 {
-  "name": "@app-elements/poll",
+  "name": "@app-elements/interval",
   "version": "1.0.0",
   "description": "Call some function on an interval during the lifecycle of a component",
   "main": "index.js",
