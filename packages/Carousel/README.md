@@ -8,7 +8,7 @@ Simple (P)React carousel with arrows and dot indicators.
 
 ## Usage
 
-```
+```javascript
 import Carousel from '@app-elements/carousel'
 
 const items = ['fff', 'a7c', '09d', '411', '111']
