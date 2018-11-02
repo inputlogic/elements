@@ -1,5 +1,5 @@
 import React from 'react'
-import equal from '@app-elements/router/equal'
+import equal from '@app-elements/equal'
 
 export default class WithState extends React.Component {
   constructor (props, {store}) {

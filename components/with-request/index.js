@@ -1,6 +1,6 @@
 import React from 'react'
 
-import equal from '@app-elements/router/equal'
+import equal from '@app-elements/equal'
 
 import makeRequest from './makeRequest'
 
