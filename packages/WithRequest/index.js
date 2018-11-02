@@ -4,29 +4,63 @@ import equal from '@app-elements/router/equal'
 
 import makeRequest from './makeRequest'
 
-const OK_TIME = 30000
-const CACHE = {}
+let storeRef // Will get populated if WithRequest receives `store` via context
 
+const OK_TIME = 30000
+const CACHE = {} // used if no store is provided in context
+
+// cache result of request by endpoint, either in store or local cache object
 const cache = (endpoint, result) => {
-  CACHE[endpoint] = {result, timestamp: Date.now()}
+  if (storeRef) {
+    storeRef.setState({
+      requests: {
+        ...storeRef.getState().requests || {},
+        [endpoint]: {result, timestamp: Date.now()}
+      }
+    })
+  } else {
+    CACHE[endpoint] = {result, timestamp: Date.now()}
+  }
 }
 
+// get timestamp of an endpoint from store or local cache object
+const getTimestamp = endpoint => {
+  if (storeRef) {
+    const reqs = storeRef.getState().requests || {}
+    return reqs[endpoint] && reqs[endpoint].timestamp
+  } else {
+    return CACHE[endpoint] && CACHE[endpoint].timestamp
+  }
+}
+
+// check if last saved timestamp for endpoint is not expired
 const validCache = endpoint => {
-  const ts = CACHE[endpoint] && CACHE[endpoint].timestamp
+  const ts = getTimestamp(endpoint)
   if (!ts) return false
   const diff = Date.now() - ts
   return diff < OK_TIME
 }
 
+// clear result for an endpoint from store or local cache object
 export const clearCache = endpoint => {
-  CACHE[endpoint] = null
+  if (storeRef) {
+    storeRef.setState({
+      requests: {
+        ...storeRef.getState().requests || {},
+        [endpoint]: null
+      }
+    })
+  } else {
+    CACHE[endpoint] = null
+  }
 }
 
 export default class WithRequest extends React.Component {
-  constructor (props) {
+  constructor (props, {store}) {
     super(props)
-    this.state = {...(this.state || {}), isLoading: true, result: null, error: null}
+    storeRef = store
     this._existing = null
+    this.state = {...(this.state || {}), isLoading: true, result: null, error: null}
   }
 
   _performRequest (endpoint, parse) {
