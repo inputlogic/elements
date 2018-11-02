@@ -1,6 +1,6 @@
 {
   "name": "@app-elements/image",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -21,5 +21,6 @@
     "ui"
   ],
   "author": "Input Logic Team",
-  "license": "ISC"
+  "license": "ISC",
+  "gitHead": "d50087f5b15f56e544e7e52d0628bc3b7f0ea361"
 }

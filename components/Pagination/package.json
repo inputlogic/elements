@@ -1,6 +1,6 @@
 {
   "name": "@app-elements/pagination",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Display pagination links for a url that follows DRF format.",
   "main": "index.js",
   "scripts": {
@@ -26,9 +26,10 @@
     "access": "public"
   },
   "dependencies": {
-    "@app-elements/router": "^1.0.4"
+    "@app-elements/router": "^1.0.5"
   },
   "peerDependencies": {
     "wasmuth": "2.0.6"
-  }
+  },
+  "gitHead": "d50087f5b15f56e544e7e52d0628bc3b7f0ea361"
 }
