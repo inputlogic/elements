@@ -11,8 +11,8 @@
       "alias": {
         "react": "preact",
         "unistore/react": "unistore/preact",
-        "^@app-elements/(.+)-(.+)": "./packages/\\1\\2",
-        "^@app-elements/(.+)": "./packages/\\1",
+        "@app-elements/equal": "./util/equal",
+        "^@app-elements/(.+)": "./components/\\1",
         "": "./src"
       }
     }],

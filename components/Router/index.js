@@ -1,8 +1,8 @@
 import React from 'react' // Can be aliased to `preact` in host project
 
 import WithState from '@app-elements/with-state'
+import equal from '@app-elements/equal'
 
-import equal from './equal'
 import qs from './qs'
 
 let storeRef

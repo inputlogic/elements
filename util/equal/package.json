@@ -1,0 +1,24 @@
+{
+  "name": "@app-elements/equal",
+  "version": "1.0.0",
+  "description": "See if two things are equal",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/inputlogic/elements.git"
+  },
+  "bugs": {
+    "url": "https://github.com/inputlogic/elements/issues"
+  },
+  "keywords": [
+    "javascript"
+  ],
+  "author": "Input Logic Team",
+  "license": "ISC",
+  "publishConfig": {
+    "access": "public"
+  }
+}
