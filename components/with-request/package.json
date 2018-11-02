@@ -1,6 +1,6 @@
 {
   "name": "@app-elements/with-request",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -26,6 +26,6 @@
     "access": "public"
   },
   "dependencies": {
-    "@app-elements/router": "^1.0.4"
+    "@app-elements/router": "^1.0.5"
   }
 }

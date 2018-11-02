@@ -1,6 +1,6 @@
 {
   "name": "@app-elements/request",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Wrap XMLHttpRequest to return a promise and the xhr object.",
   "main": "index.js",
   "scripts": {

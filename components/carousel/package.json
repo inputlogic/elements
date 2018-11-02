@@ -1,6 +1,6 @@
 {
   "name": "@app-elements/carousel",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Simple carousel with arrows and dot indicators.",
   "main": "index.js",
   "scripts": {
@@ -26,6 +26,6 @@
     "wasmuth": "2.0.6"
   },
   "dependencies": {
-    "@app-elements/level": "^1.0.0"
+    "@app-elements/level": "^1.0.1"
   }
 }

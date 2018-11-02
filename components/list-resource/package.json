@@ -1,6 +1,6 @@
 {
   "name": "@app-elements/list-resource",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "List an API resource with pagination.",
   "main": "index.js",
   "scripts": {
@@ -26,9 +26,9 @@
     "access": "public"
   },
   "dependencies": {
-    "@app-elements/pagination": "^1.0.4",
-    "@app-elements/router": "^1.0.4",
-    "@app-elements/with-request": "^1.0.3"
+    "@app-elements/pagination": "^1.0.5",
+    "@app-elements/router": "^1.0.5",
+    "@app-elements/with-request": "^1.0.4"
   },
   "peerDependencies": {
     "unistore": "3.1.0",
