@@ -5,8 +5,8 @@ export default class WithState extends React.Component {
   constructor (props, {store}) {
     super(props)
     this._store = store
-    this._unsubscribe = store.subscribe(this._update)
     this._update = this._update.bind(this)
+    this._unsubscribe = store.subscribe(this._update)
     this.state = {...this.state, _mappedState: props.mapper(store.getState(), props)}
   }
 
@@ -40,7 +40,9 @@ export default class WithState extends React.Component {
 
   render () {
     const {_mappedState} = this.state
-    const child = this.props.children || this.children[0]
+    const child = this.children
+      ? this.children[0]
+      : this.props.children[0]
     if (!child || typeof child !== 'function') {
       throw new Error('WithState requires a function as its only child')
     }
