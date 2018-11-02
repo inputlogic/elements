@@ -1,5 +1,7 @@
 import {map} from 'wasmuth'
 
+export {request}
+
 export default function request ({url, method = 'GET', data = null, headers}) {
   const xhr = new window.XMLHttpRequest()
   const promise = new Promise((resolve, reject) => {
