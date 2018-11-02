@@ -1,0 +1,28 @@
+{
+  "name": "@app-elements/tooltip",
+  "version": "1.0.3",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/inputlogic/elements.git"
+  },
+  "bugs": {
+    "url": "https://github.com/inputlogic/elements/issues"
+  },
+  "keywords": [
+    "react",
+    "react-component",
+    "preact",
+    "component",
+    "ui"
+  ],
+  "author": "Input Logic Team",
+  "license": "ISC",
+  "peerDependencies": {
+    "wasmuth": "2.0.6"
+  }
+}
