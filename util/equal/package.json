@@ -1,6 +1,6 @@
 {
   "name": "@app-elements/equal",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "See if two things are equal",
   "main": "index.js",
   "scripts": {
