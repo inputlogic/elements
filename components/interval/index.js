@@ -5,8 +5,8 @@ export default class Interval extends React.Component {
     if (!this.props.function) {
       console.warn('Interval should receive `function` prop.')
     }
-    if (typeof window !== 'undefined') {
-      this._intervalId = window.setInterval(
+    if (typeof setInterval !== 'undefined') {
+      this._intervalId = setInterval(
         this.props.function,
         this.props.interval || 3000
       )
@@ -14,8 +14,8 @@ export default class Interval extends React.Component {
   }
 
   componentWillUnmount () {
-    if (typeof window !== 'undefined') {
-      window.clearInterval(this._intervalId)
+    if (typeof clearInterval !== 'undefined') {
+      clearInterval(this._intervalId)
     }
   }
 
