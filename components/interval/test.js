@@ -40,3 +40,14 @@ test('Interval should render children', () => {
 
   expect(document.body.querySelector('#child')).toBeDefined()
 })
+
+test('Interval should render null if no children', () => {
+  const callback = jest.fn(x => x)
+
+  render(
+    <Interval function={callback} />,
+    document.body
+  )
+
+  expect(document.body.querySelector('#child')).toBeDefined()
+})
