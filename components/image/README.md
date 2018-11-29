@@ -12,9 +12,11 @@ Renders an `<img />` only once it's in the viewport.
 import Image from '@app-elements/image'
 
 <Image
-  src={`http://www.placehold.it/400x300/${hex}/f44?text=${hex}`}
-  unloadedSrc={`http://www.placehold.it/400x300/eee/eee?text=Loading`}
-  style='width: 100%'
+  srcs={[
+    'http://www.placehold.it/200x150/eee/eee?text=Loading',
+    'http://www.placehold.it/400x300/f44/fff?text=MediumRes',
+    'http://www.placehold.it/800x600/44f/fff?text=HighRes'
+  ]}
 />
 ```
 
@@ -22,5 +24,4 @@ import Image from '@app-elements/image'
 
 | Prop              | Type        | Default  | Description         |
 |-------------------|-------------|----------|---------------------|
-| **`src`**         | _String_    | _None_   | The url of the image.
-| **`unloadedSrc`** | _String_    | _None_   | A url to a placeholder image. Should be of a tiny filesize.
+| **`srcs`**        | _Array_     | _None_   | An array of image URLs.

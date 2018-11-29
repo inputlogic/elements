@@ -1,89 +1,79 @@
-import W from 'wasmuth'
 import React from 'react' // Can be aliased to Preact in your project
-
-import './style.less'
-
-const isInViewport = function (element) {
-  if (typeof document === 'undefined') {
-    return false
-  }
-  const rect = element.getBoundingClientRect()
-  const html = document.documentElement
-  return (
-    rect.bottom <= (window.innerHeight || html.clientHeight)
-  )
-}
-
-let imageComponents = []
-
-if (typeof document !== 'undefined') {
-  document.addEventListener('scroll', () => {
-    if (!imageComponents.length) return
-    imageComponents.forEach(i => {
-      if (isInViewport(i.base)) {
-        i.loadImage()
-      }
-    })
-  }, true)
-}
 
 export default class Image extends React.Component {
   constructor (props) {
     super(props)
-
     this.state = {
-      loaded: false,
-      error: false
+      loaded: -1, // index of loaded src
+      error: -1 // index of errored src
     }
+    this._imgs = []
+    this._loadImage = this._loadImage.bind(this)
   }
 
-  loadImage () {
+  _loadImage (idx, src) {
     if (typeof document !== 'undefined') {
       const img = document.createElement('img')
+      this._imgs.push(img)
       img.onload = () => {
-        this.setState({loaded: true})
-        this.removeSelf(img)
+        if (this.state.loaded < idx) {
+          this.setState({loaded: idx})
+        }
+        this._removeImage(img)
       }
       img.onerror = () => {
-        this.setState({error: true})
-        this.removeSelf(img)
+        this.setState({error: idx})
+        this._removeImage(img)
       }
-      img.src = this.props.src
+      img.src = src
     }
   }
 
-  removeSelf (img) {
+  _removeImage (img) {
     if (img) {
       img.remove()
     }
 
-    if (imageComponents.includes(this)) {
-      imageComponents = W.reject(i => i === this, imageComponents)
+    if (this._imgs.includes(img)) {
+      this._imgs = this._imgs.reject(i => i === img)
     }
   }
 
   componentDidMount () {
-    imageComponents.push(this)
-
-    if (isInViewport(this.base)) {
-      this.loadImage()
-    }
+    this.props.srcs.forEach((src, idx) => this._loadImage(idx, src))
   }
 
   componentWillUnmount () {
-    this.removeSelf()
+    this._imgs.forEeach(img => this._removeImage(img))
   }
 
   render () {
-    const {src, unloadedSrc = '/images/blank-poster.gif', className, ...props} = this.props
+    const {
+      srcs,
+      unloadedSrc = '/images/blank-poster.gif',
+      className,
+      ...props
+    } = this.props
     const {error, loaded} = this.state
 
-    if (error) {
+    if (error > -1) {
       return <img src={unloadedSrc} className={className} {...props} />
-    } else if (!loaded) {
-      return <img src={unloadedSrc} className={`${className} image-loading`} {...props} />
+    } else if (loaded === -1) {
+      return (
+        <img
+          src={unloadedSrc}
+          className={`${className} image-loading`}
+          {...props}
+        />
+      )
     } else {
-      return <img src={src} className={`${className} image-ready`} {...props} />
+      return (
+        <img
+          src={srcs[loaded]}
+          className={`${className} image-ready`}
+          {...props}
+        />
+      )
     }
   }
 }
