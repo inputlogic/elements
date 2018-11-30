@@ -1,6 +1,6 @@
 # Image
 
-Renders an `<img />` only once it's in the viewport.
+Renders an `<img />` with an array of `src`'s, rendering each, in order, as the complete. The idea is the first is the smallest filesize and the last is the highest resolution.
 
 ## Installation
 
