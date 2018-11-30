@@ -4,8 +4,7 @@ export default class Image extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      loaded: -1, // index of loaded src
-      error: -1 // index of errored src
+      loaded: -1 // index of loaded src
     }
     this._imgs = []
     this._loadImage = this._loadImage.bind(this)
@@ -22,7 +21,7 @@ export default class Image extends React.Component {
         this._removeImage(img)
       }
       img.onerror = () => {
-        this.setState({error: idx})
+        console.warn(`Failed to load srcs[${idx}] => ${src}`)
         this._removeImage(img)
       }
       img.src = src
@@ -35,7 +34,7 @@ export default class Image extends React.Component {
     }
 
     if (this._imgs.includes(img)) {
-      this._imgs = this._imgs.reject(i => i === img)
+      this._imgs = this._imgs.filter(i => i !== img)
     }
   }
 
@@ -54,26 +53,17 @@ export default class Image extends React.Component {
       className,
       ...props
     } = this.props
-    const {error, loaded} = this.state
-
-    if (error > -1) {
-      return <img src={unloadedSrc} className={className} {...props} />
-    } else if (loaded === -1) {
-      return (
-        <img
-          src={unloadedSrc}
-          className={`${className} image-loading`}
-          {...props}
-        />
-      )
-    } else {
-      return (
-        <img
-          src={srcs[loaded]}
-          className={`${className} image-ready`}
-          {...props}
-        />
-      )
-    }
+    const {loaded} = this.state
+    return loaded === -1
+      ? <img
+        src={unloadedSrc}
+        className={`${className} image-loading`}
+        {...props}
+      />
+      : <img
+        src={srcs[loaded]}
+        className={`${className} image-ready`}
+        {...props}
+      />
   }
 }
