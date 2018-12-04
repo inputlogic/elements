@@ -1,6 +1,6 @@
 {
   "name": "@app-elements/connect",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "A HoC to connect WithRequest, WithState, and easily create Actions and Reducer.",
   "main": "index.js",
   "scripts": {
