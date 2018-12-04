@@ -38,6 +38,7 @@ const constToCamel = str => {
 
 const buildActionsAndReducer = (withActions, store, componentName) => {
   const actionTypes = Object.keys(withActions).map(camelToConst)
+  console.log({actionTypes})
   function reducer (action, state) {
     if (actionTypes.includes(action.type)) {
       const args = action.payload.args || []
@@ -52,7 +53,7 @@ const buildActionsAndReducer = (withActions, store, componentName) => {
   Object.keys(withActions).forEach(type => {
     actions[type] = (...args) =>
       store.dispatch({
-        type: type.toUpperCase(),
+        type: camelToConst(type),
         payload: {args},
         meta: {componentName}
       })

@@ -81,6 +81,6 @@ try {
       el = el.parentNode
       if (isDropdown(el)) return
     }
-    storeRef.setState({...storeRef.getState(), dropdown: null})
+    storeRef.setState({dropdown: null})
   })
 } catch (_) {}

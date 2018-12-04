@@ -33,7 +33,7 @@ export default class Image extends React.Component {
       img.remove()
     }
 
-    if (this._imgs.includes(img)) {
+    if ((this._imgs || []).includes(img)) {
       this._imgs = this._imgs.filter(i => i !== img)
     }
   }
@@ -43,7 +43,9 @@ export default class Image extends React.Component {
   }
 
   componentWillUnmount () {
-    this._imgs.forEeach(img => this._removeImage(img))
+    if (this._imgs && this._imgs.length) {
+      this._imgs.forEeach(img => this._removeImage(img))
+    }
   }
 
   render () {

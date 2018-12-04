@@ -7,30 +7,21 @@ import makeRequest from './makeRequest'
 let storeRef // Will get populated if WithRequest receives `store` via context
 
 const OK_TIME = 30000
-const CACHE = {} // used if no store is provided in context
 
 // cache result of request by endpoint, either in store or local cache object
 const cache = (endpoint, result) => {
-  if (storeRef) {
-    storeRef.setState({
-      requests: {
-        ...storeRef.getState().requests || {},
-        [endpoint]: {result, timestamp: Date.now()}
-      }
-    })
-  } else {
-    CACHE[endpoint] = {result, timestamp: Date.now()}
-  }
+  storeRef.setState({
+    requests: {
+      ...storeRef.getState().requests || {},
+      [endpoint]: {result, timestamp: Date.now()}
+    }
+  })
 }
 
 // get timestamp of an endpoint from store or local cache object
 const getTimestamp = endpoint => {
-  if (storeRef) {
-    const reqs = storeRef.getState().requests || {}
-    return reqs[endpoint] && reqs[endpoint].timestamp
-  } else {
-    return CACHE[endpoint] && CACHE[endpoint].timestamp
-  }
+  const reqs = storeRef.getState().requests || {}
+  return reqs[endpoint] && reqs[endpoint].timestamp
 }
 
 // check if last saved timestamp for endpoint is not expired
@@ -43,16 +34,12 @@ const validCache = endpoint => {
 
 // clear result for an endpoint from store or local cache object
 export const clearCache = endpoint => {
-  if (storeRef) {
-    storeRef.setState({
-      requests: {
-        ...storeRef.getState().requests || {},
-        [endpoint]: null
-      }
-    })
-  } else {
-    CACHE[endpoint] = null
-  }
+  storeRef.setState({
+    requests: {
+      ...storeRef.getState().requests || {},
+      [endpoint]: null
+    }
+  })
 }
 
 export default class WithRequest extends React.Component {
@@ -97,7 +84,10 @@ export default class WithRequest extends React.Component {
 
     const {endpoint, parse} = props.request
     if (validCache(endpoint)) {
-      this.setState({result: CACHE[endpoint].result, isLoading: false})
+      this.setState({
+        result: storeRef.getState().requests[endpoint].result,
+        isLoading: false
+      })
     } else {
       this._performRequest(endpoint, parse)
     }

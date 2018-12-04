@@ -80,7 +80,7 @@ const Router = connect({
           args: routeArgs
         }
         if (!equal(newRoute, storeRef.getState().currentRoute)) {
-          storeRef.setState({...storeRef.getState(), currentRoute: newRoute})
+          storeRef.setState({currentRoute: newRoute})
         }
         const Component = routes[route].component
         return <Component {...routeArgs} />
@@ -102,7 +102,7 @@ if (typeof window !== 'undefined') {
       const currentPath = storeRef.getState().currentPath
       if (currentPath !== url) {
         window.history['pushState'](null, null, url)
-        storeRef.setState({...storeRef.getState(), currentPath: url})
+        storeRef.setState({currentPath: url})
       }
     }
   })
