@@ -3,24 +3,56 @@ import React from 'react'
 import WithState from '@app-elements/with-state'
 import WithRequest from '@app-elements/with-request'
 
+const camelToConst = str => {
+  let ret = ''
+  let prevLowercase = false
+  for (let s of str) {
+    const isUppercase = s.toUpperCase() === s
+    if (isUppercase && prevLowercase) {
+      ret += '_'
+    }
+    ret += s
+    prevLowercase = !isUppercase
+  }
+  return ret.replace(/_+/g, '_').toUpperCase()
+}
+
+const constToCamel = str => {
+  let ret = ''
+  let prevUnderscore = false
+  for (let s of str) {
+    const isUnderscore = s === '_'
+    if (isUnderscore) {
+      prevUnderscore = true
+      continue
+    }
+    if (!isUnderscore && prevUnderscore) {
+      ret += s
+      prevUnderscore = false
+    } else {
+      ret += s.toLowerCase()
+    }
+  }
+  return ret
+}
+
 const buildActionsAndReducer = (withActions, store, componentName) => {
-  const actionTypes = Object.keys(withActions).map(k => k.toUpperCase())
+  const actionTypes = Object.keys(withActions).map(camelToConst)
   function reducer (action, state) {
     if (actionTypes.includes(action.type)) {
-      const lowerCaseType = action.type.toLowerCase()
       const args = action.payload.args || []
       return {
         ...state,
-        ...withActions[lowerCaseType].apply(null, [state, ...(args || [])])
+        ...withActions[constToCamel(action.type)].apply(null, [state, ...(args || [])])
       }
     }
     return state
   }
   const actions = {}
-  actionTypes.forEach(type => {
-    actions[type.toLowerCase()] = (...args) =>
+  Object.keys(withActions).forEach(type => {
+    actions[type] = (...args) =>
       store.dispatch({
-        type,
+        type: type.toUpperCase(),
         payload: {args},
         meta: {componentName}
       })
