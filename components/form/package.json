@@ -1,0 +1,22 @@
+{
+  "name": "@app-elements/form",
+  "version": "0.0.1",
+  "description": "Take the pain out of forms!",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/inputlogic/elements.git"
+  },
+  "bugs": {
+    "url": "https://github.com/inputlogic/elements/issues"
+  },
+  "keywords": ["react", "react-component", "preact", "react-native", "component", "ui"],
+  "author": "Input Logic Team",
+  "license": "ISC",
+  "publishConfig": {
+    "access": "public"
+  }
+}
