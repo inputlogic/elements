@@ -16,13 +16,12 @@
     "babel-preset-env": "1.7.0",
     "babel-preset-react": "6.24",
     "jest": "23.6.0",
-    "lerna": "3.4.3",
-    "less": "3.8.1",
+    "lerna": "3.5.1",
+    "less": "3.9.0",
     "preact": "8.3.1",
-    "react": "16.6.0",
+    "react": "16.6.3",
     "snazzy": "8.0.0",
-    "standard": "10.0.2",
-    "unistore": "3.1.0",
+    "standard": "11.0.1",
     "wasmuth": "1.13.2"
   },
   "standard": {

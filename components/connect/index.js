@@ -36,6 +36,7 @@ const connect = ({
   withActions,
   withState,
   withRequest,
+  getStoreRef,
   ...rest
 }) => PassedComponent => {
   const Base = withState != null
@@ -45,10 +46,15 @@ const connect = ({
   class Connect extends Base {
     constructor (props, context) {
       super(props, context)
-      if (withActions && context.store) {
-        const {reducer, actions} = buildActionsAndReducer(withActions, context.store, name)
-        context.store.addReducer(reducer)
-        this._actions = actions
+      if (context.store) {
+        if (withActions) {
+          const {reducer, actions} = buildActionsAndReducer(withActions, context.store, name)
+          context.store.addReducer(reducer)
+          this._actions = actions
+        }
+        if (getStoreRef) {
+          getStoreRef(context.store)
+        }
       }
       this.state = {...this.state}
     }

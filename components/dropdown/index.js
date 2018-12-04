@@ -1,17 +1,12 @@
 import W from 'wasmuth'
 import React from 'react' // Can be aliased to `preact` in host project
-import {connect} from 'unistore/react' // Can alias to `unistore/preact` in host project
 
+import connect from '@app-elements/connect'
 import Level from '@app-elements/level'
 
 import './style.less'
 
 let storeRef // Will get populated by `getStoreReference`
-
-const getStoreReference = actions => store => {
-  storeRef = store
-  return actions
-}
 
 export const actions = {
   toggle: ({dropdown}, uid) => {
@@ -27,7 +22,12 @@ const mapper = ({dropdown}, {uid}) => {
   return {isOpen: dropdown === uid}
 }
 
-const Dropdown = connect(mapper, getStoreReference(actions))(({
+const Dropdown = connect({
+  name: 'Dropdown',
+  withActions: actions,
+  withState: mapper,
+  getStoreRef: store => { storeRef = store }
+})(({
   // Store
   isOpen,
   toggle,

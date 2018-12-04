@@ -1,7 +1,7 @@
 import W from 'wasmuth'
 import Portal from 'preact-portal'
 
-import {connect} from 'unistore/preact'
+import connect from '@app-elements/connect'
 
 import './style.less'
 
@@ -17,7 +17,10 @@ export const actions = store => ({
   closeModal: (state) => ({modal: null})
 })
 
-const Modal = connect('', actions)(({
+const Modal = connect({
+  name: 'Modal',
+  withActions: actions
+})(({
   // connect actions
   onContainerClick,
   closeModal,
@@ -52,7 +55,12 @@ export default Modal
 *   </Modals>
 */
 let prevState = {}
-export const Modals = connect('currentRoute, modal', actions)(({currentRoute, modal, closeModal, children}) => {
+
+export const Modals = connect({
+  name: 'Modals',
+  withActions: actions,
+  withState: ({currentRoute, modal}) => ({currentRoute, modal})
+})(({currentRoute, modal, closeModal, children}) => {
   const prevModal = prevState.modal
   const prevRouteName = W.path('currentRoute.name', prevState)
 

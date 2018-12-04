@@ -10,7 +10,6 @@
     ["module-resolver/lib/index.js", {
       "alias": {
         "react": "preact",
-        "unistore/react": "unistore/preact",
         "@app-elements/equal": "./util/equal",
         "^@app-elements/(.+)": "./components/\\1",
         "": "./src"

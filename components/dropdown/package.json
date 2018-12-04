@@ -23,10 +23,10 @@
   "author": "Input Logic Team",
   "license": "ISC",
   "dependencies": {
-    "@app-elements/level": "^1.0.2"
+    "@app-elements/connect": "0.3.0",
+    "@app-elements/level": "1.0.2"
   },
   "peerDependencies": {
-    "unistore": "3.1.0",
     "wasmuth": "2.0.6"
   },
   "gitHead": "d50087f5b15f56e544e7e52d0628bc3b7f0ea361"

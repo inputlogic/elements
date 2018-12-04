@@ -1,6 +1,6 @@
 import W from 'wasmuth'
-import {connect} from 'unistore/react' // Can alias to `unistore/preact` in host project
 
+import connect from '@app-elements/connect'
 import Pagination from '@app-elements/pagination'
 import qs from '@app-elements/router/qs'
 import WithRequest from '@app-elements/with-request'
@@ -8,7 +8,10 @@ import WithRequest from '@app-elements/with-request'
 const OK_TYPES = ['function', 'object']
 
 // We subscribe to `currentPath` to rerender on route change
-const ListResource = connect('currentPath', {})(({
+const ListResource = connect({
+  name: 'ListResource',
+  withState: ({currentPath}) => ({currentPath})
+})(({
   endpoint,
   limit,
   list = true,
