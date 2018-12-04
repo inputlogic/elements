@@ -8,6 +8,7 @@
     "test": "jest"
   },
   "devDependencies": {
+    "atom": "1.2.2",
     "babel-core": "6.26.3",
     "babel-jest": "23.6.0",
     "babel-plugin-jsx-import": "github:staydecent/babel-plugin-jsx-import",

@@ -38,13 +38,13 @@ const constToCamel = str => {
 
 const buildActionsAndReducer = (withActions, store, componentName) => {
   const actionTypes = Object.keys(withActions).map(camelToConst)
-  console.log({actionTypes})
   function reducer (action, state) {
     if (actionTypes.includes(action.type)) {
       const args = action.payload.args || []
+      const fnRef = constToCamel(action.type)
       return {
         ...state,
-        ...withActions[constToCamel(action.type)].apply(null, [state, ...(args || [])])
+        ...withActions[fnRef].apply(null, [state, ...(args || [])])
       }
     }
     return state

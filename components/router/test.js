@@ -1,10 +1,11 @@
 /* global afterEach jest test expect */
 
 import {render} from 'preact'
-import createStore from 'unistore'
-import {Provider} from 'unistore/preact'
-
+import createStore from 'atom'
 import Router from './index.js'
+
+function Provider (props) { this.getChildContext = () => ({store: props.store}) }
+Provider.prototype.render = props => props.children[0]
 
 const Home = () => (
   <div id='home'>Home</div>
@@ -37,7 +38,7 @@ const routes = {
   }
 }
 
-const store = createStore({currentPath: '/'})
+const store = createStore([], {currentPath: '/'})
 
 afterEach(() => {
   document.getElementsByTagName('html')[0].innerHTML = ''
