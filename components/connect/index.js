@@ -3,38 +3,8 @@ import React from 'react'
 import WithState from '@app-elements/with-state'
 import WithRequest from '@app-elements/with-request'
 
-const camelToConst = str => {
-  let ret = ''
-  let prevLowercase = false
-  for (let s of str) {
-    const isUppercase = s.toUpperCase() === s
-    if (isUppercase && prevLowercase) {
-      ret += '_'
-    }
-    ret += s
-    prevLowercase = !isUppercase
-  }
-  return ret.replace(/_+/g, '_').toUpperCase()
-}
-
-const constToCamel = str => {
-  let ret = ''
-  let prevUnderscore = false
-  for (let s of str) {
-    const isUnderscore = s === '_'
-    if (isUnderscore) {
-      prevUnderscore = true
-      continue
-    }
-    if (!isUnderscore && prevUnderscore) {
-      ret += s
-      prevUnderscore = false
-    } else {
-      ret += s.toLowerCase()
-    }
-  }
-  return ret
-}
+import constToCamel from '@wasmuth/const-to-camel'
+import camelToConst from '@wasmuth/camel-to-const'
 
 const buildActionsAndReducer = (withActions, store, componentName) => {
   const actionTypes = Object.keys(withActions).map(camelToConst)
