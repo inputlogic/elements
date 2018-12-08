@@ -6,6 +6,8 @@ import WithRequest from '@app-elements/with-request'
 import constToCamel from '@wasmuth/const-to-camel'
 import camelToConst from '@wasmuth/camel-to-const'
 
+const CALLED = {}
+
 const buildActionsAndReducer = (withActions, store, componentName) => {
   const actionTypes = Object.keys(withActions).map(camelToConst)
   function reducer (action, state) {
@@ -51,9 +53,18 @@ const connect = ({
       super(props, context)
       if (context.store) {
         if (withActions) {
-          const {reducer, actions} = buildActionsAndReducer(withActions, context.store, name)
-          context.store.addReducer(reducer)
-          this._actions = actions
+          if (!CALLED[name]) {
+            const {reducer, actions} = buildActionsAndReducer(
+              withActions,
+              context.store,
+              name
+            )
+            context.store.addReducer(reducer)
+            this._actions = actions
+            CALLED[name] = actions
+          } else {
+            this._actions = CALLED[name]
+          }
         }
         if (getStoreRef) {
           getStoreRef(context.store)
