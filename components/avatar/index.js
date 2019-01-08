@@ -1,3 +1,5 @@
+import './style.less'
+
 const Avatar = ({
   src,
   fullName = '',
