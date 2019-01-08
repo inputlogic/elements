@@ -1,9 +1,10 @@
-export default ({
+const Avatar = ({
   src,
   fullName = '',
   className = '',
   size = '100'
 }) =>
+
   <div style={`font-size: ${size}%;`} className={`avatar-wrap ${className}`}>
     <div className={`avatar ${src && 'hasImage'}`}>
       {src
@@ -12,3 +13,5 @@ export default ({
       }
     </div>
   </div>
+
+export default Avatar
