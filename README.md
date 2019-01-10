@@ -12,7 +12,7 @@ Fun!
 ## Adding a New Package
 
 1. Copy the `_package-template` folder
-2. Rename it, like `MyComponent`, and move into `/packages` folder
+2. Rename it, like `MyComponent`, and move into `/components` folder
 3. Update the `name` field to match: `"@app-elements/<my-component>"`
 4. Add your code to the `index.js` file and add any other files you need
 5. From the root of the project run: `npm run bootstrap`
