@@ -6,7 +6,6 @@ const Avatar = ({
   className = '',
   size = '100'
 }) =>
-
   <div style={`font-size: ${size}%;`} className={`avatar-wrap ${className}`}>
     <div className={`avatar ${src && 'hasImage'}`}>
       {src
