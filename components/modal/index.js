@@ -8,14 +8,14 @@ import './style.less'
 const isOverlay = (el) =>
   (el.classList && el.classList.contains('modal-container'))
 
-export const actions = store => ({
+export const actions = {
   onContainerClick: (state, event) => {
     if (isOverlay(event.target)) {
       return {modal: null}
     }
   },
   closeModal: (state) => ({modal: null})
-})
+}
 
 const Modal = connect({
   name: 'Modal',

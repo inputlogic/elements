@@ -37,7 +37,7 @@ const buildActionsAndReducer = (withActions, store, componentName) => {
 }
 
 const connect = ({
-  name = 'Connect',
+  name,
   withActions,
   withState,
   withRequest,
@@ -80,7 +80,10 @@ const connect = ({
         ...this.state
       }
       return withRequest != null
-        ? <WithRequest request={withRequest(allState, this.props)} connectState={mappedState}>
+        ? <WithRequest
+          request={withRequest(allState, this.props)}
+          connectState={mappedState}
+        >
           {({isLoading, ...response}) =>
             isLoading
               ? null
@@ -105,6 +108,12 @@ const connect = ({
   if (withState) {
     Connect.defaultProps = {mapper: withState}
   }
+
+  const passedComponentName = PassedComponent.displayName ||
+    PassedComponent.name ||
+    name ||
+    'PassedComponent'
+  Connect.displayName = `connect(${passedComponentName})`
 
   return Connect
 }
