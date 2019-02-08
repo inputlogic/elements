@@ -1,6 +1,6 @@
 {
   "name": "@app-elements/carousel",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Simple carousel with arrows and dot indicators.",
   "main": "index.js",
   "scripts": {
