@@ -1,10 +1,12 @@
 import React from 'react'
 
-import makeRequest from '@app/util/makeRequest'
-import equal from '@app/util/equal'
-import {getState, setState} from '@app/store'
+import makeRequest from '@app-elements/with-request/makeRequest'
+import equal from '@app-elements/equal'
 
-const isReactNative = window.navigator.product === 'ReactNative'
+let storeRef // Will get populated if we receive `store` via context
+
+const isReactNative = typeof window !== 'undefined' &&
+  window.navigator.product === 'ReactNative'
 
 // children can be an array or object in React,
 // but always array in Preact.
@@ -19,19 +21,21 @@ const compatIsValid = React.isValidElement
 
 // These are the component names that we will sync values
 // to our parent Form state.
-// @TODO: This should be props passed into <Form />
-const formFieldNames = [
-  // Our ReactNative 'form' components
-  'InputIcon',
+let formFieldNames = [
   'InputText',
   'InputLocation',
+  'TextInput',
+  'TextArea',
   'Checkbox',
+  'Select',
+  'Radio',
   'Question',
-  'WhatTimesQuestion',
-  'WhenDoneQuestion',
-  'Slider',
-  'CategoryPillFilter'
+  'DatePicker',
+  'Slider'
 ]
+
+export const addFieldNames = (...names) =>
+  formFieldNames = formFieldNames.concat(names)
 
 // `displayName` is lost in Release builds. It must be explicitly set
 // on each of the above `formFieldNames` Component classes.
@@ -58,8 +62,9 @@ const isFormField = child => {
 
 // Our actual Form component
 export default class Form extends React.Component {
-  constructor (props) {
+  constructor (props, {store}) {
     super(props)
+    storeRef = store
     if (!this.props.name) throw new Error('<Form /> Components needs a `name` prop.')
     this.state = {
       values: this.props.initialData || {},
@@ -84,8 +89,8 @@ export default class Form extends React.Component {
         // If not ReactNative, override the onChange event to sync value.
         const newProps = {
           formName,
-          text: this.state.values[child.props.name],
-          value: this.state.values[child.props.name],
+          text: this.state.values[childProps.name],
+          value: this.state.values[childProps.name],
           syncState: state => this.setState({values: {
             ...this.state.values,
             [childProps.name]: state.value || state.text
@@ -100,12 +105,12 @@ export default class Form extends React.Component {
         child = React.cloneElement(child, newProps)
         // Store a reference to our fields, so we can validate them on submit
         this._fields[childProps.name] = child
-      } else if (child.children || child.props.children) {
+      } else if (child.children || childProps.children) {
         // Recursively search children for more form fields
         child = React.cloneElement(child, {
           formName,
           children: this._updateChildFormFields(
-            child.children || child.props.children,
+            child.children || childProps.children,
             formName
           )
         })
@@ -169,14 +174,14 @@ export default class Form extends React.Component {
           })
       } else {
         this.setState({submitting: false})
-        setState({notification: {status: 'failure', message: 'Please complete all form fields!'}})
+        storeRef.setState({notification: {status: 'failure', message: 'Please complete all form fields!'}})
       }
     }
   }
 
   componentDidUpdate () {
-    if (!equal(this.state, getState()[this.props.name])) {
-      setState({[this.props.name]: this.state})
+    if (!equal(this.state, storeRef.getState()[this.props.name])) {
+      storeRef.setState({[this.props.name]: this.state})
     }
   }
 
