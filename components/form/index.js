@@ -34,8 +34,9 @@ let formFieldNames = [
   'Slider'
 ]
 
-export const addFieldNames = (...names) =>
+export const addFieldNames = (...names) => {
   formFieldNames = formFieldNames.concat(names)
+}
 
 // `displayName` is lost in Release builds. It must be explicitly set
 // on each of the above `formFieldNames` Component classes.
