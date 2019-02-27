@@ -1,6 +1,6 @@
 {
   "name": "@app-elements/loading-indicator",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Show a three dots loading indicator.",
   "main": "index.js",
   "scripts": {
