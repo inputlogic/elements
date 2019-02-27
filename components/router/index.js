@@ -92,6 +92,15 @@ const Router = connect({
 export default Router
 
 if (typeof window !== 'undefined') {
+  window.addEventListener('popstate', function () {
+    const url = window.location.pathname
+    const currentPath = storeRef.getState().currentPath
+    if (currentPath !== url) {
+      window.history['pushState'](null, null, url)
+      storeRef.setState({currentPath: url})
+    }
+  })
+
   document.addEventListener('click', ev => {
     if (ev.target.nodeName === 'A' && storeRef) {
       if (ev.metaKey) return
