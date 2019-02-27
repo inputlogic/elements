@@ -20,7 +20,7 @@ Fun!
 
 ## Publishing Changes
 
-1. `node_modules/.bin/lerna changed` to see what would be published
-2. `node_modules/.bin/lerna publish`
+1. `npm run changed` to see what would be published
+2. `npm run publish`
 
 More details may be needed...
