@@ -6,19 +6,72 @@ import Level from '@app-elements/level'
 import './style.less'
 
 export default class Carousel extends React.Component {
-  constructor (props) {
-    super(props)
-    this.state = { active: this.props.active || 0, width: 0 }
-    this.next = this.next.bind(this)
-    this.prev = this.prev.bind(this)
-    this.setActive = this.setActive.bind(this)
-    this.getRef = this.getRef.bind(this)
-    this.getStyle = this.getStyle.bind(this)
-    this.getSlidesStyle = this.getSlidesStyle.bind(this)
+  static defaultProps = {
+    tolerance: 100,
+    mouseSupport: true
   }
 
-  next (ev) {
-    ev.preventDefault()
+  state = { active: this.props.active || 0, width: 0 }
+
+  gesture = { x: [], y: [], match: '' }
+
+  capture = (event) => {
+    event.preventDefault()
+    this.gesture.x.push(event.touches[0].clientX)
+    this.gesture.y.push(event.touches[0].clientY)
+  }
+
+  compute = (event) => {
+    const { tolerance } = this.props
+    let xStart = this.gesture.x[0]
+    let yStart = this.gesture.y[0]
+    let xEnd = this.gesture.x.pop()
+    let yEnd = this.gesture.y.pop()
+    let xTravel = xEnd - xStart
+    let yTravel = yEnd - yStart
+
+    if (Math.abs(xTravel) < tolerance && yTravel > tolerance) {
+      this.gesture.match = 'down'
+    } else if (
+      yTravel < tolerance &&
+      Math.abs(xTravel) < tolerance &&
+      Math.abs(yTravel) > tolerance
+    ) {
+      this.gesture.match = 'up'
+    } else if (
+      xTravel < tolerance &&
+      Math.abs(xTravel) > tolerance &&
+      Math.abs(yTravel) < tolerance
+    ) {
+      this.gesture.match = 'left'
+    } else if (xTravel > tolerance && Math.abs(yTravel) < tolerance) {
+      this.gesture.match = 'right'
+    }
+
+    if (this.gesture.match !== '') {
+      this.onSwipe(this.gesture.match)
+    }
+
+    this.gesture.x = []
+    this.gesture.y = []
+    this.gesture.match = ''
+  }
+
+  onSwipe = (direction) => {
+    if (this.props.onSwipe) {
+      this.props.onSwipe(direction)
+    }
+    this.setState({ swipe: direction }, () => {
+      if (direction === 'left') {
+        this.next()
+      } else if (direction === 'right') {
+        this.prev()
+      }
+    })
+  }
+
+  next = (ev) => {
+    ev && ev.preventDefault()
     const active = this.state.active + this.state.numFit
     const n = active >= this.props.children.length - 1
       ? 0
@@ -26,22 +79,22 @@ export default class Carousel extends React.Component {
     this.setState({ active: n })
   }
 
-  prev (ev) {
-    ev.preventDefault()
+  prev = (ev) => {
+    ev && ev.preventDefault()
     const n = this.state.active <= 0
       ? this.props.children.length - (this.state.numFit + 1)
       : this.state.active - 1
     this.setState({ active: n })
   }
 
-  setActive (active) {
+  setActive = (active) => {
     return ev => {
       ev.preventDefault()
       this.setState({ active })
     }
   }
 
-  getRef (ref) {
+  getRef = (ref) => {
     if (!ref || this.ref) return
     this.ref = ref
     window.requestAnimationFrame(() => {
@@ -55,7 +108,7 @@ export default class Carousel extends React.Component {
     })
   }
 
-  getStyle (idx, active) {
+  getStyle = (idx, active) => {
     const { parentWidth, width } = this.state
     const style = parentWidth != null
       ? `width: ${parentWidth}px;`
@@ -66,8 +119,20 @@ export default class Carousel extends React.Component {
     return `${style} margin-left: -${width}px;`
   }
 
-  getSlidesStyle () {
+  getSlidesStyle = () => {
     return `width: ${this.state.parentWidth * this.props.children.length}px;`
+  }
+
+  componentDidMount () {
+    this.base.addEventListener('touchstart', this.capture)
+    this.base.addEventListener('touchmove', this.capture)
+    this.base.addEventListener('touchend', this.compute)
+  }
+
+  componentWillUnmount () {
+    this.base.removeEventListener('touchstart', this.capture)
+    this.base.removeEventListener('touchmove', this.capture)
+    this.base.removeEventListener('touchend', this.compute)
   }
 
   render () {
