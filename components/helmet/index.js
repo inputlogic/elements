@@ -8,9 +8,9 @@ export const rewind = () => {
   return res
 }
 
-const Wrapper = ({children}) => {
+const Wrapper = ({ children }) => {
   if (typeof window !== 'undefined') {
-    const titleChild = W.find(({nodeName}) => nodeName === 'title', children)
+    const titleChild = W.find(({ nodeName }) => nodeName === 'title', children)
     if (titleChild) {
       const title = titleChild.children[0]
       if (title !== document.title) {
@@ -36,12 +36,12 @@ export default class Helmet extends React.Component {
   }
 
   _getTitle (props) {
-    const {title, titleTemplate = '%s', defaultTitle} = {...rewind(), ...props}
+    const { title, titleTemplate = '%s', defaultTitle } = { ...rewind(), ...props }
     return titleTemplate.replace('%s', title || defaultTitle || '')
   }
 
-  _getMeta ({meta = []}) {
-    return meta.map(({name, property, content}) =>
+  _getMeta ({ meta = [] }) {
+    return meta.map(({ name, property, content }) =>
       <meta
         name={name}
         property={property}

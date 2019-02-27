@@ -1,10 +1,10 @@
 /* global afterEach jest test expect */
 
-import {render} from 'preact'
+import { render } from 'preact'
 import createStore from 'atom'
 import Router from './index.js'
 
-function Provider (props) { this.getChildContext = () => ({store: props.store}) }
+function Provider (props) { this.getChildContext = () => ({ store: props.store }) }
 Provider.prototype.render = props => props.children[0]
 
 const Home = () => (
@@ -19,7 +19,7 @@ const Users = () => (
   </div>
 )
 
-const User = ({id}) => (
+const User = ({ id }) => (
   <div id='user'>User {id}</div>
 )
 
@@ -38,7 +38,7 @@ const routes = {
   }
 }
 
-const store = createStore([], {currentPath: '/'})
+const store = createStore([], { currentPath: '/' })
 
 afterEach(() => {
   document.getElementsByTagName('html')[0].innerHTML = ''
@@ -64,7 +64,7 @@ test('Router should render Home', () => {
 test('Router should automatically wire up <a /> elements', () => {
   window.scrollTo = jest.fn()
 
-  store.setState({currentPath: '/users'})
+  store.setState({ currentPath: '/users' })
 
   render(
     <Provider store={store}>
@@ -85,7 +85,7 @@ test('Router should automatically wire up <a /> elements', () => {
 })
 
 test('Router should render parent routes', () => {
-  store.setState({currentPath: '/users/2'})
+  store.setState({ currentPath: '/users/2' })
 
   const Parent = () => (
     <div id='parent'>

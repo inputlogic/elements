@@ -10,7 +10,7 @@ const OK_TYPES = ['function', 'object']
 // We subscribe to `currentPath` to rerender on route change
 const ListResource = connect({
   name: 'ListResource',
-  withState: ({currentPath}) => ({currentPath})
+  withState: ({ currentPath }) => ({ currentPath })
 })(({
   endpoint,
   limit,
@@ -37,11 +37,11 @@ const ListResource = connect({
   }
   return (
     <WithRequest request={request}>
-      {({result, isLoading}) =>
+      {({ result, isLoading }) =>
         isLoading
           ? <p>Loading...</p>
           : <div key={request.endpoint}>
-            {list ? W.map(func, W.pathOr(result, 'results', result)) : func({...result})}
+            {list ? W.map(func, W.pathOr(result, 'results', result)) : func({ ...result })}
             {pagination && limit != null
               ? <Pagination activePage={activePage} request={result} pageSize={limit} />
               : null
@@ -54,5 +54,5 @@ const ListResource = connect({
 
 export default ListResource
 
-export const Resource = ({endpoint, ...props}) =>
+export const Resource = ({ endpoint, ...props }) =>
   <ListResource key={`resource-${endpoint}`} list={false} endpoint={endpoint} {...props} />

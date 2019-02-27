@@ -16,7 +16,7 @@ if (typeof document !== 'undefined') {
     if (!lazyComponents.length) return
     lazyComponents.forEach(c => {
       if (isInViewport(c.base)) {
-        c.setState({show: true})
+        c.setState({ show: true })
       }
     })
   }, true)
@@ -25,13 +25,13 @@ if (typeof document !== 'undefined') {
 export default class LazyLoad extends React.Component {
   constructor (props) {
     super(props)
-    this.state = {show: false}
+    this.state = { show: false }
   }
 
   componentDidMount () {
     lazyComponents.push(this)
     if (isInViewport(this.base)) {
-      this.setState({show: true})
+      this.setState({ show: true })
     }
   }
 
@@ -42,8 +42,8 @@ export default class LazyLoad extends React.Component {
   }
 
   render () {
-    const {children} = this.props
-    const {show} = this.state
+    const { children } = this.props
+    const { show } = this.state
     return show
       ? <div>{children}</div>
       : <div style='height: 10px'>&nbsp;</div>

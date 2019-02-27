@@ -13,7 +13,7 @@ const cache = (endpoint, result) => {
   storeRef.setState({
     requests: {
       ...storeRef.getState().requests || {},
-      [endpoint]: {result, timestamp: Date.now()}
+      [endpoint]: { result, timestamp: Date.now() }
     }
   })
 }
@@ -43,11 +43,11 @@ export const clearCache = endpoint => {
 }
 
 export default class WithRequest extends React.Component {
-  constructor (props, {store}) {
+  constructor (props, { store }) {
     super(props)
     storeRef = store
     this._existing = null
-    this.state = {...(this.state || {}), isLoading: true, result: null, error: null}
+    this.state = { ...(this.state || {}), isLoading: true, result: null, error: null }
   }
 
   _performRequest (endpoint, parse) {
@@ -56,7 +56,7 @@ export default class WithRequest extends React.Component {
     if (token) {
       headers.Authorization = `Token ${token}`
     }
-    const {xhr, promise} = makeRequest({endpoint, headers})
+    const { xhr, promise } = makeRequest({ endpoint, headers })
 
     this._existing = xhr
     this._existing._endpoint = endpoint
@@ -65,12 +65,12 @@ export default class WithRequest extends React.Component {
       .then(result => {
         cache(endpoint, result)
         if (this.props.mutateResult) {
-          this.setState({result: this.props.mutateResult(result, this.state.result), isLoading: false})
+          this.setState({ result: this.props.mutateResult(result, this.state.result), isLoading: false })
         } else {
-          this.setState({result, isLoading: false})
+          this.setState({ result, isLoading: false })
         }
       })
-      .catch(error => console.log('_performRequest', {error}) || this.setState({error, isLoading: false}))
+      .catch(error => console.log('_performRequest', { error }) || this.setState({ error, isLoading: false }))
   }
 
   _loadResult (props) {
@@ -82,7 +82,7 @@ export default class WithRequest extends React.Component {
       this._existing = null
     }
 
-    const {endpoint, parse} = props.request
+    const { endpoint, parse } = props.request
     if (validCache(endpoint)) {
       this.setState({
         result: storeRef.getState().requests[endpoint].result,
@@ -118,7 +118,7 @@ export default class WithRequest extends React.Component {
       ? this.children[0]
       : this.props.children[0]
     if (!child || typeof child !== 'function') {
-      console.log({child})
+      console.log({ child })
       throw new Error('WithRequest requires a function as its only child')
     }
     return child(this.state)

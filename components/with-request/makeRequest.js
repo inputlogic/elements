@@ -3,7 +3,7 @@ import W from 'wasmuth'
 let storage = null
 let apiUrl = 'http://10.0.2.2:8000'
 
-export const configure = ({storage: uStorage, apiUrl: uApiUrl}) => {
+export const configure = ({ storage: uStorage, apiUrl: uApiUrl }) => {
   if (uStorage) storage = uStorage
   if (uApiUrl) apiUrl = uApiUrl
 }
@@ -31,7 +31,7 @@ const makeErr = (code, msg) => {
   if (code === 401) {
     storage && storage.removeItem('token')
   }
-  console.error('makeErr', {code, msg})
+  console.error('makeErr', { code, msg })
   return e
 }
 
@@ -75,5 +75,5 @@ export default function makeRequest ({
       ? JSON.stringify(data)
       : data)
   })
-  return {xhr, promise}
+  return { xhr, promise }
 }

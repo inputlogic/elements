@@ -26,8 +26,8 @@ const buildActionsAndReducer = (withActions, store, componentName) => {
     actions[type] = (...args) =>
       store.dispatch({
         type: camelToConst(type),
-        payload: {args},
-        meta: {componentName}
+        payload: { args },
+        meta: { componentName }
       })
   })
   return {
@@ -54,7 +54,7 @@ const connect = ({
       if (context.store) {
         if (withActions) {
           if (!CALLED[name]) {
-            const {reducer, actions} = buildActionsAndReducer(
+            const { reducer, actions } = buildActionsAndReducer(
               withActions,
               context.store,
               name
@@ -70,7 +70,7 @@ const connect = ({
           getStoreRef(context.store)
         }
       }
-      this.state = {...this.state}
+      this.state = { ...this.state }
     }
 
     render () {
@@ -84,7 +84,7 @@ const connect = ({
           request={withRequest(allState, this.props)}
           connectState={mappedState}
         >
-          {({isLoading, ...response}) =>
+          {({ isLoading, ...response }) =>
             isLoading
               ? null
               : <PassedComponent
@@ -106,7 +106,7 @@ const connect = ({
   }
 
   if (withState) {
-    Connect.defaultProps = {mapper: withState}
+    Connect.defaultProps = { mapper: withState }
   }
 
   const passedComponentName = PassedComponent.displayName ||

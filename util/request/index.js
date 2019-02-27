@@ -1,8 +1,8 @@
-import {map} from 'wasmuth'
+import { map } from 'wasmuth'
 
-export {request}
+export { request }
 
-export default function request ({url, method = 'GET', data = null, headers}) {
+export default function request ({ url, method = 'GET', data = null, headers }) {
   const xhr = new window.XMLHttpRequest()
   const promise = new Promise((resolve, reject) => {
     xhr.open(method, url)
@@ -16,7 +16,7 @@ export default function request ({url, method = 'GET', data = null, headers}) {
     }
     xhr.send(typeof data === 'object' ? JSON.stringify(data) : data)
   })
-  return {xhr, promise}
+  return { xhr, promise }
 }
 
 const parse = res => {

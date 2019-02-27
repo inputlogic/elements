@@ -11,10 +11,10 @@ const isOverlay = (el) =>
 export const actions = {
   onContainerClick: (state, event) => {
     if (isOverlay(event.target)) {
-      return {modal: null}
+      return { modal: null }
     }
   },
-  closeModal: (state) => ({modal: null})
+  closeModal: (state) => ({ modal: null })
 }
 
 const Modal = connect({
@@ -59,12 +59,12 @@ let prevState = {}
 export const Modals = connect({
   name: 'Modals',
   withActions: actions,
-  withState: ({currentRoute, modal}) => ({currentRoute, modal})
-})(({currentRoute, modal, closeModal, children}) => {
+  withState: ({ currentRoute, modal }) => ({ currentRoute, modal })
+})(({ currentRoute, modal, closeModal, children }) => {
   const prevModal = prevState.modal
   const prevRouteName = W.path('currentRoute.name', prevState)
 
-  prevState = {currentRoute, modal}
+  prevState = { currentRoute, modal }
 
   if (!modal) {
     if (prevModal != null) {

@@ -1,13 +1,13 @@
 /* global test expect */
 
-import {render} from 'preact'
+import { render } from 'preact'
 import createStore from 'atom'
 import Dropdown from './index.js'
 
-function Provider (props) { this.getChildContext = () => ({store: props.store}) }
+function Provider (props) { this.getChildContext = () => ({ store: props.store }) }
 Provider.prototype.render = props => props.children[0]
 
-const store = createStore([], {dropdown: null})
+const store = createStore([], { dropdown: null })
 
 test('Dropdown exports', () => {
   expect(typeof Dropdown).toBe('function')
@@ -60,8 +60,8 @@ test.only('Dropdown should be open after toggle action', () => {
     </Provider>,
     document.body
   )
-  expect(store.getState()).toEqual({dropdown: null})
+  expect(store.getState()).toEqual({ dropdown: null })
   document.body.querySelector('button').click()
-  expect(store.getState()).toEqual({dropdown: '1'})
+  expect(store.getState()).toEqual({ dropdown: '1' })
   expect(document.body.querySelector('#child')).toBeDefined()
 })

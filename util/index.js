@@ -1,2 +1,2 @@
-export {equal} from './equal'
-export {request} from './request'
+export { equal } from './equal'
+export { request } from './request'

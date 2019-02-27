@@ -63,7 +63,7 @@ const isFormField = child => {
 
 // Our actual Form component
 export default class Form extends React.Component {
-  constructor (props, {store}) {
+  constructor (props, { store }) {
     super(props)
     storeRef = store
     if (!this.props.name) throw new Error('<Form /> Components needs a `name` prop.')
@@ -84,7 +84,7 @@ export default class Form extends React.Component {
       const childProps = child.attributes || child.props
       if (childProps.isSubmit) {
         // if has isSubmit flag, treat as Submit button on ReactNative
-        child = React.cloneElement(child, {formName, onPress: () => this._onSubmit()})
+        child = React.cloneElement(child, { formName, onPress: () => this._onSubmit() })
       } else if (isFormField(child)) {
         // If one of our nested Form Fields, add syncState prop.
         // If not ReactNative, override the onChange event to sync value.
@@ -92,16 +92,16 @@ export default class Form extends React.Component {
           formName,
           text: this.state.values[childProps.name],
           value: this.state.values[childProps.name],
-          syncState: state => this.setState({values: {
+          syncState: state => this.setState({ values: {
             ...this.state.values,
             [childProps.name]: state.value || state.text
-          }})
+          } })
         }
         if (!isReactNative) {
-          newProps.onChange = ev => this.setState({values: {
+          newProps.onChange = ev => this.setState({ values: {
             ...this.state.values,
             [childProps.name]: ev.target.value
-          }})
+          } })
         }
         child = React.cloneElement(child, newProps)
         // Store a reference to our fields, so we can validate them on submit
@@ -128,7 +128,7 @@ export default class Form extends React.Component {
       return
     }
 
-    this.setState({submitting: true})
+    this.setState({ submitting: true })
 
     const fieldNames = Object.keys(this._fields)
 
@@ -142,7 +142,7 @@ export default class Form extends React.Component {
     }, {})
 
     const hasError = Object.keys(errors).length > 0
-    hasError && this.setState({errors: {...this.state.errors, ...errors}})
+    hasError && this.setState({ errors: { ...this.state.errors, ...errors } })
 
     if (this.props.onSubmit) {
       this.props.onSubmit({
@@ -157,7 +157,7 @@ export default class Form extends React.Component {
       })
     } else {
       if (!hasError) {
-        const {xhr, promise} = makeRequest({
+        const { xhr, promise } = makeRequest({
           endpoint: this.props.action,
           method: this.props.method,
           data: this.state.values,
@@ -166,23 +166,23 @@ export default class Form extends React.Component {
         })
         promise
           .then(r => {
-            this.setState({submitting: false})
+            this.setState({ submitting: false })
             this.props.onSuccess && this.props.onSuccess(r)
           })
           .catch(_ => {
-            this.setState({submitting: false})
+            this.setState({ submitting: false })
             this.props.onFailure && this.props.onFailure(xhr)
           })
       } else {
-        this.setState({submitting: false})
-        storeRef.setState({notification: {status: 'failure', message: 'Please complete all form fields!'}})
+        this.setState({ submitting: false })
+        storeRef.setState({ notification: { status: 'failure', message: 'Please complete all form fields!' } })
       }
     }
   }
 
   componentDidUpdate () {
     if (!equal(this.state, storeRef.getState()[this.props.name])) {
-      storeRef.setState({[this.props.name]: this.state})
+      storeRef.setState({ [this.props.name]: this.state })
     }
   }
 

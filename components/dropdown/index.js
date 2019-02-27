@@ -9,17 +9,17 @@ import './style.less'
 let storeRef // Will get populated by `getStoreReference`
 
 export const actions = {
-  toggle: ({dropdown}, uid) => {
+  toggle: ({ dropdown }, uid) => {
     const isOpen = dropdown === uid
-    return {dropdown: isOpen ? null : uid}
+    return { dropdown: isOpen ? null : uid }
   }
 }
 
-const mapper = ({dropdown}, {uid}) => {
+const mapper = ({ dropdown }, { uid }) => {
   if (!uid) {
     console.warn('<Dropdown> must include a uid prop.')
   }
-  return {isOpen: dropdown === uid}
+  return { isOpen: dropdown === uid }
 }
 
 const Dropdown = connect({
@@ -81,6 +81,6 @@ try {
       el = el.parentNode
       if (isDropdown(el)) return
     }
-    storeRef.setState({dropdown: null})
+    storeRef.setState({ dropdown: null })
   })
 } catch (_) {}

@@ -1,18 +1,18 @@
 import W from 'wasmuth'
 import React from 'react'
 
-import {updateQuery} from '@app-elements/router'
+import { updateQuery } from '@app-elements/router'
 
 import paginationRange from './paginationRange'
 
 import './style.less'
 
-const pageBuilder = page => updateQuery({page})
+const pageBuilder = page => updateQuery({ page })
 
 export default class Pagination extends React.Component {
   render () {
-    const {activePage, pageSize, request} = this.props
-    const {count, next, previous} = request
+    const { activePage, pageSize, request } = this.props
+    const { count, next, previous } = request
     if (!count || count < pageSize) {
       return
     }

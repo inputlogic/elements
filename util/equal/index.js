@@ -2,7 +2,7 @@ let isArray = Array.isArray
 let keyList = Object.keys
 let hasProp = Object.prototype.hasOwnProperty
 
-export {equal}
+export { equal }
 
 export default function equal (a, b) {
   if (a === b) return true

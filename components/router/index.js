@@ -13,7 +13,7 @@ const segmentize = (url) => {
 
 export function updateQuery (queries) {
   const existingParams = qs.parse(window.location.search)
-  return window.location.pathname + `?${qs.stringify({...existingParams, ...queries})}`
+  return window.location.pathname + `?${qs.stringify({ ...existingParams, ...queries })}`
 }
 
 // route matching logic, taken from preact-router
@@ -59,14 +59,14 @@ export const exec = (url, route) => {
 
 const Router = connect({
   name: 'Router',
-  withState: ({currentPath}) => ({currentPath}),
+  withState: ({ currentPath }) => ({ currentPath }),
   getStoreRef: store => { storeRef = store }
-})(({currentPath, routes}) => {
+})(({ currentPath, routes }) => {
   for (let route in routes) {
     if (routes[route].hasOwnProperty('routes')) {
       const shouldRender = Object
         .values(routes[route].routes)
-        .some(({path}) => path && exec(currentPath, path))
+        .some(({ path }) => path && exec(currentPath, path))
       if (shouldRender) {
         const App = routes[route].component
         return <App />
@@ -80,7 +80,7 @@ const Router = connect({
           args: routeArgs
         }
         if (!equal(newRoute, storeRef.getState().currentRoute)) {
-          storeRef.setState({currentRoute: newRoute})
+          storeRef.setState({ currentRoute: newRoute })
         }
         const Component = routes[route].component
         return <Component {...routeArgs} />
@@ -97,7 +97,7 @@ if (typeof window !== 'undefined') {
     const currentPath = storeRef.getState().currentPath
     if (currentPath !== url) {
       window.history['pushState'](null, null, url)
-      storeRef.setState({currentPath: url})
+      storeRef.setState({ currentPath: url })
     }
   })
 
@@ -111,7 +111,7 @@ if (typeof window !== 'undefined') {
       const currentPath = storeRef.getState().currentPath
       if (currentPath !== url) {
         window.history['pushState'](null, null, url)
-        storeRef.setState({currentPath: url})
+        storeRef.setState({ currentPath: url })
       }
     }
   })

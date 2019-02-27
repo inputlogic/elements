@@ -1,6 +1,6 @@
 /* global jest test expect */
 
-import {render} from 'preact'
+import { render } from 'preact'
 
 import Interval from './index.js'
 

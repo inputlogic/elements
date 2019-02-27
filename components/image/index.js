@@ -16,7 +16,7 @@ export default class Image extends React.Component {
       this._imgs.push(img)
       img.onload = () => {
         if (this.state.loaded < idx) {
-          this.setState({loaded: idx})
+          this.setState({ loaded: idx })
         }
         this._removeImage(img)
       }
@@ -55,7 +55,7 @@ export default class Image extends React.Component {
       className,
       ...props
     } = this.props
-    const {loaded} = this.state
+    const { loaded } = this.state
     return loaded === -1
       ? <img
         src={unloadedSrc}

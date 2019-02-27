@@ -8,7 +8,7 @@ import './style.less'
 export default class Carousel extends React.Component {
   constructor (props) {
     super(props)
-    this.state = {active: this.props.active || 0, width: 0}
+    this.state = { active: this.props.active || 0, width: 0 }
     this.next = this.next.bind(this)
     this.prev = this.prev.bind(this)
     this.setActive = this.setActive.bind(this)
@@ -23,7 +23,7 @@ export default class Carousel extends React.Component {
     const n = active >= this.props.children.length - 1
       ? 0
       : this.state.active + 1
-    this.setState({active: n})
+    this.setState({ active: n })
   }
 
   prev (ev) {
@@ -31,13 +31,13 @@ export default class Carousel extends React.Component {
     const n = this.state.active <= 0
       ? this.props.children.length - (this.state.numFit + 1)
       : this.state.active - 1
-    this.setState({active: n})
+    this.setState({ active: n })
   }
 
   setActive (active) {
     return ev => {
       ev.preventDefault()
-      this.setState({active})
+      this.setState({ active })
     }
   }
 
@@ -51,12 +51,12 @@ export default class Carousel extends React.Component {
       const numFit = parent != null
         ? Math.max(0, Math.floor(parent.offsetWidth / width) - 1)
         : 0
-      this.setState({width, parentWidth, numFit})
+      this.setState({ width, parentWidth, numFit })
     })
   }
 
   getStyle (idx, active) {
-    const {parentWidth, width} = this.state
+    const { parentWidth, width } = this.state
     const style = parentWidth != null
       ? `width: ${parentWidth}px;`
       : ''
@@ -78,7 +78,7 @@ export default class Carousel extends React.Component {
       withDots = false,
       wrapperClass = ''
     } = this.props
-    const {active} = this.state
+    const { active } = this.state
 
     return (
       <div className={`carousel ${wrapperClass}`}>

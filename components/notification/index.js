@@ -5,7 +5,7 @@ import './style.less'
 let ref
 
 export function showNotification (notification) {
-  ref && ref.setState({...ref.state, ...notification, open: true})
+  ref && ref.setState({ ...ref.state, ...notification, open: true })
 }
 
 /**
@@ -16,14 +16,14 @@ export function showNotification (notification) {
 export default class Notification extends React.Component {
   constructor (props) {
     super(props)
-    this.state = {open: false, message: null, type: 'error', length: 3000}
+    this.state = { open: false, message: null, type: 'error', length: 3000 }
   }
 
   componentDidUpdate () {
     if (this.state.message) {
       this.timeout && clearTimeout(this.timeout)
       this.timeout = setTimeout(
-        () => this.timeout && this.setState({open: false}),
+        () => this.timeout && this.setState({ open: false }),
         this.state.length
       )
     }
@@ -33,7 +33,7 @@ export default class Notification extends React.Component {
     this.timeout && clearTimeout(this.timeout)
   }
 
-  render (_, {open, message, type}) {
+  render (_, { open, message, type }) {
     if (!ref) ref = this
     if (!message) return null
     return (
