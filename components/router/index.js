@@ -103,11 +103,14 @@ if (typeof window !== 'undefined') {
 
   document.addEventListener('click', ev => {
     if (ev.target.nodeName === 'A' && storeRef) {
+      const url = ev.target.getAttribute('href')
+      console.log({ url })
       if (ev.metaKey) return
+      if (url.indexOf('mailto:') === 0) return
+      if (ev.target.hasAttribute('data-external-link')) return
       ev.preventDefault()
       ev.stopImmediatePropagation()
       window.scrollTo(0, 0)
-      const url = ev.target.getAttribute('href')
       const currentPath = storeRef.getState().currentPath
       if (currentPath !== url) {
         window.history['pushState'](null, null, url)
