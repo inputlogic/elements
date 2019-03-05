@@ -2,8 +2,6 @@ import React from 'react'
 import equal from '@app-elements/equal'
 
 const withState = ({ name, mapper }) => PassedComponent => {
-  let storeRef
-
   class WithState extends React.Component {
     constructor (props, { store }) {
       super(props)
@@ -48,9 +46,9 @@ const withState = ({ name, mapper }) => PassedComponent => {
       const { _mappedState } = this.state
       return (
         <PassedComponent
-          store={ this._store }
-          { ...this.props }
-          { ..._mappedState }
+          store={this._store}
+          {...this.props}
+          {..._mappedState}
         />
       )
     }

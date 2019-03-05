@@ -49,6 +49,7 @@ test('Router exports', () => {
 })
 
 test('Router should render Home', () => {
+  console.log('!!!', { render })
   render(
     <Provider store={store}>
       <Router routes={routes} />

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import WithState from '@app-elements/with-state'
+import stateEnhancer from '@app-elements/with-state'
 import WithRequest from '@app-elements/with-request'
 
 import constToCamel from '@wasmuth/const-to-camel'
@@ -44,11 +44,7 @@ const connect = ({
   getStoreRef,
   ...rest
 }) => PassedComponent => {
-  const Base = withState != null
-    ? WithState
-    : React.Component
-
-  class Connect extends Base {
+  class Connect extends React.Component {
     constructor (props, context) {
       super(props, context)
       if (context.store) {
@@ -74,21 +70,16 @@ const connect = ({
     }
 
     render () {
-      const mappedState = withState != null ? this.state._mappedState : {}
-      const allState = {
-        ...mappedState,
-        ...this.state
-      }
       return withRequest != null
         ? <WithRequest
-          request={withRequest(allState, this.props)}
-          connectState={mappedState}
+          request={withRequest(this.state, this.props)}
+          connectState={this.state}
         >
           {({ isLoading, ...response }) =>
             isLoading
               ? null
               : <PassedComponent
-                {...allState}
+                {...this.state}
                 {...response}
                 {...this.props}
                 {...rest}
@@ -97,16 +88,12 @@ const connect = ({
           }
         </WithRequest>
         : <PassedComponent
-          {...allState}
+          {...this.state}
           {...this.props}
           {...rest}
           {...this._actions}
         />
     }
-  }
-
-  if (withState) {
-    Connect.defaultProps = { mapper: withState }
   }
 
   const passedComponentName = PassedComponent.displayName ||
@@ -115,7 +102,12 @@ const connect = ({
     'PassedComponent'
   Connect.displayName = `connect(${passedComponentName})`
 
-  return Connect
+  return withState != null
+    ? stateEnhancer({
+      name: Connect.displayName,
+      mapper: withState
+    })(Connect)
+    : Connect
 }
 
 export default connect

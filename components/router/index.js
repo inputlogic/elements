@@ -1,6 +1,6 @@
 import React from 'react' // Can be aliased to `preact` in host project
 
-import connect from '@app-elements/connect'
+import withState from '@app-elements/with-state'
 import equal from '@app-elements/equal'
 
 import qs from './qs'
@@ -57,39 +57,47 @@ export const exec = (url, route) => {
   return matches
 }
 
-const Router = connect({
-  name: 'Router',
-  withState: ({ currentPath }) => ({ currentPath }),
-  getStoreRef: store => { storeRef = store }
-})(({ currentPath, routes }) => {
-  for (let route in routes) {
-    if (routes[route].hasOwnProperty('routes')) {
-      const shouldRender = Object
-        .values(routes[route].routes)
-        .some(({ path }) => path && exec(currentPath, path))
-      if (shouldRender) {
-        const App = routes[route].component
-        return <App />
-      }
-    } else {
-      const routeArgs = exec(currentPath, routes[route].path)
-      if (routeArgs) {
-        const newRoute = {
-          name: route,
-          path: routes[route].path,
-          args: routeArgs
+class Router extends React.Component {
+  constructor (props, { store }) {
+    super(props)
+    storeRef = store
+  }
+
+  render () {
+    const { routes, currentPath } = this.props
+
+    for (let route in routes) {
+      if (routes[route].hasOwnProperty('routes')) {
+        const shouldRender = Object
+          .values(routes[route].routes)
+          .some(({ path }) => path && exec(currentPath, path))
+        if (shouldRender) {
+          const App = routes[route].component
+          return <App />
         }
-        if (!equal(newRoute, storeRef.getState().currentRoute)) {
-          storeRef.setState({ currentRoute: newRoute })
+      } else {
+        const routeArgs = exec(currentPath, routes[route].path)
+        if (routeArgs) {
+          const newRoute = {
+            name: route,
+            path: routes[route].path,
+            args: routeArgs
+          }
+          if (!equal(newRoute, storeRef.getState().currentRoute)) {
+            storeRef.setState({ currentRoute: newRoute })
+          }
+          const Component = routes[route].component
+          return <Component {...routeArgs} />
         }
-        const Component = routes[route].component
-        return <Component {...routeArgs} />
       }
     }
   }
-})
+}
 
-export default Router
+export default withState({
+  name: 'Router',
+  mapper: ({ currentPath }) => ({ currentPath })
+})(Router)
 
 if (typeof window !== 'undefined') {
   window.addEventListener('popstate', function () {
@@ -104,7 +112,6 @@ if (typeof window !== 'undefined') {
   document.addEventListener('click', ev => {
     if (ev.target.nodeName === 'A' && storeRef) {
       const url = ev.target.getAttribute('href')
-      console.log({ url })
       if (ev.metaKey) return
       if (url.indexOf('mailto:') === 0) return
       if (ev.target.hasAttribute('data-external-link')) return
