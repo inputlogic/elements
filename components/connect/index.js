@@ -1,7 +1,7 @@
 import React from 'react'
 
 import stateEnhancer from '@app-elements/with-state'
-import WithRequest from '@app-elements/with-request'
+import requestEnhancer from '@app-elements/with-request'
 
 import constToCamel from '@wasmuth/const-to-camel'
 import camelToConst from '@wasmuth/camel-to-const'
@@ -70,29 +70,14 @@ const connect = ({
     }
 
     render () {
-      return withRequest != null
-        ? <WithRequest
-          request={withRequest(this.state, this.props)}
-          connectState={this.state}
-        >
-          {({ isLoading, ...response }) =>
-            isLoading
-              ? null
-              : <PassedComponent
-                {...this.state}
-                {...response}
-                {...this.props}
-                {...rest}
-                {...this._actions}
-              />
-          }
-        </WithRequest>
-        : <PassedComponent
+      return (
+        <PassedComponent
           {...this.state}
           {...this.props}
           {...rest}
           {...this._actions}
         />
+      )
     }
   }
 
@@ -102,12 +87,24 @@ const connect = ({
     'PassedComponent'
   Connect.displayName = `connect(${passedComponentName})`
 
-  return withState != null
-    ? stateEnhancer({
-      name: Connect.displayName,
+  let enhanced = Connect
+
+  if (withRequest != null) {
+    console.log({ withRequest })
+    enhanced = requestEnhancer({
+      name: enhanced.displayName,
+      ...withRequest // { endpoint, parse }
+    })(enhanced)
+  }
+
+  if (withState != null) {
+    enhanced = stateEnhancer({
+      name: enhanced.displayName,
       mapper: withState
-    })(Connect)
-    : Connect
+    })(enhanced)
+  }
+
+  return enhanced
 }
 
 export default connect
