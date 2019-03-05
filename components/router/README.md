@@ -18,6 +18,14 @@ import routes from './routes'
 <Router routes={routes} />
 ```
 
+### routeTo
+
+```javascript
+import { routeTo } from '@app-elements/router'
+
+routeTo('users') // `routeTo('users', true)` to use `replaceState`
+```
+
 ### Defining Your Routes
 
 ```javascript
