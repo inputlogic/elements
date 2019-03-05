@@ -5,8 +5,6 @@ import Pagination from '@app-elements/pagination'
 import qs from '@app-elements/router/qs'
 import WithRequest from '@app-elements/with-request'
 
-const OK_TYPES = ['function', 'object']
-
 // We subscribe to `currentPath` to rerender on route change
 const ListResource = connect({
   name: 'ListResource',
@@ -16,15 +14,8 @@ const ListResource = connect({
   limit,
   list = true,
   pagination = false,
-  children
+  render: View
 }) => {
-  const Child = children[0]
-  const type = typeof Child
-  if (!Child || !OK_TYPES.includes(type)) {
-    throw new Error('ListResource requires a function or Component as its only child')
-  }
-  const func = type === 'function' ? Child : props => <Child {...props} />
-
   // @TODO: Needs to access search params on SSR
   const search = typeof window !== 'undefined' ? window.location.search : ''
   const args = qs.parse(search)
@@ -35,15 +26,26 @@ const ListResource = connect({
       ? `${endpoint}?limit=${limit}${activePage > 1 ? `&offset=${limit * activePage}` : ''}`
       : endpoint
   }
+
   return (
     <WithRequest request={request}>
       {({ result, isLoading }) =>
         isLoading
           ? <p>Loading...</p>
           : <div key={request.endpoint}>
-            {list ? W.map(func, W.pathOr(result, 'results', result)) : func({ ...result })}
+            {list
+              ? W.map(
+                item => <View {...item} />,
+                W.pathOr(result, 'results', result)
+              )
+              : <View {...result} />
+            }
             {pagination && limit != null
-              ? <Pagination activePage={activePage} request={result} pageSize={limit} />
+              ? <Pagination
+                activePage={activePage}
+                request={result}
+                pageSize={limit}
+              />
               : null
             }
           </div>
@@ -55,4 +57,9 @@ const ListResource = connect({
 export default ListResource
 
 export const Resource = ({ endpoint, ...props }) =>
-  <ListResource key={`resource-${endpoint}`} list={false} endpoint={endpoint} {...props} />
+  <ListResource
+    key={`resource-${endpoint}`}
+    {...props}
+    list={false}
+    endpoint={endpoint}
+  />
