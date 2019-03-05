@@ -16,6 +16,12 @@ export function updateQuery (queries) {
   return window.location.pathname + `?${qs.stringify({ ...existingParams, ...queries })}`
 }
 
+export function routeTo (to, replaceState) {
+  const method = replaceState != null ? 'replaceState' : 'pushState'
+  window.history[method](null, null, to)
+  storeRef && storeRef.setState({ currentPath: window.location.pathname })
+}
+
 // route matching logic, taken from preact-router
 export const exec = (url, route) => {
   let reg = /(?:\?([^#]*))?(#.*)?$/
