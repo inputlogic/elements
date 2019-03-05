@@ -1,3 +1,4 @@
+import W from 'wasmuth'
 import React from 'react'
 
 import equal from '@app-elements/equal'
@@ -5,6 +6,8 @@ import equal from '@app-elements/equal'
 import makeRequest from './makeRequest'
 
 let storeRef // Will get populated if WithRequest receives `store` via context
+
+const _existing = {}
 
 const OK_TIME = 30000
 
@@ -42,85 +45,109 @@ export const clearCache = endpoint => {
   })
 }
 
-export default class WithRequest extends React.Component {
-  constructor (props, { store }) {
-    super(props)
-    storeRef = store
-    this._existing = null
-    this.state = { ...(this.state || {}), isLoading: true, result: null, error: null }
-  }
-
-  _performRequest (endpoint, parse) {
-    const token = this.context.store.getState().token
-    const headers = {}
-    if (token) {
-      headers.Authorization = `Token ${token}`
-    }
-    const { xhr, promise } = makeRequest({ endpoint, headers })
-
-    this._existing = xhr
-    this._existing._endpoint = endpoint
-
-    promise
-      .then(result => {
-        cache(endpoint, result)
-        if (this.props.mutateResult) {
-          this.setState({ result: this.props.mutateResult(result, this.state.result), isLoading: false })
-        } else {
-          this.setState({ result, isLoading: false })
-        }
-      })
-      .catch(error => console.log('_performRequest', { error }) || this.setState({ error, isLoading: false }))
-  }
-
-  _loadResult (props) {
-    if (!props.request || !props.request.endpoint) {
-      return
-    }
-    if (this._existing && !this.state.error) {
-      this._existing.abort()
-      this._existing = null
+const withRequest = ({
+  name,
+  endpoint,
+  parse
+}) => PassedComponent => {
+  class WithRequest extends React.Component {
+    constructor (props, { store }) {
+      super(props)
+      storeRef = store
+      this.state = { ...(this.state || {}), isLoading: true, result: null, error: null }
     }
 
-    const { endpoint, parse } = props.request
-    if (validCache(endpoint)) {
-      this.setState({
-        result: storeRef.getState().requests[endpoint].result,
-        isLoading: false
-      })
-    } else {
-      this._performRequest(endpoint, parse)
+    _performRequest (endpoint) {
+      const token = this.context.store.getState().token
+      const headers = {}
+      if (token) {
+        headers.Authorization = `Token ${token}`
+      }
+      const { xhr, promise } = makeRequest({ endpoint, headers })
+
+      _existing[endpoint] = xhr
+
+      promise
+        .then(result => {
+          cache(endpoint, result)
+          delete _existing[endpoint]
+
+          if (parse) {
+            this.setState({ result: parse(result, this.state.result), isLoading: false })
+          } else {
+            this.setState({ result, isLoading: false })
+          }
+        })
+        .catch(error => {
+          delete _existing[endpoint]
+          this.setState({ error, isLoading: false })
+        })
+    }
+
+    _loadResult (endpoint) {
+      if (!endpoint) {
+        return
+      }
+
+      if (_existing[endpoint] && !this.state.error) {
+        _existing[endpoint].abort()
+        delete _existing[endpoint]
+      }
+
+      if (validCache(endpoint)) {
+        this.setState({
+          result: storeRef.getState().requests[endpoint].result,
+          isLoading: false
+        })
+      } else {
+        this._performRequest(endpoint)
+      }
+    }
+
+    componentDidMount () {
+      this._loadResult(
+        W.toType(endpoint) === 'function'
+          ? endpoint(this.props)
+          : endpoint
+      )
+    }
+
+    shouldComponentUpdate (nextProps, nextState) {
+      const nextEnpoint = W.toType(endpoint) === 'function'
+        ? endpoint(nextProps)
+        : endpoint
+      const currEnpoint = W.toType(endpoint) === 'function'
+        ? endpoint(this.props)
+        : endpoint
+      if (currEnpoint !== nextEnpoint) {
+        return true
+      }
+      return !equal(nextState, this.state)
+    }
+
+    componentDidUpdate () {
+      const currEnpoint = W.toType(endpoint) === 'function'
+        ? endpoint(this.props)
+        : endpoint
+      if (!_existing[currEnpoint]) {
+        this.setState({ isLoading: true }, () => this._loadResult(currEnpoint))
+      }
+    }
+
+    render () {
+      return (
+        <PassedComponent {...this.props} {...this.state} />
+      )
     }
   }
 
-  componentDidMount () {
-    this._loadResult(this.props)
-  }
+  const passedComponentName = PassedComponent.displayName ||
+    PassedComponent.name ||
+    name ||
+    'PassedComponent'
+  WithRequest.displayName = `withRequest(${passedComponentName})`
 
-  shouldComponentUpdate (nextProps, nextState) {
-    const nextEnpoint = (nextProps.request || {}).endpoint
-    const currEnpoint = (this.props.request || {}).endpoint
-    if (currEnpoint !== nextEnpoint) {
-      return true
-    }
-    return !equal(nextState, this.state)
-  }
-
-  componentDidUpdate (prevProps, prevState, snapshot) {
-    if (!this._existing) return
-    if ((this.props.request || {}).endpoint !== this._existing._endpoint) {
-      this._loadResult(this.props)
-    }
-  }
-
-  render () {
-    const child = this.children
-      ? this.children[0]
-      : this.props.children[0]
-    if (!child || typeof child !== 'function') {
-      console.log({ child })
-      throw new Error('WithRequest requires a function as its only child')
-    }
-    return child(this.state)
-  }
+  return WithRequest
 }
+
+export default withRequest
