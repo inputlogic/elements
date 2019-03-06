@@ -150,9 +150,10 @@ export default class Form extends React.Component {
         errors: errors,
         data: this.state.values,
         state: this.state,
-        clearValues: () => this.setState({
-          values: this.props.initialData || {},
-          errors: {}
+        done: (errors = {}, values) => this.setState({
+          values: values || this.props.initialData || {},
+          submitting: false,
+          errors
         })
       })
     } else {
@@ -166,12 +167,16 @@ export default class Form extends React.Component {
         })
         promise
           .then(r => {
-            this.setState({ submitting: false })
+            this.setState({
+              values: this.props.initialData || {},
+              errors: {},
+              submitting: false
+            })
             this.props.onSuccess && this.props.onSuccess(r)
           })
-          .catch(_ => {
+          .catch(err => {
             this.setState({ submitting: false })
-            this.props.onFailure && this.props.onFailure(xhr)
+            this.props.onFailure && this.props.onFailure({ err, xhr })
           })
       } else {
         this.setState({ submitting: false })
