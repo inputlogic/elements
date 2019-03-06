@@ -39,12 +39,19 @@ export default class Image extends React.Component {
   }
 
   componentDidMount () {
-    this.props.srcs.forEach((src, idx) => this._loadImage(idx, src))
+    const { srcs } = this.props
+    if (srcs && srcs.length > 0) {
+      for (let x = 0; x < srcs.length; x++) {
+        this._loadImage(x, srcs[x])
+      }
+    }
   }
 
   componentWillUnmount () {
-    if (this._imgs && this._imgs.length) {
-      this._imgs.forEeach(img => this._removeImage(img))
+    if (this._imgs && this._imgs.length > 0) {
+      for (let x = 0; x < this._imgs.length; x++) {
+        this._removeImage(this._imgs[x])
+      }
     }
   }
 
