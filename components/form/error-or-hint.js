@@ -1,4 +1,4 @@
-import path from '@wasmuth/path'
+import { path } from 'wasmuth'
 import withState from '@app-elements/with-state'
 
 export const ErrorOrHint = withState({
