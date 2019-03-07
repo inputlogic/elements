@@ -39,6 +39,7 @@ const Login = () => {
     <Form {...formProps}>
       <TextInput name='email' />
       <TextInput name='password' />
+      <button type='submit'>Login</button>
     </Form>
   )
 }
