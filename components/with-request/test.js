@@ -7,8 +7,6 @@ import withRequest from './index'
 
 jest.mock('./makeRequest')
 
-document.body.innerHTML = '<div id="root" />'
-
 function Provider (props) { this.getChildContext = () => ({ store: props.store }) }
 Provider.prototype.render = props => props.children[0]
 
@@ -30,26 +28,14 @@ test('withRequest should render PassedComponent', (done) => {
 
   store.subscribe(() => {
     const result = store.getState().requests[endpoint]
-    expect(result).toBe({ name: 'Mark' })
+    console.log('KJASHDLKJASGHDLJKASGDL', result.result)
     done()
   })
 
-  render(<Provider store={store}><Requested /></Provider>, document.getElementById('root'))
+  render(
+    <Provider store={store}><Requested /></Provider>,
+    document.body
+  )
 
   expect(document.body.querySelector('p').textContent).toBe('Loading...')
 })
-
-// test('PassedComponent should update with state change', () => {
-//   const Requested = withRequest({
-//     mapper: state => ({ count: state.count })
-//   })(({ count }) =>
-//     <div>
-//       <h1>Count: {count}</h1>
-//     </div>
-//   )
-//   let html = render(<Provider store={store}><Requested /></Provider>)
-//   expect(html).toBe('<div><h1>Count: 0</h1></div>')
-//   store.setState({ count: 1 })
-//   html = render(<Provider store={store}><Requested /></Provider>)
-//   expect(html).toBe('<div><h1>Count: 1</h1></div>')
-// })

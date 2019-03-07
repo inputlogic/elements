@@ -26,9 +26,9 @@
     "preact": "8.4.2",
     "preact-render-to-string": "4.1.0",
     "react": "16.8.3",
-    "react-test-renderer": "16.8.3",
     "snazzy": "8.0.0",
     "standard": "12.0.1",
+    "undom": "^0.4.0",
     "wasmuth": "1.13.2"
   },
   "standard": {
