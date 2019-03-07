@@ -37,6 +37,14 @@ const Login = () => {
 
   return (
     <Form {...formProps}>
+      // Each form input requires a `name` prop. It will be the key set on the Form state.
+      // In this case, the form name is `LoginForm`, so:
+      //   {
+      //     LoginForm: {
+      //       email: '',
+      //       password: ''
+      //     }
+      //   }
       <TextInput name='email' />
       <TextInput name='password' />
       <button type='submit'>Login</button>
@@ -74,7 +82,7 @@ import { addFieldNames } from '@app-elements/form'
 addFieldNames('MyCoolField', 'NeatoField', 'BurritoField')
 ```
 
-In the future, we should probably just automatically sync all native web form elements (input, select, checkbox, textarea, etc.. :shrug:)
+In the future, we should probably just automatically sync all native web form elements (input, select, checkbox, textarea, etc.. 🤷‍♀️)
 
 ## Props
 
