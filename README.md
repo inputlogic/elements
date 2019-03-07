@@ -2,12 +2,28 @@
 
 Fun!
 
+## Documentation
+
+- [avatar](components/avatar)
+- [carousel](components/carousel)
+- [connect](components/connect)
+- [dropdown](components/dropdown)
+- [form](components/form)
+- [helmet](components/helmet)
+- [image](components/image)
+- [interval](components/interval)
+- [lazy-load](components/lazy-load)
+- [level](components/level)
+- [list-resource](components/list-resource)
+- [router](components/router)
+- [with-request](components/with-request)
+- [with-state](components/with-state)
+
 ## Making Changes
 
 1. Clone the repo
 2. `npm install`
 3. `npm run bootstrap`
-
 
 ## Adding a New Package
 

@@ -4,7 +4,7 @@ A Component that will request data from an endpoint and then render each item in
 
 ## Installation
 
-`npm install --save @app-elements/with-request`
+`npm install --save @app-elements/list-resource`
 
 ## Usage
 
