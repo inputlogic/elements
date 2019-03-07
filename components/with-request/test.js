@@ -1,7 +1,5 @@
-/* global jest test expect */
+/* global renderer afterEach jest test expect */
 
-import { render } from 'preact'
-// import renderToString from 'preact-render-to-string'
 import createStore from 'atom'
 import withRequest from './index'
 
@@ -11,6 +9,10 @@ function Provider (props) { this.getChildContext = () => ({ store: props.store }
 Provider.prototype.render = props => props.children[0]
 
 const store = createStore([], { requests: {} })
+
+afterEach(() => {
+  renderer.tearDown()
+})
 
 test('withRequest exports', () => {
   expect(typeof withRequest).toBe('function')
@@ -27,15 +29,12 @@ test('withRequest should render PassedComponent', (done) => {
   )
 
   store.subscribe(() => {
-    const result = store.getState().requests[endpoint]
-    console.log('KJASHDLKJASGHDLJKASGDL', result.result)
-    done()
+    setTimeout(() => {
+      expect(renderer.html()).toBe('<div><h1>User: Mark</h1></div>')
+      done()
+    }, 1000)
   })
 
-  render(
-    <Provider store={store}><Requested /></Provider>,
-    document.body
-  )
-
-  expect(document.body.querySelector('p').textContent).toBe('Loading...')
+  renderer.render(<Provider store={store}><Requested /></Provider>)
+  expect(renderer.html()).toBe('<div><p>Loading...</p></div>')
 })

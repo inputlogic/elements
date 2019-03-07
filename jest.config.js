@@ -1,5 +1,6 @@
 module.exports = {
   verbose: false,
+  bail: true,
   'setupFiles': [
     './tests-setup.js'
   ],

@@ -40,11 +40,28 @@ const serializeHtml = (el) => {
   if (nodeType === 3) {
     return enc(textContent)
   }
-  const start = `<${normalizedNodeName}${attributes.map(attr).join('')}`
+  const start = `<${normalizedNodeName}${Array.from(attributes).map(attr).join('')}`
   if (VOID_ELEMENTS.includes(normalizedNodeName)) {
     return `${start} />`
   }
-  return `${start}>${innerHTML || childNodes.map(serializeHtml).join('')}</${normalizedNodeName}>`
+  return `${start}>${innerHTML || Array.from(childNodes).map(serializeHtml).join('')}</${normalizedNodeName}>`
+}
+
+const serializeJson = (el) => {
+  if (el.nodeType === 3) return el.nodeValue
+  let attributes = {}
+  let a = el.attributes
+  if (el.className) {
+    attributes.class = el.className
+  }
+  for (let i = 0; i < a.length; i++) {
+    attributes[a[i].name] = a[i].value
+  }
+  return {
+    attributes,
+    nodeName: String(el.nodeName).toLowerCase(),
+    children: Array.from(el.childNodes).map(serializeJson)
+  }
 }
 
 let doc
@@ -64,9 +81,10 @@ const preactDomRenderer = () => {
       return renderer
     },
     html: () => serializeHtml(root),
+    json: () => serializeJson(root),
     tearDown: () => render(<nothing />, parent, root).remove()
   }
   return renderer
 }
 
-global.preactDomRenderer = preactDomRenderer
+global.renderer = preactDomRenderer()
