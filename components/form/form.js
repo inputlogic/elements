@@ -22,7 +22,6 @@ const compatIsValid = React.isValidElement
 // These are the component names that we will sync values
 // to our parent Form state.
 let formFieldNames = [
-  'ErrorOrHint',
   'InputText',
   'InputLocation',
   'TextInput',
@@ -82,7 +81,7 @@ export default class Form extends React.Component {
         return child
       }
 
-      const childProps = child.attributes || child.props
+      const childProps = child.attributes || child.props || {}
       if (childProps.isSubmit) {
         // if has isSubmit flag, treat as Submit button on ReactNative
         child = React.cloneElement(child, { formName, onPress: () => this._onSubmit() })
