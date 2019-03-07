@@ -1,34 +1,30 @@
 import W from 'wasmuth'
 import withState from '@app-elements/with-state'
+import LoadingIndicator from '@app-elements/loading-indicator'
 
-export const ErrorOrHint = withState({
-  mapper: (state, { formName, name }) => ({
-    error: W.path([formName, 'errors', name], state)
+export const SubmitButton = withState({
+  mapper: (state, { formName }) => ({
+    submitting: W.pathOr(false, [formName, 'submitting'], state)
   })
 })(({
-  // User provided
-  name,
-  hint,
-  className = '',
-
   // withState provided
-  error,
+  submitting,
 
-  // parent <Form /> provided
-  formName
+  // User provided
+  Loading,
+  children,
+
+  ...props
 }) => {
-  !name && console.error('ErrorOrHint component requires `name` prop')
-  !formName && console.error('ErrorOrHint component requires `formName` prop ', name)
-
-  if (!!error || !!hint) {
-    return (
-      <span className={`field-hint ${error ? 'is-error' : ''} ${className}`}>
-        {error || hint}
-      </span>
-    )
-  }
-
-  return null
+  const loader = Loading != null
+    ? <Loading />
+    : <LoadingIndicator />
+  return (
+    <button {...props} type='submit' disabled={submitting}>
+      {submitting && loader}
+      {!submitting && (children || 'Submit')}
+    </button>
+  )
 })
 
-export default ErrorOrHint
+export default SubmitButton
