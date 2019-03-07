@@ -38,6 +38,28 @@ const enhance = connect({
 export default enhance(PeopleList)
 ```
 
+### withActions
+
+A convenient way to define actions and automatically create a reducer that handles them. The reducer is only defined once and passed to the store once.
+
+```javascript
+const Dropdown = connect({
+  // Each property on this object will result in a function of the same name
+  // being created and included in the props given to the PassedComponent.
+  withActions: {
+    // Each value should be a function that accepts `(currentState, [...args])`
+    // `args` will be any arguments you provide when you call the function in
+    // your PassedComponent. For example, on a click handler you would call:
+    // `toggle(this.props.uid)`
+    toggle: ({dropdown}, uid) => {
+      const isOpen = dropdown === uid
+      return {dropdown: isOpen ? null : uid}
+    }
+  },
+  
+})(DropdownView)
+```
+
 ## Props
 
 | Prop                   | Type       | Default       | Description         |
