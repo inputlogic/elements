@@ -75,26 +75,25 @@ const serializeJson = (el) => {
 }
 
 let doc
-const preactDomRenderer = () => {
-  if (!doc) {
-    doc = undom()
-    Object.assign(global, doc.defaultView)
-  }
+let root
+let parent
 
-  let root
-  const parent = doc.createElement('x-root')
-  doc.body.appendChild(parent)
+global.renderer = {
+  render: (jsx) => {
+    root = render(jsx, parent, root)
+  },
+  html: () => serializeHtml(root),
+  json: () => serializeJson(root),
+  setup: () => {
+    if (!doc) {
+      doc = undom()
+      Object.assign(global, doc.defaultView)
+    }
 
-  const renderer = {
-    render: (jsx) => {
-      root = render(jsx, parent, root)
-      return renderer
-    },
-    html: () => serializeHtml(root),
-    json: () => serializeJson(root),
-    tearDown: () => render(<nothing />, parent, root).remove()
+    parent = doc.createElement('x-root')
+    doc.body.appendChild(parent)
+  },
+  teardown: () => {
+    render(<nothing />, parent, root)
   }
-  return renderer
 }
-
-global.renderer = preactDomRenderer()
