@@ -1,6 +1,16 @@
 import { render } from 'preact'
 import undom from 'undom'
 
+// Expose simple store Provider
+global.getProvider = function () {
+  function Provider (props) { this.getChildContext = () => ({ store: props.store }) }
+  Provider.prototype.render = props => props.children[0]
+  return Provider
+}
+
+// Custom undom renderer
+// This let's us check changed html of undom
+// without calling render more than once.
 const VOID_ELEMENTS = [
   'area',
   'base',
