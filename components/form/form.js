@@ -151,17 +151,19 @@ export default class Form extends React.Component {
     const hasError = Object.keys(errors).length > 0
     hasError && this.setState({ errors: { ...this.state.errors, ...errors } })
 
+    const done = (errors = {}, values) => this.setState({
+      values: values || this.props.initialData || {},
+      submitting: false,
+      errors
+    })
+
     if (this.props.onSubmit) {
       this.props.onSubmit({
         hasError,
+        done,
         errors: errors,
         data: this.state.values,
-        state: this.state,
-        done: (errors = {}, values) => this.setState({
-          values: values || this.props.initialData || {},
-          submitting: false,
-          errors
-        })
+        state: this.state
       })
     } else {
       if (!hasError) {
@@ -183,7 +185,7 @@ export default class Form extends React.Component {
           })
           .catch(err => {
             this.setState({ submitting: false })
-            this.props.onFailure && this.props.onFailure({ err, xhr })
+            this.props.onFailure && this.props.onFailure({ err, xhr, done })
           })
       } else {
         this.setState({ submitting: false })
