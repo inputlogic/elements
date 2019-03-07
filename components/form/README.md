@@ -90,6 +90,7 @@ In the future, we should probably just automatically sync all native web form el
 |------------------------|------------|---------------|---------------------|
 | **`name`**             | _String_   | _None_        | The name of the form. Will be used as the parent key in global state.
 | **`initialData`**      | _Object_   | _None_        | An object to prefill the form with. Each key should correspond to the name of a field.
+| **`validations`**      | _Object_   | _None_        | An object of field validations. Each key should match a field name and the value should be a function that accepts the current field value and return null if valid, or a string describing the error if invalid.
 | **`action`**           | _String_   | _None_        | URL to send form data to when submitted
 | **`method`**           | _String_   | _None_        | The HTTP method to use when sending data to the `action` URL
 | **`noAuth`**           | _Boolean_  | `false`       | If the request should *not* include auth token in the headers
