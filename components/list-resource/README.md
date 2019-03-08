@@ -1,6 +1,6 @@
 # ListResource
 
-A Component that will request data from an endpoint and then render each item in response `results` array. This Component assumes the `endpoint` will point to a Django-Rest-Framework powered API. Or, an API with similar JSON output.
+A Component that will request data from an endpoint and then render each item in response `results` array. This Component assumes the `endpoint` will point to a Django-Rest-Framework powered API using [LimitOffsetPagination](https://www.django-rest-framework.org/api-guide/pagination/#limitoffsetpagination). Or, an API with similar JSON output.
 
 ## Installation
 
