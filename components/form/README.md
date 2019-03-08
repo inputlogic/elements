@@ -84,6 +84,14 @@ addFieldNames('MyCoolField', 'NeatoField', 'BurritoField')
 
 In the future, we should probably just automatically sync all native web form elements (input, select, checkbox, textarea, etc.. 🤷‍♀️)
 
+### Difference between `onSubmit` and `action, method, noAuth, onSuccess, onFailure`
+
+There are two main ways to use `Form`. The first is the more bare-bones `onSubmit`. When a user submits your form, if `onSubmit` was defined, it will be called with `{ hasError, errors, data, done }` and you are left to determine what you want to do with the potential `errors` or form `data`.
+
+The second way, is a convience around sending the form data to an API endpoint. You define the endpoint via `action` (named after native web form attribute) as well as the `method`. And you define the `onSuccess` and `onFailure` callbacks.
+
+In both cases, any provided `validations` are run. With `onSubmit` any failed validations will be contained in the `errors` object. With the `action` way, the API request will **not** be made if there are any failed validations.
+
 ## Props
 
 | Prop                   | Type       | Default       | Description         |
@@ -102,7 +110,7 @@ In the future, we should probably just automatically sync all native web form el
 
 | Prop                   | Type       | Description         |
 |------------------------|------------|---------------------|
-| **`hasError`**         | _Boolean_  | Indicates if a validation error was found
+| **`hasError`**         | _Boolean_  | Indicates if a validation error was found, offered as a convenience so you don't have to inspect `errors`
 | **`errors`**           | _Object_   | An object of any found errors. Each key will match the name of the offending field. The value will be the error.
 | **`data`**             | _Object_   | The form data! Each key is a name of a field, the value is the value given by the user.
 | **`done`**             | _Function_ | A function you can call to reset the form state. It has the signature `(errors = {}, values)`. You can pass in the existing errors, so they don't get reset. If `values` is null, then the `initialData` will be set again. If you wish to clear all values, pass an empty object: `done({}, {})`

@@ -4,20 +4,25 @@ Fun!
 
 ## Documentation
 
-- [avatar](components/avatar)
-- [carousel](components/carousel)
+- [Avatar](components/avatar)
+- [Carousel](components/carousel)
 - [connect](components/connect)
-- [dropdown](components/dropdown)
-- [form](components/form)
-- [helmet](components/helmet)
-- [image](components/image)
-- [interval](components/interval)
-- [lazy-load](components/lazy-load)
-- [level](components/level)
-- [list-resource](components/list-resource)
-- [router](components/router)
-- [with-request](components/with-request)
-- [with-state](components/with-state)
+- [Dropdown](components/dropdown)
+- [Form](components/form)
+- [Helmet](components/helmet)
+- [Image](components/image)
+- [Interval](components/interval)
+- [LazyLoad](components/lazy-load)
+- [Level](components/level)
+- [ListResource](components/list-resource)
+- [LoadingIndicator](components/loading-indicator)
+- [Modal](components/modal)
+- [Notification](components/notification)
+- [Pagination](components/pagination)
+- [Router](components/router)
+- [Tooltip](components/tooltip)
+- [withRequest](components/with-request)
+- [withState](components/with-state)
 
 ## Making Changes
 
