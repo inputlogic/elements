@@ -34,6 +34,20 @@ const enhance = withRequest({
 export default enhance(User)
 ```
 
+## Configuration
+
+Internally, `withRequest` relies on a `makeRequest` function which is a small wrapper around [XHR](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest) that returns a promise and the `xhr` reference. This allows `withRequest` to abort ongoing requests if a new one is requested. (In the future this should be swapped for [Fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) and [AbortController](https://developer.mozilla.org/en-US/docs/Web/API/AbortController))
+
+Anyway, `makeRequest` also let's you set an `apiUrl` so you can make requests with just a pathname: `auth/login` instead of `https://my-cool-api.herokuapp.com/auth/login`.
+
+To enable this:
+
+```javascript
+import { configure } from '@app-elements/with-request/makeRequest'
+
+configure({ apiUrl: 'https://my-cool-api.herokuapp.com' })
+```
+
 ## Props
 
 | Prop            | Type                   | Default       | Description         |
