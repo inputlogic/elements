@@ -53,3 +53,4 @@ configure({ apiUrl: 'https://my-cool-api.herokuapp.com' })
 | Prop            | Type                   | Default       | Description         |
 |-----------------|------------------------|---------------|---------------------|
 | **`endpoint`**  | _Function_ or _String_ | _None_        | The url to call, or a function that returns a the url to call.
+| **`parse`**     | _Function_             | _None_        | A function to parse the API response. If provided, will be called with the signature `(result, prevResult)` and whatever it returns will be cached as the result.
