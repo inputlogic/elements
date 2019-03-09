@@ -1,7 +1,16 @@
 import React from 'react'
 import equal from '@app-elements/equal'
 
-const withState = ({ name, mapper }) => PassedComponent => {
+const withState = optsOrMapper => PassedComponent => {
+  let mapper
+  let name
+  if (typeof optsOrMapper === 'function') {
+    mapper = optsOrMapper
+  } else {
+    mapper = optsOrMapper.mapper
+    name = optsOrMapper.name
+  }
+
   class WithState extends React.Component {
     constructor (props, { store }) {
       super(props)
