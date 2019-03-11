@@ -18,7 +18,10 @@ const safelyParse = (json, key) => {
   }
 }
 
-export const getAuthHeader = (headers = {}, token) => {
+export const getAuthHeader = (headers = {}) => {
+  const token = storage != null
+    ? storage.getItem('token')
+    : null
   if (token) {
     headers.Authorization = `Token ${token}`
   }
