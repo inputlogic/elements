@@ -17,7 +17,7 @@ const compatMap = React.Children
 // React method to skip textNodes, and Preact fallback.
 const compatIsValid = React.isValidElement
   ? React.isValidElement
-  : child => child.nodeName != null
+  : child => child && child.nodeName != null
 
 // These are the component names that we will sync values
 // to our parent Form state.
