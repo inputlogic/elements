@@ -122,7 +122,7 @@ const withRequest = ({
       if (currEnpoint !== nextEnpoint) {
         return true
       }
-      return !equal(nextState, this.state)
+      return !equal(nextState, this.state) || !equal(this.props, nextProps)
     }
 
     componentDidUpdate () {

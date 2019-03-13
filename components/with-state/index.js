@@ -38,10 +38,9 @@ const withState = optsOrMapper => PassedComponent => {
       )
       if (mappedStateChanged) {
         return true
-      } else if (!equal(nextState, this.state)) {
-        return true
+      } else {
+        return !equal(this.props, nextProps)
       }
-      return false
     }
 
     componentDidUpdate () {
