@@ -116,11 +116,16 @@ if (typeof window !== 'undefined') {
   })
 
   document.addEventListener('click', ev => {
-    if (ev.target.nodeName === 'A' && storeRef) {
-      const url = ev.target.getAttribute('href')
+    let anchor = ev.target
+    while (anchor.parentNode) {
+      if (anchor.nodeName === 'A') break
+      anchor = anchor.parentNode
+    }
+    if (anchor.nodeName === 'A' && storeRef) {
+      const url = anchor.getAttribute('href')
       if (ev.metaKey) return
       if (url.indexOf('mailto:') === 0) return
-      if (ev.target.hasAttribute('data-external-link')) return
+      if (anchor.hasAttribute('data-external-link')) return
       ev.preventDefault()
       ev.stopImmediatePropagation()
       window.scrollTo(0, 0)
