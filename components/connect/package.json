@@ -1,6 +1,6 @@
 {
   "name": "@app-elements/connect",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "A HoC to connect WithRequest, WithState, and easily create Actions and Reducer.",
   "main": "index.js",
   "scripts": {
@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "@app-elements/with-request": "^2.0.5",
-    "@app-elements/with-state": "^2.0.5",
+    "@app-elements/with-state": "^2.0.6",
     "@wasmuth/camel-to-const": "0.1.0",
     "@wasmuth/const-to-camel": "0.1.0"
   },
