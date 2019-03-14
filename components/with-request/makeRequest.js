@@ -60,7 +60,8 @@ export default function makeRequest ({
 
     xhr.onreadystatechange = () => {
       if (xhr.readyState !== 4) return
-      xhr.response === '' || xhr.status >= 400
+      const badResponse = xhr.status !== 204 && xhr.response === ''
+      badResponse || xhr.status >= 400
         ? reject(makeErr(xhr.status, safelyParse(xhr.response, 'detail')))
         : resolve(safelyParse(xhr.response))
     }
