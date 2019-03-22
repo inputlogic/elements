@@ -100,7 +100,7 @@ export default class Form extends React.Component {
         if (!isReactNative) {
           newProps.onChange = ev => this.setState({ values: {
             ...this.state.values,
-            [childProps.name]: ev.target.value
+            [childProps.name]: ev.target.type === 'checkbox' ? ev.target.checked : ev.target.value
           } })
         }
         child = React.cloneElement(child, newProps)
