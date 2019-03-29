@@ -21,6 +21,9 @@ const Login = () => {
     action: 'auth/login',
     method: 'post',
     noAuth: true,
+    initialData: {
+      username: 'example'
+    },
     onSuccess: ({ token, userId }) => {
       setState(
         { token, userId }
@@ -42,10 +45,12 @@ const Login = () => {
       //   {
       //     LoginForm: {
       //       email: '',
+      //       username: '',
       //       password: ''
       //     }
       //   }
       <TextInput name='email' />
+      <input isFormField name='username' />
       <TextInput name='password' />
       <button type='submit'>Login</button>
     </Form>
@@ -75,6 +80,18 @@ let formFieldNames = [
 ```
 
 You can also add additional field names:
+
+```javacript
+import { addFieldNames } from '@app-elements/form'
+
+addFieldNames('MyCoolField', 'NeatoField', 'BurritoField')
+```
+
+Or add `isFormField` attribute:
+
+```javacript
+const MyCustomInput => <input isFormField name='hello' />
+```
 
 ```javacript
 import { addFieldNames } from '@app-elements/form'

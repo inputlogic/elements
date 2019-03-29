@@ -46,14 +46,15 @@ const getNodeName = child =>
 
 const getProps = child => child.attributes || child.props || {}
 
-// Is one of the above defined form fields, and has a `name`
-// prop set. We can't sync state if the component doesn't have
+// Is one of the above defined form fields, (or has attribute isFormField)
+// and has a `name` prop set. We can't sync state if the component doesn't have
 // have a `name` prop set.
 const isFormField = child => {
   const name = getNodeName(child)
-  if (!formFieldNames.includes(name)) {
+  const props = getProps(child)
+  if (!formFieldNames.includes(name) && !props.isFormField) {
     return false
-  } else if (getProps(child).name) {
+  } else if (props.name) {
     return true
   } else {
     console.warn(`Found Component '${name}' missing 'name' prop!`)
@@ -97,6 +98,7 @@ export default class Form extends React.Component {
             [childProps.name]: state.value || state.text
           } })
         }
+
         if (!isReactNative) {
           newProps.onChange = ev => this.setState({ values: {
             ...this.state.values,
@@ -108,13 +110,11 @@ export default class Form extends React.Component {
         this._fields[childProps.name] = child
       } else if (child.children || childProps.children) {
         // Recursively search children for more form fields
-        child = React.cloneElement(child, {
-          formName,
-          children: this._updateChildFormFields(
-            child.children || childProps.children,
-            formName
-          )
-        })
+        child = React.cloneElement(
+          child,
+          { formName },
+          this._updateChildFormFields(child.children || childProps.children, formName)
+        )
       }
 
       return child
