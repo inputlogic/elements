@@ -51,9 +51,10 @@ const getProps = child => child.attributes || child.props || {}
 // have a `name` prop set.
 const isFormField = child => {
   const name = getNodeName(child)
-  if (!formFieldNames.includes(name) && !(child.attributes && child.attributes.isFormField)) {
+  const props = getProps(child)
+  if (!formFieldNames.includes(name) && !props.isFormField) {
     return false
-  } else if (getProps(child).name) {
+  } else if (props.name) {
     return true
   } else {
     console.warn(`Found Component '${name}' missing 'name' prop!`)
