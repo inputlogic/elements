@@ -79,6 +79,8 @@ test('Router should automatically wire up <a /> elements', () => {
 
   const anchor = document.body.querySelector('a')
 
+  console.log('!?!?!?', document.body.innerHTML)
+
   anchor.click()
 
   expect(store.getState().currentPath).toEqual(anchor.href.replace('http://localhost', ''))

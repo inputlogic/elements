@@ -54,6 +54,8 @@ const serializeHtml = (el) => {
   if (VOID_ELEMENTS.includes(normalizedNodeName)) {
     return `${start} />`
   }
+
+  console.log('serializeHtml', { nodeName, innerHTML, childNodes })
   return `${start}>${innerHTML || Array.from(childNodes).map(serializeHtml).join('')}</${normalizedNodeName}>`
 }
 
@@ -80,7 +82,8 @@ let parent
 
 global.renderer = {
   render: (jsx) => {
-    root = render(jsx, parent, root)
+    let ok = render(jsx, parent)
+    console.log('render', { ok, parent })
   },
   html: () => serializeHtml(root),
   json: () => serializeJson(root),
@@ -90,10 +93,10 @@ global.renderer = {
       Object.assign(global, doc.defaultView)
     }
 
-    parent = doc.createElement('x-root')
-    doc.body.appendChild(parent)
+    parent = doc.body
+    root = doc.body
   },
   teardown: () => {
-    render(<nothing />, parent, root)
+    render(<nothing />, parent)
   }
 }
