@@ -57,33 +57,13 @@ const serializeHtml = (el) => {
   return `${start}>${innerHTML || Array.from(childNodes).map(serializeHtml).join('')}</${normalizedNodeName}>`
 }
 
-const serializeJson = (el) => {
-  if (el.nodeType === 3) return el.nodeValue
-  let attributes = {}
-  let a = el.attributes
-  if (el.className) {
-    attributes.class = el.className
-  }
-  for (let i = 0; i < a.length; i++) {
-    attributes[a[i].name] = a[i].value
-  }
-  return {
-    attributes,
-    nodeName: String(el.nodeName).toLowerCase(),
-    children: Array.from(el.childNodes).map(serializeJson)
-  }
-}
-
 let doc
 let root
 let parent
 
 global.renderer = {
-  render: (jsx) => {
-    render(jsx, parent)
-  },
-  html: () => serializeHtml(root),
-  json: () => serializeJson(root),
+  render: (jsx) => render(jsx, parent),
+  html: () => serializeHtml(root.childNodes[0]),
   setup: () => {
     if (!doc) {
       doc = undom()
@@ -93,7 +73,5 @@ global.renderer = {
     parent = doc.body
     root = doc.body
   },
-  teardown: () => {
-    render(<nothing />, parent)
-  }
+  teardown: () => render(<nothing />, parent)
 }

@@ -1,4 +1,4 @@
-/* global getProvider renderer afterAll beforeAll afterEach test expect */
+/* global getProvider afterEach test expect */
 
 import render from 'preact-render-to-string'
 import createStore from 'atom'
@@ -8,8 +8,6 @@ const Provider = getProvider()
 const store = createStore([], { count: 0 })
 
 afterEach(() => store.setState({ count: 0 }))
-beforeAll(() => renderer.setup())
-afterAll(() => renderer.teardown())
 
 test('useMappedState exports', () => {
   expect(typeof useMappedState).toBe('function')

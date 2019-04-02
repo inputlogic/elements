@@ -1,13 +1,15 @@
-/* global test expect */
+/* global getProvider afterEach test expect */
 
 import { render } from 'preact'
 import createStore from 'atom'
 import Dropdown from './index.js'
 
-function Provider (props) { this.getChildContext = () => ({ store: props.store }) }
-Provider.prototype.render = props => props.children[0]
-
 const store = createStore([], { dropdown: null })
+const Provider = getProvider()
+
+afterEach(() => {
+  document.getElementsByTagName('html')[0].innerHTML = ''
+})
 
 test('Dropdown exports', () => {
   expect(typeof Dropdown).toBe('function')
