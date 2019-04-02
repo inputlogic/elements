@@ -1,13 +1,15 @@
 /* global getProvider renderer afterAll beforeAll afterEach test expect */
 
-import render from 'preact-render-to-string'
 import createStore from 'atom'
 import withState from './index.js'
 
 const Provider = getProvider()
 const store = createStore([], { count: 0 })
 
-afterEach(() => store.setState({ count: 0 }))
+afterEach(() => {
+  store.setState({ count: 0 })
+  renderer.teardown()
+})
 beforeAll(() => renderer.setup())
 afterAll(() => renderer.teardown())
 
@@ -20,21 +22,21 @@ test('withState should render PassedComponent', () => {
     mapper: state => ({ count: state.count })
   })(({ count }) =>
     <div>
-      <h1>Count: {count}</h1>
+      <p>Count: {count}</p>
     </div>
   )
-  let html = render(<Provider store={store}><Stateful /></Provider>)
-  expect(html).toBe('<div><h1>Count: 0</h1></div>')
+  renderer.render(<Provider store={store}><Stateful /></Provider>)
+  expect(renderer.html()).toBe('<div><p>Count: 0</p></div>')
 })
 
 test('withState should accept mapper function as only argument', () => {
   const Stateful = withState(state => ({ count: state.count }))(({ count }) =>
     <div>
-      <h1>Count: {count}</h1>
+      <p>Count: {count}</p>
     </div>
   )
-  let html = render(<Provider store={store}><Stateful /></Provider>)
-  expect(html).toBe('<div><h1>Count: 0</h1></div>')
+  renderer.render(<Provider store={store}><Stateful /></Provider>)
+  expect(renderer.html()).toBe('<div><p>Count: 0</p></div>')
 })
 
 test('PassedComponent should update with props change', (done) => {

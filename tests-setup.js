@@ -58,20 +58,23 @@ const serializeHtml = (el) => {
 }
 
 let doc
-let root
 let parent
 
 global.renderer = {
   render: (jsx) => render(jsx, parent),
-  html: () => serializeHtml(root.childNodes[0]),
+  html: () => serializeHtml(parent.childNodes[0]),
   setup: () => {
     if (!doc) {
       doc = undom()
       Object.assign(global, doc.defaultView)
     }
 
-    parent = doc.body
-    root = doc.body
+    parent = doc.createElement('x-root')
+    doc.body.appendChild(parent)
   },
-  teardown: () => render(<nothing />, parent)
+  teardown: () => {
+    while (parent.firstChild) {
+      parent.removeChild(parent.firstChild)
+    }
+  }
 }
