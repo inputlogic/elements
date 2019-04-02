@@ -4,7 +4,7 @@ import undom from 'undom'
 // Expose simple store Provider
 global.getProvider = function () {
   function Provider (props) { this.getChildContext = () => ({ store: props.store }) }
-  Provider.prototype.render = props => props.children[0]
+  Provider.prototype.render = props => props.children
   return Provider
 }
 
@@ -54,8 +54,6 @@ const serializeHtml = (el) => {
   if (VOID_ELEMENTS.includes(normalizedNodeName)) {
     return `${start} />`
   }
-
-  console.log('serializeHtml', { nodeName, innerHTML, childNodes })
   return `${start}>${innerHTML || Array.from(childNodes).map(serializeHtml).join('')}</${normalizedNodeName}>`
 }
 
@@ -82,8 +80,7 @@ let parent
 
 global.renderer = {
   render: (jsx) => {
-    let ok = render(jsx, parent)
-    console.log('render', { ok, parent })
+    render(jsx, parent)
   },
   html: () => serializeHtml(root),
   json: () => serializeJson(root),
