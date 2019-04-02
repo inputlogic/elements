@@ -27,34 +27,6 @@ test('withState should render PassedComponent', () => {
   expect(html).toBe('<div><h1>Count: 0</h1></div>')
 })
 
-test('PassedComponent should update with state change', (done) => {
-  const Stateful = withState({
-    mapper: state => ({ count: state.count })
-  })(({ count }) =>
-    <div>
-      <p>Count: {count}</p>
-    </div>
-  )
-
-  // Wait for store to update
-  const listener = () => {
-    // Wait for React to re-render with updated state
-    setTimeout(() => {
-      expect(renderer.html()).toBe('<div><p>Count: 1</p></div>')
-      store.unsubscribe(listener)
-      done()
-    }, 1000)
-  }
-  store.subscribe(listener)
-
-  // Do initial render
-  renderer.render(<Provider store={store}><Stateful /></Provider>)
-  expect(renderer.html()).toBe('<div><p>Count: 0</p></div>')
-
-  // Update state so listener is called
-  store.setState({ count: 1 })
-})
-
 test('withState should accept mapper function as only argument', () => {
   const Stateful = withState(state => ({ count: state.count }))(({ count }) =>
     <div>
