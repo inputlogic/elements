@@ -9,7 +9,6 @@ export default function useMappedState (store, mapper) {
   useEffect(() => {
     const handleStateChange = () => {
       const nextState = mapper(store.getState())
-      console.log({ nextState }, store.getState())
       if (!equal(nextState, mappedState)) {
         setMappedState(nextState)
       }
