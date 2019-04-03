@@ -1,23 +1,26 @@
-/* global renderer afterAll beforeAll getProvider jest test expect */
+/* global afterEach getProvider jest test expect */
 
+import { render, Fragment } from 'preact'
+import { setupRerender } from 'preact/test-utils'
 import createStore from 'atom'
 import withRequest from './index'
 
 jest.mock('./makeRequest')
 
-const store = createStore([], { requests: {} })
 const Provider = getProvider()
+const store = createStore([], { count: 0 })
 
-const Base = ({ isLoading, error, result }) =>
-  <div>
-    {isLoading && <p>Loading...</p>}
-    {error != null && <strong>{error}</strong>}
-    {result != null && <h1>User: {result.name}</h1>}
-  </div>
+afterEach(() => {
+  store.setState({ count: 0 })
+  document.body.innerHTML = ''
+})
 
-beforeAll(() => renderer.setup())
-
-afterAll(() => renderer.teardown())
+const Base = ({ result }) =>
+  <Fragment>
+    {result == null
+      ? <p>Loading...</p>
+      : <h1>User: {result.name}</h1>}
+  </Fragment>
 
 test('withRequest exports', () => {
   expect(typeof withRequest).toBe('function')
@@ -26,17 +29,18 @@ test('withRequest exports', () => {
 test('withRequest should render PassedComponent', (done) => {
   const endpoint = '/users/4'
   const Requested = withRequest({ endpoint })(Base)
+  const rerender = setupRerender()
 
   // Wait for store to update
   store.subscribe(() => {
     // Wait for React to re-render with updated state
-    process.nextTick(() => {
-      expect(renderer.html()).toBe('<div><h1>User: Mark</h1></div>')
+    setTimeout(() => {
+      rerender()
+      expect(document.body.innerHTML).toBe('<h1>User: Mark</h1>')
       done()
-    })
+    }, 1000)
   })
 
-  renderer.render(<Provider store={store}><Requested /></Provider>)
-
-  expect(renderer.html()).toBe('<div><p>Loading...</p></div>')
+  render(<Provider store={store}><Requested /></Provider>, document.body)
+  expect(document.body.innerHTML).toBe('<p>Loading...</p>')
 })

@@ -7,15 +7,14 @@ export default function makeRequest ({ endpoint }) {
   const promise = new Promise((resolve, reject) => {
     const userID = parseInt(endpoint.substr('/users/'.length), 10)
     const err = '404'
-    process.nextTick(() =>
+    setTimeout(() =>
       users[userID]
         ? resolve(users[userID])
         : reject(err)
-    )
+    , 2000)
   })
   const xhr = {
     abort: () => {
-      console.log('mocked abort')
       promise.resolve(null)
     }
   }

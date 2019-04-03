@@ -35,6 +35,7 @@ let formFieldNames = [
 ]
 
 export const addFieldNames = (...names) => {
+  console.warn('addFieldNames is deprecated. Please use the isFormField prop instead.')
   formFieldNames = formFieldNames.concat(names)
 }
 
