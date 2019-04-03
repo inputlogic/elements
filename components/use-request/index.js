@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'preact/hooks'
+import { useEffect, useRef, useState } from 'preact/hooks'
 import { request as makeRequest } from './request'
 
 const OK_TIME = 30000
@@ -11,6 +11,30 @@ const validCache = ts => {
 }
 
 export function useRequest (store, endpoint) {
+  // Check for an existing request object in the global store
+  const initialState = (
+    ({ requests = {} }) => ({ request: requests[endpoint] || {} })
+  )(store.getState())
+  const { timestamp, result } = initialState
+
+  // And, create a stateful value with any existing request object
+  // found in the global store.
+  const [request, setRequest] = useState(initialState)
+
+  // We'll need to track if the component is mounted. We'll use
+  // useRef which acts as instance variables without the class syntax.
+  // And a useEffect call with no inputs, so it's only called once on mount.
+  const mountedRef = useRef(false)
+  useEffect(() => {
+    mountedRef.current = true
+    return () => (mountedRef.current = true)
+  }, [])
+
+  // Now, we'll put our mountedRef to use: only change state if the
+  // component is mounted.
+  const safeSetRequest = (...args) => mountedRef.current && setRequest(...args)
+
+  // And some functions to manage this request in the global store
   const cache = (result) => store.setState({
     requests: {
       ...store.getState().requests || {},
@@ -35,15 +59,9 @@ export function useRequest (store, endpoint) {
     }
   })
 
-  const initialState = (
-    ({ requests = {} }) => ({ request: requests[endpoint] || {} })
-  )(store.getState())
-  const { timestamp, result } = initialState
-  const [request, setRequest] = useState(initialState)
-
   useEffect(() => {
     if (validCache(timestamp)) {
-      setRequest({ result })
+      safeSetRequest({ result })
     } else {
       const token = store.getState().token
       const headers = {}
@@ -55,12 +73,12 @@ export function useRequest (store, endpoint) {
       promise
         .then(result => {
           cache(result)
-          setRequest({ result })
+          safeSetRequest({ result })
           delete _existing[endpoint]
         })
         .catch(error => {
           err(error)
-          setRequest({ error })
+          safeSetRequest({ error })
           delete _existing[endpoint]
         })
     }
@@ -70,7 +88,7 @@ export function useRequest (store, endpoint) {
         delete _existing[endpoint]
       }
     }
-  })
+  }, [endpoint])
 
   return { ...request, clear }
 }
