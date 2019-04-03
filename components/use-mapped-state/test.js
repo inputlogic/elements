@@ -2,9 +2,16 @@
 
 import { render } from 'preact'
 import createStore from 'atom'
-import useMappedState from './index.js'
+import { useMappedState } from './index.js'
 
 const store = createStore([], { count: 0 })
+
+const Stateful = (props) => {
+  const { count } = useMappedState(store, ({ count }) => ({ count }))
+  return (
+    <p>Count: {count}</p>
+  )
+}
 
 afterEach(() => {
   store.setState({ count: 0 })
@@ -16,16 +23,8 @@ test('useMappedState exports', () => {
 })
 
 test('useMappedState should render initial state', () => {
-  const Stateful = (props) => {
-    const { count } = useMappedState(store, state => ({ count: state.count }))
-    return (
-      <div>
-        <p>Count: {count}</p>
-      </div>
-    )
-  }
   render(<Stateful />, document.body)
-  expect(document.body.innerHTML).toBe('<div><p>Count: 0</p></div>')
+  expect(document.body.innerHTML).toBe('<p>Count: 0</p>')
 })
 
 test('useMappedState should update when mapped state changes', (done) => {
