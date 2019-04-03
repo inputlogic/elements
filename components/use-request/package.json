@@ -1,7 +1,7 @@
 {
-  "name": "@app-elements/use-mapped-state",
+  "name": "@app-elements/use-request",
   "version": "0.1.0",
-  "description": "A (P)React hook to map part of global state to a child component.",
+  "description": "Connect a Component to the result of an API request.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
