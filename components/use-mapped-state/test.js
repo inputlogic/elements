@@ -1,10 +1,9 @@
-/* global getProvider afterEach test expect */
+/* global afterEach test expect */
 
 import { render } from 'preact'
 import createStore from 'atom'
 import useMappedState from './index.js'
 
-const Provider = getProvider()
 const store = createStore([], { count: 0 })
 
 afterEach(() => {
@@ -25,7 +24,7 @@ test('useMappedState should render initial state', () => {
       </div>
     )
   }
-  render(<Provider store={store}><Stateful /></Provider>, document.body)
+  render(<Stateful />, document.body)
   expect(document.body.innerHTML).toBe('<div><p>Count: 0</p></div>')
 })
 
@@ -37,7 +36,7 @@ test('useMappedState should update when mapped state changes', (done) => {
   }
 
   const listener = () => {
-    render(<Provider store={store}><Parent /></Provider>, document.body)
+    render(<Parent />, document.body)
     setTimeout(() => {
       expect(store.getState()).toEqual({ count: 1 })
       expect(document.body.innerHTML).toBe('<div><p>Count: 1</p></div>')
@@ -46,7 +45,7 @@ test('useMappedState should update when mapped state changes', (done) => {
     }, 1000)
   }
 
-  render(<Provider store={store}><Parent /></Provider>, document.body)
+  render(<Parent />, document.body)
   expect(document.body.innerHTML).toBe('<div><p>Count: 0</p></div>')
 
   store.subscribe(listener)

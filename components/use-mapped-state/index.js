@@ -1,8 +1,7 @@
-import { useState, useEffect } from 'preact/hooks'
+import { useEffect, useState } from 'preact/hooks'
 import equal from '@app-elements/equal'
 
 export default function useMappedState (store, mapper) {
-  // const store = useContext(MyContext)
   const initialState = mapper(store.getState())
   const [mappedState, setMappedState] = useState(initialState)
 
