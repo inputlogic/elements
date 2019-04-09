@@ -79,7 +79,6 @@ const withRequest = ({
           }
         })
         .catch(error => {
-          delete _existing[endpoint]
           this.setState({ error, isLoading: false })
         })
     }
