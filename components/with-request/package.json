@@ -1,6 +1,6 @@
 {
   "name": "@app-elements/with-request",
-  "version": "2.0.6",
+  "version": "2.0.7",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -26,7 +26,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@app-elements/router": "^2.1.6"
+    "@app-elements/router": "^2.1.7"
   },
   "gitHead": "d50087f5b15f56e544e7e52d0628bc3b7f0ea361"
 }

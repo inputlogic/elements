@@ -1,6 +1,6 @@
 {
   "name": "@app-elements/dropdown",
-  "version": "2.0.6",
+  "version": "2.0.7",
   "description": "Simple dropdown menus.",
   "main": "index.js",
   "scripts": {
@@ -23,7 +23,7 @@
   "author": "Input Logic Team",
   "license": "ISC",
   "dependencies": {
-    "@app-elements/connect": "^1.0.7",
+    "@app-elements/connect": "^1.0.8",
     "@app-elements/level": "^1.0.3"
   },
   "peerDependencies": {
