@@ -1,13 +1,12 @@
 import React from 'react' // Can be aliased to Preact in your project
 
 import { getAllRoutes, getHref } from './util'
-import { routeTo } from './router'
 
 let allRoutes
 
 export class RouteTo extends React.Component {
   render () {
-    const { routes } = this.context
+    const { routes, store } = this.context
     const { name, args = {}, queries = {} } = this.props
 
     if (allRoutes == null) {
@@ -21,8 +20,10 @@ export class RouteTo extends React.Component {
     }
 
     const href = getHref({ rule, args, queries })
-
-    href && routeTo(href)
+    if (href) {
+      window.history.pushState(null, null, href)
+      store.setState({ currentPath: window.location.pathname })
+    }
 
     return null
   }
