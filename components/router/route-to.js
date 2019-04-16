@@ -1,13 +1,14 @@
 import React from 'react' // Can be aliased to Preact in your project
 
 import { getAllRoutes, getHref } from './util'
+import { routeTo } from './router'
 
 let allRoutes
 
-export class Link extends React.Component {
+export class RouteTo extends React.Component {
   render () {
     const { routes } = this.context
-    const { name, args = {}, queries = {}, children, ...props } = this.props
+    const { name, args = {}, queries = {} } = this.props
 
     if (allRoutes == null) {
       allRoutes = getAllRoutes(routes)
@@ -21,10 +22,10 @@ export class Link extends React.Component {
 
     const href = getHref({ rule, args, queries })
 
-    return (
-      <a href={href} {...props}>{children}</a>
-    )
+    href && routeTo(href)
+
+    return null
   }
 }
 
-export default Link
+export default RouteTo
