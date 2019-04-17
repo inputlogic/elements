@@ -10,7 +10,13 @@ const ActiveStateLink = withState({
   mapper: ({ currentPath }, { href }) => ({
     isActive: currentPath === href
   })
-})(({ isActive, activeClass, href, className, children }) =>
+})(({
+  isActive,
+  activeClass,
+  href,
+  className,
+  children
+}) =>
   <a
     href={href}
     className={(`${className || ''} ${isActive ? activeClass : ''}`).trim()}
