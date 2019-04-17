@@ -28,7 +28,7 @@ export class RouteTo extends React.Component {
 
     if (href) {
       window.history.pushState(null, null, href)
-      store.setState({ currentPath: window.location.pathname })
+      store.setState({ currentPath: window.location.pathname + window.location.search })
     }
 
     return null
