@@ -7,22 +7,28 @@ let allRoutes
 export class RouteTo extends React.Component {
   render () {
     const { routes, store } = this.context
-    const { name, args = {}, queries = {} } = this.props
+    const { name, url, args = {}, queries = {} } = this.props
+    let href
 
-    if (allRoutes == null) {
-      allRoutes = getAllRoutes(routes)
+    if (url === undefined) {
+      if (allRoutes == null) {
+        allRoutes = getAllRoutes(routes)
+      }
+
+      const rule = allRoutes[name]
+      if (!rule) {
+        console.warn('No route found for name: ' + name)
+        return
+      }
+
+      href = getHref({ rule, args, queries })
+    } else {
+      href = url
     }
 
-    const rule = allRoutes[name]
-    if (!rule) {
-      console.warn('No route found for name: ' + name)
-      return
-    }
-
-    const href = getHref({ rule, args, queries })
     if (href) {
       window.history.pushState(null, null, href)
-      store.setState({ currentPath: window.location.pathname })
+      store.setState({ currentPath: window.location.pathname + window.location.search })
     }
 
     return null
