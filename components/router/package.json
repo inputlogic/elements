@@ -1,6 +1,6 @@
 {
   "name": "@app-elements/router",
-  "version": "2.2.4",
+  "version": "2.2.5",
   "description": "The best router.",
   "main": "index.js",
   "scripts": {
@@ -27,7 +27,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@app-elements/connect": "^1.0.13",
+    "@app-elements/connect": "^1.0.14",
     "@app-elements/equal": "^1.0.3"
   },
   "gitHead": "d50087f5b15f56e544e7e52d0628bc3b7f0ea361"
