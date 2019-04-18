@@ -1,4 +1,4 @@
-import Router from './Router'
+import Router from './router'
 
 export { updateQuery, routeTo, exec, Router } from './router'
 export { Link } from './link'
