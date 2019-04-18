@@ -11,6 +11,7 @@ let storeRef // Will get populated by `getStoreReference`
 export const actions = {
   toggle: ({ dropdown }, uid) => {
     const isOpen = dropdown === uid
+    console.log('toggle', { dropdown, uid, isOpen })
     return { dropdown: isOpen ? null : uid }
   }
 }
@@ -64,23 +65,42 @@ const Dropdown = connect({
 export default Dropdown
 
 // DOM event to close all Dropdown's on off-click
-const isDropdown = (el) =>
-  (el.classList && el.classList.contains('dropdown-menu')) ||
-  (el.classList && el.classList.contains('btn-dropdown'))
+const checkClass = (className, el) => {
+  if (el.classList && el.classList.contains(className)) {
+    return true
+  }
+  while (el.parentNode) {
+    el = el.parentNode
+    if (el.classList && el.classList.contains(className)) {
+      return true
+    }
+  }
+  return false
+}
+
+const isClickable = (el) =>
+  el.tagName === 'A' ||
+  el.tagName === 'BUTTON'
 
 try {
   document.body.addEventListener('click', (ev) => {
     if (!storeRef) return
+
     const activeDropdown = W.path('dropdown', storeRef.getState())
     if (!activeDropdown) {
       return
     }
-    let el = ev.target
-    if (isDropdown(el)) return
-    while (el.parentNode) {
-      el = el.parentNode
-      if (isDropdown(el)) return
+
+    const el = ev.target
+
+    if (checkClass('btn-dropdown', el)) {
+      return
     }
-    storeRef.setState({ dropdown: null })
+
+    const withinDropdown = checkClass('dropdown-menu', el)
+    if (!withinDropdown || (withinDropdown && isClickable(el))) {
+      console.log('CLOSING', { el: ev.target, withinDropdown })
+      storeRef.setState({ dropdown: null })
+    }
   })
 } catch (_) {}
