@@ -193,6 +193,12 @@ export default class Form extends React.Component {
     }
   }
 
+  componentDidMount () {
+    if (!equal(this.state, storeRef.getState()[this.props.name])) {
+      storeRef.setState({ [this.props.name]: this.state })
+    }
+  }
+
   componentDidUpdate () {
     if (!equal(this.state, storeRef.getState()[this.props.name])) {
       storeRef.setState({ [this.props.name]: this.state })
