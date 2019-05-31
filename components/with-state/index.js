@@ -33,7 +33,7 @@ const withState = optsOrMapper => PassedComponent => {
 
     shouldComponentUpdate (nextProps, nextState) {
       const mappedStateChanged = !equal(
-        mapper(nextState, nextProps),
+        mapper(this._store.getState(), nextProps),
         this.state._mappedState
       )
       if (mappedStateChanged) {
