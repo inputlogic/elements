@@ -90,7 +90,6 @@ const connect = ({
   let enhanced = Connect
 
   if (withRequest != null) {
-    console.log({ withRequest })
     enhanced = requestEnhancer({
       name: enhanced.displayName,
       ...withRequest // { endpoint, parse }
