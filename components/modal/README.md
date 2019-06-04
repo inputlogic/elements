@@ -54,6 +54,7 @@ setState({ modal: 'ExampleModal' })
 | Prop                   | Type        | Default       | Description         |
 |------------------------|-------------|---------------|---------------------|
 | **`className`**        | _String_    | _None_        | A class name to be added on the `.modal-container` div
+| **`hideClose`**        | _Boolean_   | _false_       | Should the modal render without a 'x' close button?  
 | **`children`**         | _Array_     | _None_        | The elements to display when the Modal is open.
 
 ## `<Modals />` Props

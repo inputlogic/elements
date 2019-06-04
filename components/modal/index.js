@@ -27,6 +27,7 @@ const Modal = connect({
 
   // props
   className = '',
+  hideClose = false,
   children
 }) => (
   <Portal into='body'>
@@ -35,9 +36,11 @@ const Modal = connect({
       onClick={onContainerClick}
     >
       <div class='modal-content'>
-        <div className='close' onClick={closeModal}>
-          close
-        </div>
+        {!hideClose &&
+          <div className='close' onClick={closeModal}>
+            close
+          </div>
+        }
         {children}
       </div>
     </div>
