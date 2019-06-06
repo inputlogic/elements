@@ -29,8 +29,8 @@ export default class Helmet extends Component {
   }
 
   componentWillUnmount () {
-    const newRefs = refs.filter(c => c !== this)
-    refs = newRefs
+    const refsWithout = refs.filter(c => c !== this)
+    refs = refsWithout
     document.title = this._getTitle({})
   }
 
