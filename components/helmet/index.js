@@ -1,18 +1,17 @@
-import W from 'wasmuth'
-import React from 'react'
+import { Component } from 'react'
 
 let refs = []
 
 export const rewind = () => {
-  const res = W.reduce((acc, el) => W.merge(acc, el.props), {}, refs)
+  const res = refs.reduce((acc, el) => ({ ...acc, ...el.props }), {})
   return res
 }
 
 const Wrapper = ({ children }) => {
   if (typeof window !== 'undefined') {
-    const titleChild = W.find(({ nodeName }) => nodeName === 'title', children)
+    const titleChild = children.find(({ type }) => type === 'title')
     if (titleChild) {
-      const title = titleChild.children[0]
+      const title = titleChild.props.children
       if (title !== document.title) {
         document.title = title
       }
@@ -23,14 +22,14 @@ const Wrapper = ({ children }) => {
   }
 }
 
-export default class Helmet extends React.Component {
+export default class Helmet extends Component {
   constructor (props) {
     super(props)
     refs.push(this)
   }
 
   componentWillUnmount () {
-    const newRefs = W.reject(c => c === this, refs)
+    const newRefs = refs.filter(c => c !== this)
     refs = newRefs
     document.title = this._getTitle({})
   }
