@@ -129,7 +129,8 @@ const withRequest = ({
         ? endpoint(this.props)
         : endpoint
       if (!_existing[currEnpoint]) {
-        this.setState({ isLoading: true }, () => this._loadResult(currEnpoint))
+        this.setState({ isLoading: true })
+        this._loadResult(currEnpoint)
       }
     }
 
