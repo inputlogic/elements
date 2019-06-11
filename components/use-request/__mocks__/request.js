@@ -3,20 +3,20 @@ const users = {
   5: { name: 'Paul' }
 }
 
-export default function makeRequest ({ endpoint }) {
+export function request ({ endpoint }) {
+  let resolveOuter
   const promise = new Promise((resolve, reject) => {
+    resolveOuter = resolve
     const userID = parseInt(endpoint.substr('/users/'.length), 10)
     const err = '404'
     setTimeout(() =>
       users[userID]
         ? resolve(users[userID])
         : reject(err)
-    , 2000)
+    , 100)
   })
   const xhr = {
-    abort: () => {
-      promise.resolve(null)
-    }
+    abort: () => resolveOuter(null)
   }
   return { promise, xhr }
 }

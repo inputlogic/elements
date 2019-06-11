@@ -1,11 +1,10 @@
-/* global afterEach jest test expect */
+/* global getProvider afterEach jest test expect */
 
 import { render } from 'preact'
 import createStore from 'atom'
 import Router from './index.js'
 
-function Provider (props) { this.getChildContext = () => ({ store: props.store }) }
-Provider.prototype.render = props => props.children[0]
+const Provider = getProvider()
 
 const Home = () => (
   <div id='home'>Home</div>
@@ -73,11 +72,11 @@ test('Router should automatically wire up <a /> elements', () => {
     document.body
   )
 
-  expect(document.body.querySelector('#home')).toBeNull()
-  expect(document.body.querySelector('#users')).toBeDefined()
-  expect(document.body.querySelector('#user')).toBeNull()
+  expect(document.querySelector('#home')).toBeNull()
+  expect(document.querySelector('#users')).toBeDefined()
+  expect(document.querySelector('#user')).toBeNull()
 
-  const anchor = document.body.querySelector('a')
+  const anchor = document.querySelector('a')
 
   anchor.click()
 
