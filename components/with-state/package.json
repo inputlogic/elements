@@ -1,6 +1,6 @@
 {
   "name": "@app-elements/with-state",
-  "version": "2.0.14",
+  "version": "2.0.15",
   "description": "A HoC to map part of global state to a child component.",
   "main": "index.js",
   "scripts": {
@@ -26,7 +26,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@app-elements/router": "^2.2.7"
+    "@app-elements/router": "^2.2.9"
   },
   "gitHead": "d50087f5b15f56e544e7e52d0628bc3b7f0ea361"
 }

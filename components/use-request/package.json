@@ -1,6 +1,6 @@
 {
   "name": "@app-elements/use-request",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Connect a Component to the result of an API request.",
   "main": "index.js",
   "scripts": {
@@ -25,7 +25,5 @@
   "license": "ISC",
   "publishConfig": {
     "access": "public"
-  },
-  "dependencies": {
   }
 }

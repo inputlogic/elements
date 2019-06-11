@@ -1,6 +1,6 @@
 {
   "name": "@app-elements/helmet",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Basic Component to set title and meta tags in your HTML.",
   "main": "index.js",
   "scripts": {
