@@ -38,7 +38,7 @@ const makeErr = (code, msg) => {
   return e
 }
 
-export default function makeRequest ({
+export function request ({
   endpoint,
   url,
   method = 'get',
@@ -81,3 +81,5 @@ export default function makeRequest ({
   })
   return { xhr, promise }
 }
+
+export default request
