@@ -42,12 +42,15 @@ export function useRequest (store, endpoint) {
     }
   })
 
-  const clear = () => store.setState({
-    requests: {
-      ...store.getState().requests || {},
-      [endpoint]: null
-    }
-  })
+  const clear = () => {
+    store.setState({
+      requests: {
+        ...store.getState().requests || {},
+        [endpoint]: null
+      }
+    })
+    load()
+  }
 
   const err = (error) => store.setState({
     requests: {
@@ -59,7 +62,7 @@ export function useRequest (store, endpoint) {
     }
   })
 
-  useEffect(() => {
+  const load = () => {
     if (validCache(timestamp)) {
       safeSetRequest({ result })
     } else {
@@ -88,7 +91,9 @@ export function useRequest (store, endpoint) {
         delete _existing[endpoint]
       }
     }
-  }, [endpoint])
+  }
+
+  useEffect(load, [endpoint])
 
   return { ...request, clear }
 }
