@@ -8,7 +8,9 @@ Simple modals. Comes with basic overlay styling, animation, and a `<Modals />` C
 
 ## Usage
 
-First, you need to define at least one modal. The only requirement is that the top-level element for your Component needs to be `<Modal />`:
+First, you need to have a root dom node to render modals into. So inside your `<body>` add `<div id='modals' />`.
+
+Then, you need to define at least one modal. The only requirement is that the top-level element for your Component needs to be `<Modal />`:
 
 ```javascript
 import Modal from '@app-elements/modal'

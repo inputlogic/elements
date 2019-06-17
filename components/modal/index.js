@@ -1,9 +1,11 @@
 import W from 'wasmuth'
-import Portal from 'preact-portal'
+import { createPortal, Component } from 'react'
 
 import connect from '@app-elements/connect'
 
 import './style.less'
+
+const modalRoot = document.getElementById('modals')
 
 const isOverlay = (el) =>
   (el.classList && el.classList.contains('modal-container'))
@@ -15,6 +17,36 @@ export const actions = {
     }
   },
   closeModal: (state) => ({ modal: null })
+}
+
+class Portal extends Component {
+  constructor(props) {
+    super(props)
+    this.el = document.createElement('div')
+  }
+
+  componentDidMount() {
+    // The portal element is inserted in the DOM tree after
+    // the Modal's children are mounted, meaning that children
+    // will be mounted on a detached DOM node. If a child
+    // component requires to be attached to the DOM tree
+    // immediately when mounted, for example to measure a
+    // DOM node, or uses 'autoFocus' in a descendant, add
+    // state to Modal and only render the children when Modal
+    // is inserted in the DOM tree.
+    modalRoot.appendChild(this.el)
+  }
+
+  componentWillUnmount() {
+    modalRoot.removeChild(this.el)
+  }
+
+  render() {
+    return createPortal(
+      this.props.children,
+      this.el,
+    )
+  }
 }
 
 const Modal = connect({
@@ -30,7 +62,7 @@ const Modal = connect({
   hideClose = false,
   children
 }) => (
-  <Portal into='body'>
+  <Portal>
     <div
       class={'modal-container ' + className}
       onClick={onContainerClick}
@@ -82,6 +114,6 @@ export const Modals = connect({
     closeModal()
   }
 
-  const child = W.find(c => W.pathEq('nodeName.name', modal, c), children)
+  const child = W.find(c => W.pathEq('type.name', modal, c), children)
   return child
 })
