@@ -1,29 +1,28 @@
-# useMappedState
+# useRequest
 
-useMappedState maps values from the provided (atom/Redux) store and keeps your Component synced with any changes to those mapped values.
+useRequest is a simple hook for loading data. It's efficient and caches results automatically.
 
 ## Installation
 
-`npm install --save @app-elements/use-mapped-state`
+`npm install --save @app-elements/use-request`
 
 ## Usage
 
 ```javascript
-import useMappedState from '@app-elements/use-mapped-state'
+import { useRequest } from '@app-elements/use-request'
 import createStore from 'atom'
 
-const store = createStore([], { count: 0 })
+const store = createStore([], {})
 
-// Here is a simple view that expects a `count` value
-// form the global state.
-const Stateful = (props) => {
-  // `mapper` is a function that is given the entire state object from your store.
-  // Your job is to return the portion of that state object that this Component
-  // is concerned with.
-  const mapper = ({ count }) => ({ count })
-  const { count } = useMappedState(mapper)
+const Users = () => {
+  // return an object with the keys: result, clear
+  // result is the JSON response from the given URL.
+  // clear is a function to clear the cache, and reload the data from the URL.
+  const { result, clear } = useRequest(store, 'https://jsonplaceholder.typicode.com/users')
   return (
-    <p>Count: {count}</p>
+    <ul>
+      {result.map(({ name }) => <li>{name}</li>)}
+    </ul>
   )
 }
 ```
@@ -33,4 +32,4 @@ const Stateful = (props) => {
 | Prop                   | Type       | Default       | Description         |
 |------------------------|------------|---------------|---------------------|
 | **`store`**            | _Object_   | _None_        | An (atom) store instance
-| **`mapper`**           | _Function_ | _None_        | A function that accepts `(state)` and returns an object
+| **`url`**              | _String_   | _None_        | A URL to GET data from
