@@ -22,7 +22,7 @@ export function useRequest (store, endpoint) {
   const [request, setRequest] = useState(initialState)
 
   // We'll also track loading state locally
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
 
   // We'll need to track if the component is mounted. We'll use
   // useRef which acts as instance variables without the class syntax.
