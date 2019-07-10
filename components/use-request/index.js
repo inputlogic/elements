@@ -21,6 +21,9 @@ export function useRequest (store, endpoint) {
   // found in the global store.
   const [request, setRequest] = useState(initialState)
 
+  // We'll also track loading state locally
+  const [isLoading, setIsLoading] = useState(false)
+
   // We'll need to track if the component is mounted. We'll use
   // useRef which acts as instance variables without the class syntax.
   // And a useEffect call with no inputs, so it's only called once on mount.
@@ -33,6 +36,7 @@ export function useRequest (store, endpoint) {
   // Now, we'll put our mountedRef to use: only change state if the
   // component is mounted.
   const safeSetRequest = (...args) => mountedRef.current && setRequest(...args)
+  const safeSetIsLoading = (...args) => mountedRef.current && setIsLoading(...args)
 
   // And some functions to manage this request in the global store
   const cache = (result) => store.setState({
@@ -62,9 +66,12 @@ export function useRequest (store, endpoint) {
     }
   })
 
+  // Finally, making the actual request!
   const load = () => {
+    safeSetIsLoading(true)
     if (validCache(timestamp)) {
       safeSetRequest({ result })
+      safeSetIsLoading(false)
     } else {
       const token = store.getState().token
       const headers = {}
@@ -77,11 +84,13 @@ export function useRequest (store, endpoint) {
         .then(result => {
           cache(result)
           safeSetRequest({ result })
+          safeSetIsLoading(false)
           delete _existing[endpoint]
         })
         .catch(error => {
           err(error)
           safeSetRequest({ error })
+          safeSetIsLoading(false)
           delete _existing[endpoint]
         })
     }
@@ -95,5 +104,5 @@ export function useRequest (store, endpoint) {
 
   useEffect(load, [endpoint])
 
-  return { ...request, clear }
+  return { ...request, clear, isLoading }
 }
