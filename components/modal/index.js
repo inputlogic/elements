@@ -20,12 +20,12 @@ export const actions = {
 }
 
 class Portal extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.el = document.createElement('div')
   }
 
-  componentDidMount() {
+  componentDidMount () {
     // The portal element is inserted in the DOM tree after
     // the Modal's children are mounted, meaning that children
     // will be mounted on a detached DOM node. If a child
@@ -37,14 +37,14 @@ class Portal extends Component {
     modalRoot.appendChild(this.el)
   }
 
-  componentWillUnmount() {
+  componentWillUnmount () {
     modalRoot.removeChild(this.el)
   }
 
-  render() {
+  render () {
     return createPortal(
       this.props.children,
-      this.el,
+      this.el
     )
   }
 }
