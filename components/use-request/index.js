@@ -83,7 +83,7 @@ export function useRequest (store, endpoint) {
       promise
         .then(result => {
           cache(result)
-          safeSetRequest({ result })
+          safeSetRequest({ result, error: null })
           safeSetIsLoading(false)
           delete _existing[endpoint]
         })
