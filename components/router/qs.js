@@ -52,7 +52,7 @@ function stringify (obj, prefix = '') {
   //
   if (typeof prefix !== 'string') prefix = '?'
 
-  for (let key in obj) {
+  for (const key in obj) {
     if (has.call(obj, key)) {
       pairs.push(encodeURIComponent(key) + '=' + encodeURIComponent(obj[key]))
     }

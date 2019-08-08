@@ -1,10 +1,12 @@
 import qs from './qs'
 
+const hasProp = Object.prototype.hasOwnProperty
+
 export const getAllRoutes = routes =>
   Object
     .keys(routes || {})
     .reduce((acc, r) =>
-      routes[r].hasOwnProperty('routes')
+      hasProp.call(routes[r], 'routes')
         ? { ...acc, ...getAllRoutes(routes[r].routes) }
         : { ...acc, [r]: routes[r] },
     {})

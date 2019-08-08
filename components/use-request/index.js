@@ -10,6 +10,18 @@ const validCache = ts => {
   return diff < OK_TIME
 }
 
+const requestPromise = ({ endpoint, headers }) => {
+  if (_existing[endpoint]) {
+    const { promise, xhr } = _existing[endpoint]
+    if (xhr.readyState !== 4) {
+      return promise
+    }
+  }
+  const { promise, xhr } = makeRequest({ endpoint, headers })
+  _existing[endpoint] = { promise, xhr }
+  return promise
+}
+
 export function useRequest (store, endpoint) {
   // Check for an existing request object in the global store
   const initialState = (
@@ -78,8 +90,7 @@ export function useRequest (store, endpoint) {
       if (token) {
         headers.Authorization = `Token ${token}`
       }
-      const { xhr, promise } = makeRequest({ endpoint, headers })
-      _existing[endpoint] = xhr
+      const promise = requestPromise({ endpoint, headers })
       promise
         .then(result => {
           cache(result)
@@ -95,8 +106,8 @@ export function useRequest (store, endpoint) {
         })
     }
     return () => {
-      if (_existing[endpoint]) {
-        _existing[endpoint].abort()
+      if (_existing[endpoint] && _existing[endpoint].xhr) {
+        _existing[endpoint].xhr.abort()
         delete _existing[endpoint]
       }
     }

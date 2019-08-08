@@ -23,12 +23,12 @@ export default class Carousel extends React.Component {
 
   compute = (event) => {
     const { tolerance } = this.props
-    let xStart = this.gesture.x[0]
-    let yStart = this.gesture.y[0]
-    let xEnd = this.gesture.x.pop()
-    let yEnd = this.gesture.y.pop()
-    let xTravel = xEnd - xStart
-    let yTravel = yEnd - yStart
+    const xStart = this.gesture.x[0]
+    const yStart = this.gesture.y[0]
+    const xEnd = this.gesture.x.pop()
+    const yEnd = this.gesture.y.pop()
+    const xTravel = xEnd - xStart
+    const yTravel = yEnd - yStart
 
     if (Math.abs(xTravel) < tolerance && yTravel > tolerance) {
       this.gesture.match = 'down'

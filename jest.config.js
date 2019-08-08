@@ -1,7 +1,7 @@
 module.exports = {
   verbose: false,
   bail: true,
-  'setupFiles': [
+  setupFiles: [
     './tests-setup.js'
   ],
   // Let babel transpile certain node_modules

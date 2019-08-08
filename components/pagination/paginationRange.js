@@ -17,7 +17,7 @@ export default function paginationRange (current, numPages, delta = 1) {
   range.push(numPages)
 
   let count
-  for (let i of range) {
+  for (const i of range) {
     if (count) {
       if (i - count === delta - 1) {
         rangeWithDots.push(count + 1)

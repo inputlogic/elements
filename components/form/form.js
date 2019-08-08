@@ -5,6 +5,8 @@ import equal from '@app-elements/equal'
 
 let storeRef // Will get populated if we receive `store` via context
 
+const hasProp = Object.prototype.hasOwnProperty
+
 const isReactNative = typeof window !== 'undefined' &&
   window.navigator.product === 'ReactNative'
 
@@ -139,7 +141,7 @@ export default class Form extends React.Component {
       if (getProps(comp).required && !this.state.values[name]) {
         errs[name] = 'Is required.'
       }
-      if (validations && validations.hasOwnProperty(name)) {
+      if (validations && hasProp.call(validations, name)) {
         const validationResult = validations[name](this.state.values[name])
         if (validationResult) {
           errs[name] = validationResult
