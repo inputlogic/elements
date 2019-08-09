@@ -6,7 +6,7 @@ Fun!
 
 - [Avatar](components/avatar)
 - [Carousel](components/carousel)
-- [connect](components/connect)
+- [~~connect~~](components/connect) **deprecated**
 - [Dropdown](components/dropdown)
 - [Form](components/form)
 - [Helmet](components/helmet)
@@ -21,8 +21,12 @@ Fun!
 - [Pagination](components/pagination)
 - [Router](components/router)
 - [Tooltip](components/tooltip)
-- [withRequest](components/with-request)
-- [withState](components/with-state)
+- [useMappedState](components/use-mapped-state)
+- [useRequest](components/use-request)
+- [~~withRequest~~](components/with-request) **deprecated**
+- [~~withState~~](components/with-state) **deprecated**
+
+*Note `connect`, `withRequest`, `withState` have been deprecated in favour of using Hooks: `useMappedState` and `useRequest`*
 
 ## Making Changes
 

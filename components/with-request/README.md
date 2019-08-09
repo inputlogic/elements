@@ -1,5 +1,7 @@
 # withRequest
 
+> **deprecated** in favour of [useRequest](components/use-request)
+
 Connect a Component to the result of an API request.
 
 ## Installation
