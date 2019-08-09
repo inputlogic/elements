@@ -1,6 +1,6 @@
 # withState
 
-> **deprecated** in favour of [useMappedState](components/use-mapped-state)
+> **deprecated** in favour of [useMappedState](../use-mapped-state)
 
 Connect a Component to specified global state changes.
 
