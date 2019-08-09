@@ -1,6 +1,6 @@
 # connect
 
-> **deprecated** in favour of [useMappedState](components/use-mapped-state) and [useRequest](components/use-request)
+> **deprecated** in favour of [useMappedState](../use-mapped-state) and [useRequest](../use-request)
 
 Convenience HoC that connects withState and withRequest. Also offers a way to create actions and a reducer.
 
