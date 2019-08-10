@@ -2,6 +2,11 @@
 
 Provides a `<Router />` component that accepts an object definition of routes, conditionally rendering them when the URL matches their path. It also supports nested Routers and automatically wires up `<a />` elements to the router.
 
+**Related components**
+
+- [Link](#link)
+- [RouteTo](#routeto)
+
 ## Installation
 
 `npm install --save @app-elements/router`
@@ -16,14 +21,6 @@ import routes from './routes'
 
 // ...
 <Router routes={routes} />
-```
-
-### routeTo
-
-```javascript
-import { routeTo } from '@app-elements/router'
-
-routeTo('users') // `routeTo('users', true)` to use `replaceState`
 ```
 
 ### Defining Your Routes
@@ -106,8 +103,38 @@ export const Account = () => (
 
 Now you have a top-level router that renders different components based on nested routes. Those top-level, or _parent_ route components can then include a nested `<Router />` to gain finer control over what gets rendered based on the current URL.
 
-## Props
+## Router Props
 
 | Prop              | Type        | Default  | Description         |
 |-------------------|-------------|----------|---------------------|
 | **`routes`**      | _Object_    | _None_   | An object of objects representing the routes. Supported keys are `path`, `component`, and `routes`.
+
+
+
+# Link
+
+```javascript
+import { Link } from '@app-elements/router'
+
+// Render an anchor with a named route
+return <Link name='post' args={{ id: post.id }}>{post.title}</Link>
+```
+
+
+# RouteTo
+
+```javascript
+import { RouteTo } from '@app-elements/router'
+
+// In your component (perhaps when a form success state is reached) 
+// you can render RouteTo to route to a new URL.
+return <RouteTo name='blogPost' args={{ id }} />
+```
+
+## Link and RouteTo Props
+
+| Prop              | Type        | Default  | Description         |
+|-------------------|-------------|----------|---------------------|
+| **`name`**        | _String_    | _None_   | String that matches a key in your routes object.
+| **`args`**        | _Object_    | _None_   | Object of key-value pairs to replace dynamic values in a route definition. Ex. `posts/:id` => { id: 1 }
+| **`queries`**     | _Object_    | _None_   | Object of key-value pairs to convert to querystring params.
