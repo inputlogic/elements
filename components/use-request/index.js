@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'preact/hooks'
+import { useEffect, useRef, useState } from 'react' // alias to 'preact/hooks'
 import { request as makeRequest } from './request'
 
 const OK_TIME = 30000

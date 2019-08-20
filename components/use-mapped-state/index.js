@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'preact/hooks'
+import { useEffect, useState } from 'react' // alias to 'preact/hooks'
 import equal from '@app-elements/equal'
 
 export function useMappedState (store, mapper) {
