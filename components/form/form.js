@@ -139,7 +139,7 @@ export default class Form extends React.Component {
         errs[name] = 'Is required.'
       }
       if (validations && validations.hasOwnProperty(name)) {
-        const validationResult = validations[name](this.state.values[name])
+        const validationResult = validations[name](this.state.values[name], name, this.state.values)
         if (validationResult) {
           errs[name] = validationResult
         }
