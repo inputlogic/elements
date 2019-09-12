@@ -71,8 +71,7 @@ const Modal = connect({
         {!hideClose &&
           <div className='close' onClick={closeModal}>
             close
-          </div>
-        }
+          </div>}
         {children}
       </div>
     </div>

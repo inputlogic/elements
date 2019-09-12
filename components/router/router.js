@@ -114,7 +114,7 @@ if (typeof window !== 'undefined') {
     const url = window.location.pathname
     const currentPath = storeRef.getState().currentPath
     if (currentPath !== url) {
-      window.history['pushState'](null, null, url)
+      window.history.pushState(null, null, url)
       storeRef.setState({ currentPath: url })
     }
   })
@@ -135,7 +135,7 @@ if (typeof window !== 'undefined') {
       window.scrollTo(0, 0)
       const currentPath = storeRef.getState().currentPath
       if (currentPath !== url) {
-        window.history['pushState'](null, null, url)
+        window.history.pushState(null, null, url)
         storeRef.setState({ currentPath: url })
       }
     }

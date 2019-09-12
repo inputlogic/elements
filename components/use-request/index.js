@@ -44,7 +44,7 @@ export function useRequest (store, endpoint) {
     mountedRef.current = true
     return () => (mountedRef.current = false)
   }, [])
- 
+
   // Now, we'll put our mountedRef to use: only change state if the
   // component is mounted.
   const safeSetRequest = (...args) => mountedRef.current && setRequest(...args)

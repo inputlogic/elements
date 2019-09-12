@@ -42,6 +42,7 @@ export default class Helmet extends Component {
   _getMeta ({ meta = [] }) {
     return meta.map(({ name, property, content }) =>
       <meta
+        key={name}
         name={name}
         property={property}
         content={content}

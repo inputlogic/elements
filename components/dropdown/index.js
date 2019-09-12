@@ -48,16 +48,20 @@ const Dropdown = connect({
   return (
     <div>
       {Trigger === undefined
-        ? <button className='btn btn-dropdown black-ghost-btn' onClick={ev => toggle(uid)}>
-          <Level noPadding>{buttonText}</Level>
-        </button>
+        ? (
+          <button className='btn btn-dropdown black-ghost-btn' onClick={ev => toggle(uid)}>
+            <Level noPadding>{buttonText}</Level>
+          </button>
+        )
         : <Trigger className='btn-dropdown' onClick={ev => toggle(uid)} />}
       {noWrapper
         ? isOpen && children
-        : <div className={cls}>
-          <div class='dropdown-arrow' />
-          {children}
-        </div>}
+        : (
+          <div className={cls}>
+            <div class='dropdown-arrow' />
+            {children}
+          </div>
+        )}
     </div>
   )
 })

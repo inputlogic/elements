@@ -64,15 +64,19 @@ export default class Image extends React.Component {
     } = this.props
     const { loaded } = this.state
     return loaded === -1
-      ? <img
-        src={unloadedSrc}
-        className={`${className} image-loading`}
-        {...props}
-      />
-      : <img
-        src={srcs[loaded]}
-        className={`${className} image-ready`}
-        {...props}
-      />
+      ? (
+        <img
+          src={unloadedSrc}
+          className={`${className} image-loading`}
+          {...props}
+        />
+      )
+      : (
+        <img
+          src={srcs[loaded]}
+          className={`${className} image-ready`}
+          {...props}
+        />
+      )
   }
 }

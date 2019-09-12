@@ -70,7 +70,7 @@ export default class Carousel extends React.Component {
     })
   }
 
-  next = (ev) => {
+  handleNext = (ev) => {
     ev && ev.preventDefault()
     const active = this.state.active + this.state.numFit
     const n = active >= this.props.children.length - 1
@@ -79,7 +79,7 @@ export default class Carousel extends React.Component {
     this.setState({ active: n })
   }
 
-  prev = (ev) => {
+  handlePrev = (ev) => {
     ev && ev.preventDefault()
     const n = this.state.active <= 0
       ? this.props.children.length - (this.state.numFit + 1)
@@ -151,22 +151,25 @@ export default class Carousel extends React.Component {
           <div className='carousel-inner'>
             {!noNav &&
               <nav className='nav prev'>
-                <button onClick={this.prev} />
+                <button onClick={this.handlePrev} />
               </nav>}
             <div className='slides-wrapper'>
               <div className='slides' style={this.getSlidesStyle()}>
                 {W.map((c, idx) =>
                   <div
+                    key={`caurosel-${idx}`}
                     ref={(ref) => idx === 0 && this.getRef(ref)}
                     style={this.getStyle(idx, active)}
                     class={`${className}${idx === active ? ' active' : ''}`}
-                  >{c}</div>,
+                  >
+                    {c}
+                  </div>,
                 children)}
               </div>
             </div>
             {!noNav &&
               <nav className='nav next'>
-                <button onClick={this.next} />
+                <button onClick={this.handleNext} />
               </nav>}
           </div>
           {withDots &&
@@ -174,6 +177,7 @@ export default class Carousel extends React.Component {
               {W.map(i =>
                 <button
                   onClick={this.setActive(i)}
+                  key={`dots-${i}`}
                   className={`${i === active ? 'active' : ''}`}
                 >
                   {i}

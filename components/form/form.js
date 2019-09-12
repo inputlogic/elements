@@ -96,17 +96,21 @@ export default class Form extends React.Component {
           formName,
           text: this.state.values[childProps.name],
           value: this.state.values[childProps.name],
-          syncState: state => this.setState({ values: {
-            ...this.state.values,
-            [childProps.name]: state.value || state.text
-          } })
+          syncState: state => this.setState({
+            values: {
+              ...this.state.values,
+              [childProps.name]: state.value || state.text
+            }
+          })
         }
 
         if (!isReactNative) {
-          newProps.onChange = ev => this.setState({ values: {
-            ...this.state.values,
-            [childProps.name]: ev.target.type === 'checkbox' ? ev.target.checked : ev.target.value
-          } })
+          newProps.onChange = ev => this.setState({
+            values: {
+              ...this.state.values,
+              [childProps.name]: ev.target.type === 'checkbox' ? ev.target.checked : ev.target.value
+            }
+          })
         }
         child = React.cloneElement(child, newProps)
         // Store a reference to our fields, so we can validate them on submit
@@ -215,12 +219,14 @@ export default class Form extends React.Component {
     )
     return isReactNative
       ? children
-      : <form
-        id={`Form-${this.props.name}`}
-        key={this.props.name}
-        onSubmit={this._onSubmit.bind(this)}
-      >
-        {children}
-      </form>
+      : (
+        <form
+          id={`Form-${this.props.name}`}
+          key={this.props.name}
+          onSubmit={this._onSubmit.bind(this)}
+        >
+          {children}
+        </form>
+      )
   }
 }

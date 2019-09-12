@@ -41,7 +41,7 @@ export default class Notification extends React.Component {
         <span className='text'>
           {message}
         </span>
-        <div className='close-icon' onClick={this.onClose} />
+        <div className='close-icon' />
       </div>
     )
   }

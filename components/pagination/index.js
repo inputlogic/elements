@@ -23,33 +23,31 @@ export default class Pagination extends React.Component {
     return (
       <nav class='pagination'>
         {previous
-          ? <a href={pageBuilder(activePage - 1)} >
-            <span className='arrow back' /> Back
-          </a>
-          : <span className='disabled' >
-            <span className='arrow back' /> Back
-          </span>
-        }
+          ? (
+            <a href={pageBuilder(activePage - 1)}>
+              <span className='arrow back' /> Back
+            </a>
+          )
+          : (
+            <span className='disabled'>
+              <span className='arrow back' /> Back
+            </span>
+          )}
         <ul>
           {W.map(
             (page, index) => page
-              ? <li key={`page-${page}`}>
-                <a href={pageBuilder(page)} className={activePage === page ? 'active' : ''} >
-                  {page}
-                </a>
-              </li>
+              ? (
+                <li key={`page-${page}`}>
+                  <a href={pageBuilder(page)} className={activePage === page ? 'active' : ''}>{page}</a>
+                </li>
+              )
               : <li key={`break-${index}`}>&hellip;</li>,
             pages
           )}
         </ul>
         {next
-          ? <a href={pageBuilder(activePage + 1)} >
-            Next <span className='arrow next' />
-          </a>
-          : <span className='disabled' >
-            Next <span className='arrow next' />
-          </span>
-        }
+          ? <a href={pageBuilder(activePage + 1)}>Next <span className='arrow next' /></a>
+          : <span className='disabled'>Next <span className='arrow next' /></span>}
       </nav>
     )
   }

@@ -33,23 +33,25 @@ const ListResource = connect({
 }) =>
   isLoading
     ? <p>Loading...</p>
-    : <div key={endpoint}>
-      {list
-        ? W.map(
-          item => <View {...item} />,
-          W.pathOr(result, 'results', result)
-        )
-        : <View {...result} />
-      }
-      {pagination && limit != null
-        ? <Pagination
-          activePage={getActivePage()}
-          request={result}
-          pageSize={limit}
-        />
-        : null
-      }
-    </div>
+    : (
+      <div key={endpoint}>
+        {list
+          ? W.map(
+            (item, idx) => <View key={item.id || idx} {...item} />,
+            W.pathOr(result, 'results', result)
+          )
+          : <View {...result} />}
+        {pagination && limit != null
+          ? (
+            <Pagination
+              activePage={getActivePage()}
+              request={result}
+              pageSize={limit}
+            />
+          )
+          : null}
+      </div>
+    )
 )
 
 export default ListResource

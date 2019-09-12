@@ -10,8 +10,7 @@ const Avatar = ({
     <div className={`avatar ${src && 'hasImage'}`}>
       {src
         ? <img src={src} alt={fullName} />
-        : <div className='initial'>{fullName[0]}</div>
-      }
+        : <div className='initial'>{fullName[0]}</div>}
     </div>
   </div>
 
