@@ -1,4 +1,6 @@
-import W from 'wasmuth'
+import check from 'check-arg-types'
+
+const toType = check.prototype.toType
 
 let storage = null
 let apiUrl = 'http://10.0.2.2:8000'
@@ -69,12 +71,13 @@ export function request ({
     xhr.setRequestHeader('Content-Type', 'application/json')
 
     headers = !noAuth ? getAuthHeader(headers) : {}
-    if (headers && W.toType(headers) === 'object') {
-      W.map((k, v) => xhr.setRequestHeader(k, v), headers)
+    if (headers && toType(headers) === 'object') {
+      for (const k in headers) {
+        xhr.setRequestHeader(k, headers[k])
+      }
     }
 
-    const dataType = W.toType(data)
-
+    const dataType = toType(data)
     xhr.send(dataType === 'object' || dataType === 'array'
       ? JSON.stringify(data)
       : data)
