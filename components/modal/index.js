@@ -71,7 +71,8 @@ const Modal = connect({
         {!hideClose &&
           <div className='close' onClick={closeModal}>
             close
-          </div>}
+          </div>
+        }
         {children}
       </div>
     </div>
@@ -113,6 +114,8 @@ export const Modals = connect({
     closeModal()
   }
 
-  const child = W.find(c => W.pathEq('type.name', modal, c), children)
+  const child = W.toType(children) === 'array'
+    ? W.find(c => W.pathEq('type.name', modal, c), children)
+    : children
   return child
 })
