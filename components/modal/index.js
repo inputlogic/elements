@@ -51,15 +51,33 @@ class Portal extends Component {
 
 const Modal = connect({
   name: 'Modal',
-  withActions: actions
+  withActions: actions,
+  focusRef: dom => {
+    setTimeout(() => {
+      dom && dom.focus()
+    }, 0)
+  },
+  handleKeyDown: closeModal => ev => {
+    const pressedEscape = ev.keyCode === 27
+    if (pressedEscape) {
+      ev.stopPropagation()
+      closeModal()
+    }
+  }
 })(({
   // connect actions
   onContainerClick,
   closeModal,
 
+  // Component functions
+  focusRef,
+  handleKeyDown,
+
   // props
   className = '',
   hideClose = false,
+  shouldCloseOnEsc = true,
+
   children
 }) => (
   <Portal>
@@ -67,7 +85,12 @@ const Modal = connect({
       className={'modal-container ' + className}
       onClick={onContainerClick}
     >
-      <div class='modal-content'>
+      <div
+        class='modal-content'
+        ref={focusRef}
+        tabIndex='-1'
+        onKeyDown={shouldCloseOnEsc && handleKeyDown(closeModal)}
+      >
         {!hideClose &&
           <div className='close' onClick={closeModal}>
             close
