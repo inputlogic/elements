@@ -11,7 +11,6 @@ let storeRef // Will get populated by `getStoreReference`
 export const actions = {
   toggle: ({ dropdown }, uid) => {
     const isOpen = dropdown === uid
-    console.log('toggle', { dropdown, uid, isOpen })
     return { dropdown: isOpen ? null : uid }
   }
 }
@@ -103,7 +102,6 @@ try {
 
     const withinDropdown = checkClass('dropdown-menu', el)
     if (!withinDropdown || (withinDropdown && isClickable(el))) {
-      console.log('CLOSING', { el: ev.target, withinDropdown })
       storeRef.setState({ dropdown: null })
     }
   })
