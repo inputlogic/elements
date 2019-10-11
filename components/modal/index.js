@@ -64,15 +64,14 @@ const Modal = connect({
 }) => (
   <Portal>
     <div
-      class={'modal-container ' + className}
+      className={'modal-container ' + className}
       onClick={onContainerClick}
     >
       <div class='modal-content'>
         {!hideClose &&
           <div className='close' onClick={closeModal}>
             close
-          </div>
-        }
+          </div>}
         {children}
       </div>
     </div>

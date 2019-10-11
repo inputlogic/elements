@@ -7,9 +7,9 @@
     ["babel-plugin-transform-require-ignore", {
       "extensions": [".less"]
     }],
-    ["module-resolver/lib/index.js", {
+    ["module-resolver", {
       "alias": {
-        "react": "preact",
+        "react": "preact/compat",
         "@app-elements/equal": "./util/equal",
         "^@app-elements/(.+)": "./components/\\1",
         "": "./src"
