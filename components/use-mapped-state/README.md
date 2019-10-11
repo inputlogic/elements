@@ -21,7 +21,7 @@ const Stateful = (props) => {
   // Your job is to return the portion of that state object that this Component
   // is concerned with.
   const mapper = ({ count }) => ({ count })
-  const { count } = useMappedState(mapper)
+  const { count } = useMappedState(store, mapper)
   return (
     <p>Count: {count}</p>
   )
