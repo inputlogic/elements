@@ -1,6 +1,6 @@
 {
   "name": "@app-elements/dropdown",
-  "version": "2.0.15",
+  "version": "2.0.16",
   "description": "Simple dropdown menus.",
   "main": "index.js",
   "scripts": {
