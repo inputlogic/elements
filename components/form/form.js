@@ -21,47 +21,17 @@ const compatIsValid = React.isValidElement
   ? React.isValidElement
   : child => child && child.nodeName != null
 
-// These are the component names that we will sync values
-// to our parent Form state.
-let formFieldNames = [
-  'InputText',
-  'InputLocation',
-  'TextInput',
-  'TextArea',
-  'Checkbox',
-  'Select',
-  'Radio',
-  'Question',
-  'DatePicker',
-  'Slider'
-]
-
-export const addFieldNames = (...names) => {
-  console.warn('addFieldNames is deprecated. Please use the isFormField prop instead.')
-  formFieldNames = formFieldNames.concat(names)
-}
-
-// `displayName` is lost in Release builds. It must be explicitly set
-// on each of the above `formFieldNames` Component classes.
-// See: https://github.com/facebook/react-native/issues/19106
-const getNodeName = child =>
-  child.type ? child.type.displayName : child.nodeName.name
-
 const getProps = child => child.attributes || child.props || {}
 
 // Is one of the above defined form fields, (or has attribute isFormField)
 // and has a `name` prop set. We can't sync state if the component doesn't have
 // have a `name` prop set.
 const isFormField = child => {
-  const name = getNodeName(child)
   const props = getProps(child)
-  if (!formFieldNames.includes(name) && !props.isFormField) {
+  if (props.native || props.isFormField === false) {
     return false
   } else if (props.name) {
     return true
-  } else {
-    console.warn(`Found Component '${name}' missing 'name' prop!`)
-    return false
   }
 }
 
