@@ -1,14 +1,5 @@
 const CALLED = {}
 
-// export const actions = {
-//   onContainerClick: (state, event) => {
-//     if (isOverlay(event.target)) {
-//       return { modal: null }
-//     }
-//   },
-//   closeModal: (state) => ({ modal: null })
-// }
-
 const nameToType = name => `useActions[${name}]`
 const typeToName = type => {
   const res = /^useActions\[(.*?)\]$/gi.exec(type)

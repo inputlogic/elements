@@ -2,15 +2,13 @@
 
 import { render } from 'preact'
 import createStore from 'atom'
-import { useMappedState } from './index.js'
+import { useActions } from './index.js'
 
 const store = createStore([], { count: 0 })
 
-const Stateful = (props) => {
-  const { count } = useMappedState(store, ({ count }) => ({ count }))
-  return (
-    <p>Count: {count}</p>
-  )
+export const actions = {
+  multiply: (state, amount) => ({ count: state.count * amount }),
+  add: (state, amount) => ({ count: state.count + amount })
 }
 
 afterEach(() => {
@@ -18,35 +16,20 @@ afterEach(() => {
   document.body.innerHTML = ''
 })
 
-test('useMappedState exports', () => {
-  expect(typeof useMappedState).toBe('function')
+test('useActions exports', () => {
+  expect(typeof useActions).toBe('function')
 })
 
-test('useMappedState should render initial state', () => {
+test('useActions should provide actions', (done) => {
+  const Stateful = (props) => {
+    const { multiply, add } = useActions(store, actions)
+    expect(store.getState()).toEqual({ count: 0 })
+    add(2)
+    expect(store.getState()).toEqual({ count: 2 })
+    multiply(2)
+    expect(store.getState()).toEqual({ count: 4 })
+    done()
+    return null
+  }
   render(<Stateful />, document.body)
-  expect(document.body.innerHTML).toBe('<p>Count: 0</p>')
-})
-
-test('useMappedState should update when mapped state changes', (done) => {
-  const Child = ({ count }) => <p>Count: {count}</p>
-  const Parent = () => {
-    const { count } = useMappedState(store, ({ count }) => ({ count }))
-    return <div><Child count={count} /></div>
-  }
-
-  const listener = () => {
-    render(<Parent />, document.body)
-    setTimeout(() => {
-      expect(store.getState()).toEqual({ count: 1 })
-      expect(document.body.innerHTML).toBe('<div><p>Count: 1</p></div>')
-      store.unsubscribe(listener)
-      done()
-    }, 1000)
-  }
-
-  render(<Parent />, document.body)
-  expect(document.body.innerHTML).toBe('<div><p>Count: 0</p></div>')
-
-  store.subscribe(listener)
-  store.setState({ count: 1 })
 })
