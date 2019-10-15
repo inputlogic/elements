@@ -2,25 +2,45 @@ import W from 'wasmuth'
 import withState from '@app-elements/with-state'
 import LoadingIndicator from '@app-elements/loading-indicator'
 
+const isDisabled = (state, formName, requiredValues) => {
+  const keys = Object.keys(W.pathOr({}, [formName, 'values'], state))
+  if (keys.length === 0) {
+    return true
+  }
+  if (!requiredValues) {
+    return false
+  }
+  for (let x = 0; x < requiredValues.length; x++) {
+    if (!keys.includes(requiredValues[x])) {
+      return true
+    }
+  }
+  return false
+}
+
 export const SubmitButton = withState({
-  mapper: (state, { formName }) => ({
-    submitting: W.pathOr(false, [formName, 'submitting'], state)
+  mapper: (state, { formName, requiredValues }) => ({
+    submitting: W.pathOr(false, [formName, 'submitting'], state),
+    disabled: isDisabled(state, formName, requiredValues)
   })
 })(({
+  // Form parent provided
+  formName,
+
   // withState provided
   submitting,
+  disabled,
 
   // User provided
   Loading,
-  children,
-
-  ...props
+  className,
+  children
 }) => {
   const loader = Loading != null
     ? <Loading />
     : <LoadingIndicator />
   return (
-    <button {...props} type='submit' disabled={submitting}>
+    <button key={`${formName}-submit-button`} className={className} type='submit' disabled={disabled || submitting}>
       {submitting && loader}
       {!submitting && (children || 'Submit')}
     </button>
