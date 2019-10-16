@@ -26,8 +26,5 @@
     "@app-elements/connect": "^1.0.21",
     "@app-elements/level": "^1.0.3"
   },
-  "peerDependencies": {
-    "wasmuth": "2.0.6"
-  },
   "gitHead": "d50087f5b15f56e544e7e52d0628bc3b7f0ea361"
 }

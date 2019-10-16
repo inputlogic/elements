@@ -1,10 +1,14 @@
-import W from 'wasmuth'
+import check from 'check-arg-types'
+import find from '@wasmuth/find'
+import path from '@wasmuth/path'
+import pathEq from '@wasmuth/path-eq'
 import { createPortal, Component } from 'react'
 
 import connect from '@app-elements/connect'
 
 import './style.less'
 
+const toType = check.prototype.toType
 const modalRoot = document.getElementById('modals')
 
 const isOverlay = (el) =>
@@ -119,7 +123,7 @@ export const Modals = connect({
   withState: ({ currentRoute, modal }) => ({ currentRoute, modal })
 })(({ currentRoute, modal, closeModal, children }) => {
   const prevModal = prevState.modal
-  const prevRouteName = W.path('currentRoute.name', prevState)
+  const prevRouteName = path('currentRoute.name', prevState)
 
   prevState = { currentRoute, modal }
 
@@ -132,12 +136,12 @@ export const Modals = connect({
     document.body.classList.add('modal-open')
   }
 
-  if (W.path('name', currentRoute || {}) !== prevRouteName) {
+  if (path('name', currentRoute || {}) !== prevRouteName) {
     closeModal()
   }
 
-  const child = W.toType(children) === 'array'
-    ? W.find(c => W.pathEq('type.name', modal, c), children)
+  const child = toType(children) === 'array'
+    ? find(c => pathEq('type.name', modal, c), children)
     : children
   return child
 })

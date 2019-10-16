@@ -1,4 +1,5 @@
-import W from 'wasmuth'
+import map from '@wasmuth/map'
+import pathOr from '@wasmuth/path-or'
 
 import connect from '@app-elements/connect'
 import Pagination from '@app-elements/pagination'
@@ -36,9 +37,9 @@ const ListResource = connect({
     : (
       <div key={endpoint}>
         {list
-          ? W.map(
+          ? map(
             (item, idx) => <View key={item.id || idx} {...item} />,
-            W.pathOr(result, 'results', result)
+            pathOr(result, 'results', result)
           )
           : <View {...result} />}
         {pagination && limit != null

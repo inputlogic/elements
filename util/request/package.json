@@ -23,5 +23,8 @@
   "publishConfig": {
     "access": "public"
   },
+  "dependencies": {
+    "@wasmuth/map": "2.1.1"
+  },
   "gitHead": "d50087f5b15f56e544e7e52d0628bc3b7f0ea361"
 }

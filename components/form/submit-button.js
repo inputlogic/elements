@@ -1,9 +1,9 @@
-import W from 'wasmuth'
+import pathOr from '@wasmuth/path-or'
 import withState from '@app-elements/with-state'
 import LoadingIndicator from '@app-elements/loading-indicator'
 
 const isDisabled = (state, formName, requiredValues) => {
-  const keys = Object.keys(W.pathOr({}, [formName, 'values'], state))
+  const keys = Object.keys(pathOr({}, [formName, 'values'], state))
   if (keys.length === 0) {
     return true
   }
@@ -20,7 +20,7 @@ const isDisabled = (state, formName, requiredValues) => {
 
 export const SubmitButton = withState({
   mapper: (state, { formName, requiredValues }) => ({
-    submitting: W.pathOr(false, [formName, 'submitting'], state),
+    submitting: pathOr(false, [formName, 'submitting'], state),
     disabled: isDisabled(state, formName, requiredValues)
   })
 })(({
