@@ -1,4 +1,3 @@
-import W from 'wasmuth'
 import React from 'react' // Can be aliased to `preact` in host project
 
 import connect from '@app-elements/connect'
@@ -89,7 +88,7 @@ try {
   document.body.addEventListener('click', (ev) => {
     if (!storeRef) return
 
-    const activeDropdown = W.path('dropdown', storeRef.getState())
+    const activeDropdown = storeRef.getState().dropdown
     if (!activeDropdown) {
       return
     }

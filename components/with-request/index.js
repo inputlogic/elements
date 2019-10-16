@@ -1,9 +1,10 @@
-import W from 'wasmuth'
+import check from 'check-arg-types'
+import equal from '@app-elements/equal'
 import React from 'react'
 
-import equal from '@app-elements/equal'
-
 import makeRequest from './makeRequest'
+
+const toType = check.prototype.toType
 
 let storeRef // Will get populated if WithRequest receives `store` via context
 
@@ -105,17 +106,17 @@ const withRequest = ({
 
     componentDidMount () {
       this._loadResult(
-        W.toType(endpoint) === 'function'
+        toType(endpoint) === 'function'
           ? endpoint(this.props)
           : endpoint
       )
     }
 
     shouldComponentUpdate (nextProps, nextState) {
-      const nextEnpoint = W.toType(endpoint) === 'function'
+      const nextEnpoint = toType(endpoint) === 'function'
         ? endpoint(nextProps)
         : endpoint
-      const currEnpoint = W.toType(endpoint) === 'function'
+      const currEnpoint = toType(endpoint) === 'function'
         ? endpoint(this.props)
         : endpoint
       if (currEnpoint !== nextEnpoint) {
@@ -125,7 +126,7 @@ const withRequest = ({
     }
 
     componentDidUpdate () {
-      const currEnpoint = W.toType(endpoint) === 'function'
+      const currEnpoint = toType(endpoint) === 'function'
         ? endpoint(this.props)
         : endpoint
       if (!_existing[currEnpoint]) {

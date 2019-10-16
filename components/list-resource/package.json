@@ -29,10 +29,9 @@
     "@app-elements/connect": "^1.0.21",
     "@app-elements/pagination": "^1.0.28",
     "@app-elements/router": "^2.2.12",
-    "@app-elements/with-request": "^2.0.19"
-  },
-  "peerDependencies": {
-    "wasmuth": "2.0.6"
+    "@app-elements/with-request": "^2.0.19",
+    "@wasmuth/map": "^2.1.1",
+    "@wasmuth/path-or": "^2.1.1"
   },
   "gitHead": "d50087f5b15f56e544e7e52d0628bc3b7f0ea361"
 }
