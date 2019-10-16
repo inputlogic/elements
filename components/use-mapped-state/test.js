@@ -1,17 +1,12 @@
 /* global afterEach test expect */
 
-import { render } from 'preact'
 import createStore from 'atom'
-import { useMappedState } from './index.js'
+import { createContext, render } from 'preact'
+import { useContext } from 'preact/hooks'
+import { useMappedState } from './index'
 
-const store = createStore([], { count: 0 })
-
-const Stateful = (props) => {
-  const { count } = useMappedState(store, ({ count }) => ({ count }))
-  return (
-    <p>Count: {count}</p>
-  )
-}
+const store = createStore([], { count: 0, other: 'a' })
+const Context = createContext(store)
 
 afterEach(() => {
   store.setState({ count: 0 })
@@ -22,31 +17,57 @@ test('useMappedState exports', () => {
   expect(typeof useMappedState).toBe('function')
 })
 
-test('useMappedState should render initial state', () => {
-  render(<Stateful />, document.body)
+test('useMappedState should render PassedComponent', (done) => {
+  const Stateful = () => {
+    const store = useContext(Context)
+    const { count } = useMappedState(store, ({ count }) => ({ count }))
+    return (
+      <p>Count: {count}</p>
+    )
+  }
+
+  // Wait for store to update
+  const listener = () => {
+    // Wait for React to re-render with updated state
+    render(<Context.Provider value={store}><Stateful /></Context.Provider>, document.body)
+    setTimeout(() => {
+      expect(document.body.innerHTML).toBe('<p>Count: 1</p>')
+      done()
+    }, 2000)
+    store.unsubscribe(listener)
+  }
+  store.subscribe(listener)
+
+  render(<Context.Provider value={store}><Stateful /></Context.Provider>, document.body)
   expect(document.body.innerHTML).toBe('<p>Count: 0</p>')
+
+  store.setState({ count: 1 })
 })
 
-test('useMappedState should update when mapped state changes', (done) => {
-  const Child = ({ count }) => <p>Count: {count}</p>
-  const Parent = () => {
+test('useMappedState can be used more than once per Component', (done) => {
+  const Stateful = () => {
+    const store = useContext(Context)
     const { count } = useMappedState(store, ({ count }) => ({ count }))
-    return <div><Child count={count} /></div>
+    const { other } = useMappedState(store, ({ other }) => ({ other }))
+    return (
+      <p>{count}/{other}</p>
+    )
   }
 
+  // Wait for store to update
   const listener = () => {
-    render(<Parent />, document.body)
+    // Wait for React to re-render with updated state
+    render(<Context.Provider value={store}><Stateful /></Context.Provider>, document.body)
     setTimeout(() => {
-      expect(store.getState()).toEqual({ count: 1 })
-      expect(document.body.innerHTML).toBe('<div><p>Count: 1</p></div>')
-      store.unsubscribe(listener)
+      expect(document.body.innerHTML).toBe('<p>1/a</p>')
       done()
-    }, 1000)
+    }, 2000)
+    store.unsubscribe(listener)
   }
-
-  render(<Parent />, document.body)
-  expect(document.body.innerHTML).toBe('<div><p>Count: 0</p></div>')
-
   store.subscribe(listener)
+
+  render(<Context.Provider value={store}><Stateful /></Context.Provider>, document.body)
+  expect(document.body.innerHTML).toBe('<p>0/a</p>')
+
   store.setState({ count: 1 })
 })

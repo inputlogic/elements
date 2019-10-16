@@ -1,20 +1,25 @@
-import { useEffect, useState } from 'react' // alias to 'preact/hooks'
+import { useEffect, useReducer, useRef } from 'react' // alias to 'preact/hooks'
 import equal from '@app-elements/equal'
 
 export function useMappedState (store, mapper) {
+  const [, forceRender] = useReducer(s => s + 1, 0)
   const initialState = mapper(store.getState())
-  const [mappedState, setMappedState] = useState(initialState)
+  const mappedStateRef = useRef(initialState)
 
   useEffect(() => {
-    const handleStateChange = () => {
+    function checkForUpdates () {
       const nextState = mapper(store.getState())
-      if (!equal(nextState, mappedState)) {
-        setMappedState(nextState)
+      if (!equal(nextState, mappedStateRef.current)) {
+        mappedStateRef.current = nextState
+        forceRender({})
       }
     }
-    const unsubscribe = store.subscribe(handleStateChange)
-    return () => unsubscribe()
-  })
 
-  return mappedState
+    checkForUpdates()
+    const unsubscribe = store.subscribe(checkForUpdates)
+
+    return () => unsubscribe()
+  }, [store, mapper])
+
+  return mappedStateRef.current
 }
