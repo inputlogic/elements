@@ -18,6 +18,16 @@ import Dropdown from '@app-elements/dropdown'
 </Dropdown>
 ```
 
+### Custom Trigger
+
+```javascript
+// If you provide a Component or function for the Trigger prop,
+// it will be given the following props: `className='btn-dropdown' onClick={handleToggle}`
+// You will need to pass these props down, so the Dropdown functionality
+// works with your custom Trigger component.
+<Dropdown uid='home-example' Trigger={props => <MyTrigger {...props}>Custom Trigger</MyTrigger>}>
+```
+
 ## Props
 
 | Prop                   | Type        | Default       | Description         |
