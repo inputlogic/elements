@@ -19,12 +19,11 @@ const safelyParse = (json, key) => {
   }
 }
 
-export const getAuthHeader = async (headers = {}) => {
-  if (storage == null) {
+export const getAuthHeader = async (headers = {}, noAuth) => {
+  if (storage == null || noAuth) {
     return headers
   }
   const token = await storage.getItem('token')
-  console.log('getAuthHeader', { token })
   if (token) {
     headers.Authorization = `Token ${token}`
   }
@@ -58,7 +57,7 @@ export function request ({
   }
 
   const xhr = new window.XMLHttpRequest()
-  const promise = new Promise(async (resolve, reject) => {
+  const promise = new Promise((resolve, reject) => {
     xhr.open(method.toUpperCase(), url)
 
     xhr.onreadystatechange = () => {
@@ -71,20 +70,18 @@ export function request ({
     xhr.onerror = () => reject(xhr)
     xhr.setRequestHeader('Content-Type', 'application/json')
 
-    if (!noAuth) {
-      headers = await getAuthHeader(headers)
-    }
-
-    if (headers && toType(headers) === 'object') {
-      for (const k in headers) {
-        xhr.setRequestHeader(k, headers[k])
+    getAuthHeader(headers, noAuth).then(headers => {
+      if (headers && toType(headers) === 'object') {
+        for (const k in headers) {
+          xhr.setRequestHeader(k, headers[k])
+        }
       }
-    }
 
-    const dataType = toType(data)
-    xhr.send(dataType === 'object' || dataType === 'array'
-      ? JSON.stringify(data)
-      : data)
+      const dataType = toType(data)
+      xhr.send(dataType === 'object' || dataType === 'array'
+        ? JSON.stringify(data)
+        : data)
+    })
   })
   return { xhr, promise }
 }
