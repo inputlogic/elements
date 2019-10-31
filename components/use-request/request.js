@@ -13,17 +13,18 @@ export const configure = ({ storage: uStorage, apiUrl: uApiUrl }) => {
 const safelyParse = (json, key) => {
   try {
     const parsed = JSON.parse(json)
-    // console.log('safelyParse', parsed)
     return key != null ? parsed[key] : parsed
   } catch (_) {
     return json
   }
 }
 
-export const getAuthHeader = (headers = {}) => {
-  const token = storage != null
-    ? storage.getItem('token')
-    : null
+export const getAuthHeader = async (headers = {}) => {
+  if (storage == null) {
+    return headers
+  }
+  const token = await storage.getItem('token')
+  console.log('getAuthHeader', { token })
   if (token) {
     headers.Authorization = `Token ${token}`
   }
@@ -33,8 +34,8 @@ export const getAuthHeader = (headers = {}) => {
 const makeErr = (code, msg) => {
   const e = new Error(msg)
   e.code = code
-  if (code === 401) {
-    storage && storage.removeItem('token')
+  if (code === 401 && storage != null) {
+    storage.removeItem('token')
   }
   console.error('makeErr', { code, msg })
   return e
@@ -57,7 +58,7 @@ export function request ({
   }
 
   const xhr = new window.XMLHttpRequest()
-  const promise = new Promise((resolve, reject) => {
+  const promise = new Promise(async (resolve, reject) => {
     xhr.open(method.toUpperCase(), url)
 
     xhr.onreadystatechange = () => {
@@ -70,7 +71,10 @@ export function request ({
     xhr.onerror = () => reject(xhr)
     xhr.setRequestHeader('Content-Type', 'application/json')
 
-    headers = !noAuth ? getAuthHeader(headers) : {}
+    if (!noAuth) {
+      headers = await getAuthHeader(headers)
+    }
+
     if (headers && toType(headers) === 'object') {
       for (const k in headers) {
         xhr.setRequestHeader(k, headers[k])
