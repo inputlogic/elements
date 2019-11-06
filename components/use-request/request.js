@@ -36,7 +36,7 @@ const makeErr = (code, msg) => {
   if (code === 401 && storage != null) {
     storage.removeItem('token')
   }
-  console.error('makeErr', { code, msg })
+  // console.error('makeErr', { code, msg })
   return e
 }
 
@@ -61,7 +61,7 @@ export function request ({
     xhr.open(method.toUpperCase(), url)
 
     xhr.onreadystatechange = () => {
-      if (xhr.readyState !== 4) return
+      if (xhr.readyState !== xhr.DONE) return
       const badResponse = xhr.status !== 204 && xhr.response === ''
       badResponse || xhr.status >= 400
         ? reject(makeErr(xhr.status, safelyParse(xhr.response, 'detail')))
@@ -71,6 +71,9 @@ export function request ({
     xhr.setRequestHeader('Content-Type', 'application/json')
 
     getAuthHeader(headers, noAuth).then(headers => {
+      // Our XHR may be aborted (by useRequest or user) and this reference
+      // may be past the opened state, in which case it's too late to set headers.
+      if (xhr.readyState !== xhr.OPENED) return
       if (headers && toType(headers) === 'object') {
         for (const k in headers) {
           xhr.setRequestHeader(k, headers[k])
