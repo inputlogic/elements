@@ -104,5 +104,11 @@ export function useRequest (store, endpoint) {
   // ie. calling `clear()` will trigger this effect to call `load`.
   useEffect(load, [endpoint, request.timestamp])
 
-  return { ...request, clear, isLoading }
+  return {
+    ...request,
+    clear,
+    // Ensure isLoading is never false when request fields are null.
+    // This covers some async race conditions that can arise.
+    isLoading: request.result == null && request.error == null ? true : isLoading
+  }
 }
