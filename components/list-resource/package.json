@@ -1,6 +1,6 @@
 {
   "name": "@app-elements/list-resource",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "List an API resource with pagination.",
   "main": "index.js",
   "scripts": {

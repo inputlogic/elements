@@ -1,6 +1,6 @@
 {
   "name": "@app-elements/use-request",
-  "version": "0.6.1",
+  "version": "1.0.0",
   "description": "Connect a Component to the result of an API request.",
   "main": "index.js",
   "scripts": {
