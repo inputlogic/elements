@@ -24,6 +24,9 @@
   "dependencies": {
     "check-arg-types": "1.1.2"
   },
+  "peerDependencies": {
+    "@app-elements/use-mapped-state": "0.3.0"
+  },
   "author": "Input Logic Team",
   "license": "ISC",
   "publishConfig": {

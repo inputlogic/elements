@@ -9,11 +9,11 @@ export function request ({ endpoint }) {
     resolveOuter = resolve
     const userID = parseInt(endpoint.substr('/users/'.length), 10)
     const err = '404'
-    setTimeout(() =>
+    setTimeout(() => {
       users[userID]
         ? resolve(users[userID])
         : reject(err)
-    , 100)
+    }, 100)
   })
   const xhr = {
     abort: () => resolveOuter(null)
