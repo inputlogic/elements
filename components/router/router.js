@@ -81,7 +81,7 @@ class RouterBase extends React.Component {
           .some(({ path }) => path && exec(currentPath, path))
         if (shouldRender) {
           const App = routes[route].component
-          return <App />
+          return typeof App === 'function' ? <App /> : App
         }
       } else {
         const routeArgs = exec(currentPath, routes[route].path)
@@ -89,13 +89,16 @@ class RouterBase extends React.Component {
           const newRoute = {
             name: route,
             path: routes[route].path,
-            args: routeArgs
+            args: {
+              ...(routes[route].args || {}),
+              ...routeArgs
+            }
           }
           if (!equal(newRoute, storeRef.getState().currentRoute)) {
             storeRef.setState({ currentRoute: newRoute })
           }
           const Component = routes[route].component
-          return <Component {...routeArgs} />
+          return typeof Component === 'function' ? <Component {...routeArgs} /> : Component
         }
       }
     }
