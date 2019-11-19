@@ -11,19 +11,19 @@ const validCache = ts => {
   return diff < OK_TIME
 }
 
-const requestPromise = ({ endpoint, headers }) => {
+const requestPromise = ({ endpoint, headers, opts = {} }) => {
   if (_existing[endpoint]) {
     const { promise, xhr } = _existing[endpoint]
     if (xhr.readyState !== 4) {
       return promise
     }
   }
-  const { promise, xhr } = makeRequest({ endpoint, headers })
+  const { promise, xhr } = makeRequest({ endpoint, headers, ...opts })
   _existing[endpoint] = { promise, xhr }
   return promise
 }
 
-export function useRequest (store, endpoint) {
+export function useRequest (store, endpoint, opts) {
   // Get existing request object in the global store, and stay in sync.
   const requestSelector = (state) => (state.requests || {})[endpoint] || {}
   const request = useMappedState(store, requestSelector)
@@ -79,7 +79,7 @@ export function useRequest (store, endpoint) {
       if (token) {
         headers.Authorization = `Token ${token}`
       }
-      const promise = requestPromise({ endpoint, headers })
+      const promise = requestPromise({ endpoint, headers, opts })
       promise
         .then(result => {
           cache(result)

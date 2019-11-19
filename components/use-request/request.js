@@ -19,16 +19,21 @@ const safelyParse = (json, key) => {
   }
 }
 
-export const getAuthHeader = async (headers = {}, noAuth) => {
+export const getAuthHeader = (headers = {}, noAuth) => new Promise((resolve, reject) => {
   if (storage == null || noAuth) {
-    return headers
+    return resolve(headers)
   }
-  const token = await storage.getItem('token')
-  if (token) {
+  const token = storage.getItem('token')
+  if (token && typeof token.then === 'function') {
+    token.then(t => {
+      headers.Authorization = `Token ${token}`
+      resolve(headers)
+    })
+  } else if (token) {
     headers.Authorization = `Token ${token}`
   }
-  return headers
-}
+  resolve(headers)
+})
 
 const makeErr = (code, msg) => {
   const e = new Error(msg)
