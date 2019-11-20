@@ -5,10 +5,10 @@ import { request as makeRequest } from './request'
 const OK_TIME = 30000
 const _existing = {}
 
-const validCache = ts => {
+const validCache = (ts, maxTime = OK_TIME) => {
   if (!ts) return false
   const diff = Date.now() - ts
-  return diff < OK_TIME
+  return diff < maxTime
 }
 
 const requestPromise = ({ endpoint, opts }) => {
@@ -24,6 +24,10 @@ const requestPromise = ({ endpoint, opts }) => {
 }
 
 export function useRequest (store, endpoint, opts = {}) {
+  // Take props out of opts that don't need to be passed to the request.
+  // Can be undefined, as they are not required.
+  const { maxTime } = opts
+
   // Get existing request object in the global store, and stay in sync.
   const requestSelector = (state) => (state.requests || {})[endpoint] || {}
   const request = useMappedState(store, requestSelector)
@@ -71,7 +75,7 @@ export function useRequest (store, endpoint, opts = {}) {
   // Finally, making the actual request!
   const load = () => {
     safeSetIsLoading(true)
-    if (validCache(request.timestamp)) {
+    if (validCache(request.timestamp, maxTime)) {
       safeSetIsLoading(false)
     } else {
       const token = store.getState().token
