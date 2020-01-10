@@ -1,10 +1,14 @@
-import W from 'wasmuth'
+import check from 'check-arg-types'
+import find from '@wasmuth/find'
+import path from '@wasmuth/path'
+import pathEq from '@wasmuth/path-eq'
 import { createPortal, Component } from 'react'
 
 import connect from '@app-elements/connect'
 
 import './style.less'
 
+const toType = check.prototype.toType
 const modalRoot = document.getElementById('modals')
 
 const isOverlay = (el) =>
@@ -51,23 +55,46 @@ class Portal extends Component {
 
 const Modal = connect({
   name: 'Modal',
-  withActions: actions
+  withActions: actions,
+  focusRef: dom => {
+    setTimeout(() => {
+      dom && dom.focus()
+    }, 0)
+  },
+  handleKeyDown: closeModal => ev => {
+    const pressedEscape = ev.keyCode === 27
+    if (pressedEscape) {
+      ev.stopPropagation()
+      closeModal()
+    }
+  }
 })(({
   // connect actions
   onContainerClick,
   closeModal,
 
+  // Component functions
+  focusRef,
+  handleKeyDown,
+
   // props
   className = '',
   hideClose = false,
+  shouldCloseOnEsc = true,
+
   children
 }) => (
   <Portal>
     <div
-      class={'modal-container ' + className}
+      className={'modal-container ' + className}
       onClick={onContainerClick}
     >
-      <div class='modal-content'>
+      <div
+        class='modal-content'
+        ref={focusRef}
+        tabIndex='-1'
+        onKeyDown={shouldCloseOnEsc && handleKeyDown(closeModal)}
+      >
         {!hideClose &&
           <div className='close' onClick={closeModal}>
             close
@@ -96,7 +123,7 @@ export const Modals = connect({
   withState: ({ currentRoute, modal }) => ({ currentRoute, modal })
 })(({ currentRoute, modal, closeModal, children }) => {
   const prevModal = prevState.modal
-  const prevRouteName = W.path('currentRoute.name', prevState)
+  const prevRouteName = path('currentRoute.name', prevState)
 
   prevState = { currentRoute, modal }
 
@@ -109,10 +136,12 @@ export const Modals = connect({
     document.body.classList.add('modal-open')
   }
 
-  if (W.path('name', currentRoute || {}) !== prevRouteName) {
+  if (path('name', currentRoute || {}) !== prevRouteName) {
     closeModal()
   }
 
-  const child = W.find(c => W.pathEq('type.name', modal, c), children)
+  const child = toType(children) === 'array'
+    ? find(c => pathEq('type.name', modal, c), children)
+    : children
   return child
 })

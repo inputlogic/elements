@@ -21,6 +21,7 @@ Fun!
 - [Pagination](components/pagination)
 - [Router](components/router)
 - [Tooltip](components/tooltip)
+- [useActions](components/use-actions)
 - [useMappedState](components/use-mapped-state)
 - [useRequest](components/use-request)
 - [~~withRequest~~](components/with-request) **deprecated**

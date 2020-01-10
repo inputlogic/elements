@@ -1,4 +1,3 @@
-import W from 'wasmuth'
 import React from 'react'
 
 import { updateQuery } from '@app-elements/router'
@@ -34,15 +33,14 @@ export default class Pagination extends React.Component {
             </span>
           )}
         <ul>
-          {W.map(
+          {pages.map(
             (page, index) => page
               ? (
                 <li key={`page-${page}`}>
                   <a href={pageBuilder(page)} className={activePage === page ? 'active' : ''}>{page}</a>
                 </li>
               )
-              : <li key={`break-${index}`}>&hellip;</li>,
-            pages
+              : <li key={`break-${index}`}>&hellip;</li>
           )}
         </ul>
         {next

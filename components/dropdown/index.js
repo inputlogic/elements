@@ -1,4 +1,3 @@
-import W from 'wasmuth'
 import React from 'react' // Can be aliased to `preact` in host project
 
 import connect from '@app-elements/connect'
@@ -11,7 +10,6 @@ let storeRef // Will get populated by `getStoreReference`
 export const actions = {
   toggle: ({ dropdown }, uid) => {
     const isOpen = dropdown === uid
-    console.log('toggle', { dropdown, uid, isOpen })
     return { dropdown: isOpen ? null : uid }
   }
 }
@@ -90,7 +88,7 @@ try {
   document.body.addEventListener('click', (ev) => {
     if (!storeRef) return
 
-    const activeDropdown = W.path('dropdown', storeRef.getState())
+    const activeDropdown = storeRef.getState().dropdown
     if (!activeDropdown) {
       return
     }
@@ -103,7 +101,6 @@ try {
 
     const withinDropdown = checkClass('dropdown-menu', el)
     if (!withinDropdown || (withinDropdown && isClickable(el))) {
-      console.log('CLOSING', { el: ev.target, withinDropdown })
       storeRef.setState({ dropdown: null })
     }
   })

@@ -1,9 +1,9 @@
-import W from 'wasmuth'
+import path from '@wasmuth/path'
 import withState from '@app-elements/with-state'
 
 export const ErrorOrHint = withState({
   mapper: (state, { formName, name }) => ({
-    error: W.path([formName, 'errors', name], state)
+    error: path([formName, 'errors', name], state)
   })
 })(({
   // User provided

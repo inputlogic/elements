@@ -1,4 +1,3 @@
-import W from 'wasmuth'
 import React from 'react' // Can be aliased to Preact in your project
 
 import Level from '@app-elements/level'
@@ -155,7 +154,7 @@ export default class Carousel extends React.Component {
               </nav>}
             <div className='slides-wrapper'>
               <div className='slides' style={this.getSlidesStyle()}>
-                {W.map((c, idx) =>
+                {children.map((c, idx) =>
                   <div
                     key={`caurosel-${idx}`}
                     ref={(ref) => idx === 0 && this.getRef(ref)}
@@ -163,8 +162,8 @@ export default class Carousel extends React.Component {
                     class={`${className}${idx === active ? ' active' : ''}`}
                   >
                     {c}
-                  </div>,
-                children)}
+                  </div>
+                )}
               </div>
             </div>
             {!noNav &&
@@ -174,15 +173,15 @@ export default class Carousel extends React.Component {
           </div>
           {withDots &&
             <Level className='carousel-dots'>
-              {W.map(i =>
+              {children.map((_, idx) =>
                 <button
-                  onClick={this.setActive(i)}
-                  key={`dots-${i}`}
-                  className={`${i === active ? 'active' : ''}`}
+                  onClick={this.setActive(idx)}
+                  key={`dots-${idx}`}
+                  className={`${idx === active ? 'active' : ''}`}
                 >
-                  {i}
-                </button>,
-              W.range(0, children.length))}
+                  {idx}
+                </button>
+              )}
             </Level>}
         </div>
       </div>

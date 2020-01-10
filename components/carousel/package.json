@@ -1,6 +1,6 @@
 {
   "name": "@app-elements/carousel",
-  "version": "1.1.3",
+  "version": "1.2.1",
   "description": "Simple carousel with arrows and dot indicators.",
   "main": "index.js",
   "scripts": {
@@ -22,9 +22,6 @@
   ],
   "author": "Input Logic Team",
   "license": "ISC",
-  "peerDependencies": {
-    "wasmuth": "2.0.6"
-  },
   "dependencies": {
     "@app-elements/level": "^1.0.3"
   },

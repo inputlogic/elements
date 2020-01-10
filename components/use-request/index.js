@@ -1,37 +1,36 @@
 import { useEffect, useRef, useState } from 'react' // alias to 'preact/hooks'
+import { useMappedState } from '@app-elements/use-mapped-state'
 import { request as makeRequest } from './request'
 
 const OK_TIME = 30000
 const _existing = {}
 
-const validCache = ts => {
+const validCache = (ts, maxTime = OK_TIME) => {
   if (!ts) return false
   const diff = Date.now() - ts
-  return diff < OK_TIME
+  return diff < maxTime
 }
 
-const requestPromise = ({ endpoint, headers }) => {
+const requestPromise = ({ endpoint, opts }) => {
   if (_existing[endpoint]) {
     const { promise, xhr } = _existing[endpoint]
     if (xhr.readyState !== 4) {
       return promise
     }
   }
-  const { promise, xhr } = makeRequest({ endpoint, headers })
+  const { promise, xhr } = makeRequest({ endpoint, ...opts })
   _existing[endpoint] = { promise, xhr }
   return promise
 }
 
-export function useRequest (store, endpoint) {
-  // Check for an existing request object in the global store
-  const initialState = (
-    ({ requests = {} }) => ({ request: requests[endpoint] || {} })
-  )(store.getState())
-  const { timestamp, result } = initialState
+export function useRequest (store, endpoint, opts = {}) {
+  // Take props out of opts that don't need to be passed to the request.
+  // Can be undefined, as they are not required.
+  const { maxTime } = opts
 
-  // And, create a stateful value with any existing request object
-  // found in the global store.
-  const [request, setRequest] = useState(initialState)
+  // Get existing request object in the global store, and stay in sync.
+  const requestSelector = (state) => (state.requests || {})[endpoint] || {}
+  const request = useMappedState(store, requestSelector)
 
   // We'll also track loading state locally
   const [isLoading, setIsLoading] = useState(true)
@@ -45,28 +44,23 @@ export function useRequest (store, endpoint) {
     return () => (mountedRef.current = false)
   }, [])
 
-  // Now, we'll put our mountedRef to use: only change state if the
-  // component is mounted.
-  const safeSetRequest = (...args) => mountedRef.current && setRequest(...args)
+  // Only update local state if component is mounted
   const safeSetIsLoading = (...args) => mountedRef.current && setIsLoading(...args)
 
   // And some functions to manage this request in the global store
   const cache = (result) => store.setState({
     requests: {
       ...store.getState().requests || {},
-      [endpoint]: { result, timestamp: Date.now() }
+      [endpoint]: { result, timestamp: Date.now(), error: null }
     }
   })
 
-  const clear = () => {
-    store.setState({
-      requests: {
-        ...store.getState().requests || {},
-        [endpoint]: null
-      }
-    })
-    load()
-  }
+  const clear = () => store.setState({
+    requests: {
+      ...store.getState().requests || {},
+      [endpoint]: null
+    }
+  })
 
   const err = (error) => store.setState({
     requests: {
@@ -81,26 +75,23 @@ export function useRequest (store, endpoint) {
   // Finally, making the actual request!
   const load = () => {
     safeSetIsLoading(true)
-    if (validCache(timestamp)) {
-      safeSetRequest({ result })
+    if (validCache(request.timestamp, maxTime)) {
       safeSetIsLoading(false)
     } else {
       const token = store.getState().token
-      const headers = {}
+      opts.headers = opts.headers || {}
       if (token) {
-        headers.Authorization = `Token ${token}`
+        opts.headers.Authorization = `Token ${token}`
       }
-      const promise = requestPromise({ endpoint, headers })
+      const promise = requestPromise({ endpoint, opts })
       promise
         .then(result => {
           cache(result)
-          safeSetRequest({ result, error: null })
           safeSetIsLoading(false)
           delete _existing[endpoint]
         })
         .catch(error => {
           err(error)
-          safeSetRequest({ error })
           safeSetIsLoading(false)
           delete _existing[endpoint]
         })
@@ -113,7 +104,15 @@ export function useRequest (store, endpoint) {
     }
   }
 
-  useEffect(load, [endpoint])
+  // Load data if a new endpoint is passed down, or if timestamp changes.
+  // ie. calling `clear()` will trigger this effect to call `load`.
+  useEffect(load, [endpoint, request.timestamp])
 
-  return { ...request, clear, isLoading }
+  return {
+    ...request,
+    clear,
+    // Ensure isLoading is never false when request fields are null.
+    // This covers some async race conditions that can arise.
+    isLoading: request.result == null && request.error == null ? true : isLoading
+  }
 }

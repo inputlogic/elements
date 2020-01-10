@@ -13,30 +13,35 @@ export const configure = ({ storage: uStorage, apiUrl: uApiUrl }) => {
 const safelyParse = (json, key) => {
   try {
     const parsed = JSON.parse(json)
-    // console.log('safelyParse', parsed)
     return key != null ? parsed[key] : parsed
   } catch (_) {
     return json
   }
 }
 
-export const getAuthHeader = (headers = {}) => {
-  const token = storage != null
-    ? storage.getItem('token')
-    : null
-  if (token) {
+export const getAuthHeader = (headers = {}, noAuth) => new Promise((resolve, reject) => {
+  if (storage == null || noAuth) {
+    return resolve(headers)
+  }
+  const token = storage.getItem('token')
+  if (token && typeof token.then === 'function') {
+    token.then(t => {
+      headers.Authorization = `Token ${token}`
+      resolve(headers)
+    })
+  } else if (token) {
     headers.Authorization = `Token ${token}`
   }
-  return headers
-}
+  resolve(headers)
+})
 
 const makeErr = (code, msg) => {
   const e = new Error(msg)
   e.code = code
-  if (code === 401) {
-    storage && storage.removeItem('token')
+  if (code === 401 && storage != null) {
+    storage.removeItem('token')
   }
-  console.error('makeErr', { code, msg })
+  // console.error('makeErr', { code, msg })
   return e
 }
 
@@ -61,7 +66,7 @@ export function request ({
     xhr.open(method.toUpperCase(), url)
 
     xhr.onreadystatechange = () => {
-      if (xhr.readyState !== 4) return
+      if (xhr.readyState !== xhr.DONE) return
       const badResponse = xhr.status !== 204 && xhr.response === ''
       badResponse || xhr.status >= 400
         ? reject(makeErr(xhr.status, safelyParse(xhr.response, 'detail')))
@@ -70,17 +75,21 @@ export function request ({
     xhr.onerror = () => reject(xhr)
     xhr.setRequestHeader('Content-Type', 'application/json')
 
-    headers = !noAuth ? getAuthHeader(headers) : {}
-    if (headers && toType(headers) === 'object') {
-      for (const k in headers) {
-        xhr.setRequestHeader(k, headers[k])
+    getAuthHeader(headers, noAuth).then(headers => {
+      // Our XHR may be aborted (by useRequest or user) and this reference
+      // may be past the opened state, in which case it's too late to set headers.
+      if (xhr.readyState !== xhr.OPENED) return
+      if (headers && toType(headers) === 'object') {
+        for (const k in headers) {
+          xhr.setRequestHeader(k, headers[k])
+        }
       }
-    }
 
-    const dataType = toType(data)
-    xhr.send(dataType === 'object' || dataType === 'array'
-      ? JSON.stringify(data)
-      : data)
+      const dataType = toType(data)
+      xhr.send(dataType === 'object' || dataType === 'array'
+        ? JSON.stringify(data)
+        : data)
+    })
   })
   return { xhr, promise }
 }

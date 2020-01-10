@@ -1,4 +1,4 @@
-import { map } from 'wasmuth'
+import map from '@wasmuth/map'
 
 export { request }
 

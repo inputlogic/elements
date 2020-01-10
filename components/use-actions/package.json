@@ -1,7 +1,7 @@
 {
-  "name": "@app-elements/form",
-  "version": "2.1.2",
-  "description": "Take the pain out of forms!",
+  "name": "@app-elements/use-actions",
+  "version": "0.1.0",
+  "description": "`useActions` let's you define actions and add their reducer to your store from a Component.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -13,16 +13,12 @@
   "bugs": {
     "url": "https://github.com/inputlogic/elements/issues"
   },
-  "dependencies": {
-    "@wasmuth/path": "2.1.1",
-    "@wasmuth/path-or": "2.1.1"
-  },
   "keywords": [
     "react",
     "react-component",
     "preact",
-    "react-native",
     "component",
+    "hook",
     "ui"
   ],
   "author": "Input Logic Team",
