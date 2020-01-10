@@ -9,7 +9,7 @@ useMappedState maps values from the provided (atom/Redux) store and keeps your C
 ## Usage
 
 ```javascript
-import useMappedState from '@app-elements/use-mapped-state'
+import { useMappedState } from '@app-elements/use-mapped-state'
 import createStore from 'atom'
 
 const store = createStore([], { count: 0 })
