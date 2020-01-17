@@ -9,21 +9,22 @@
 ## Usage
 
 ```javascript
-import useActions from '@app-elements/use-actions'
+import { useActions } from '@app-elements/use-actions'
 import createStore from 'atom'
 
-const store = createStore([], { count: 0 })
+const store = createStore([], { dropdown: null })
 
-// Here is a simple view that expects a `count` value
-// form the global state.
-const Stateful = (props) => {
-  // `mapper` is a function that is given the entire state object from your store.
-  // Your job is to return the portion of that state object that this Component
-  // is concerned with.
-  const mapper = ({ count }) => ({ count })
-  const { count } = useActions(store, mapper)
+function MyComponent () {
+  const { toggle } = useActions(this.context.store, {
+    toggle: ({ dropdown }, uid) => {
+      const isOpen = dropdown != null && dropdown === uid
+      return { dropdown: isOpen ? null : uid }
+    }
+  }, 'MyComponent')
   return (
-    <p>Count: {count}</p>
+    <div>
+      <button onClick={toggle('MyDropdown')}>Toggle Dropdown</button>
+    </div>
   )
 }
 ```
@@ -33,4 +34,5 @@ const Stateful = (props) => {
 | Prop                   | Type       | Default       | Description         |
 |------------------------|------------|---------------|---------------------|
 | **`store`**            | _Object_   | _None_        | An (atom) store instance
-| **`mapper`**           | _Function_ | _None_        | A function that accepts `(state)` and returns an object
+| **`actions`**          | _Object_   | _None_        | Your action definitions. Each key will be returned by the `useActions` call. And, each value should be a function that always accepts the current state as the first param adn returns a partial state object to be applied.
+| **`componentName`**    | _String_   | _None_        | A string name for the calling component. This gets passed as a meta property to help with debugging in redux dev tools.
