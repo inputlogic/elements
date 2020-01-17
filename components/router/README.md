@@ -103,6 +103,15 @@ export const Account = () => (
 
 Now you have a top-level router that renders different components based on nested routes. Those top-level, or _parent_ route components can then include a nested `<Router />` to gain finer control over what gets rendered based on the current URL.
 
+### External Links
+
+Since `Router` automatically wires up `<a />` elements to the router, you may wish to bypass this for external links, in these cases just add `data-external-link` to your anchor:
+
+```javascript
+<a href='http://some-external-link.com' data-external-link>External Link</a>
+```
+
+
 ## Router Props
 
 | Prop              | Type        | Default  | Description         |
