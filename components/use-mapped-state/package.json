@@ -1,6 +1,6 @@
 {
   "name": "@app-elements/use-mapped-state",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "A (P)React hook to map part of global state to a child component.",
   "main": "index.js",
   "scripts": {
