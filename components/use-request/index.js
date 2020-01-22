@@ -77,7 +77,7 @@ export function useRequest (store, endpoint, opts = {}) {
     safeSetIsLoading(true)
     if (validCache(request.timestamp, maxTime)) {
       safeSetIsLoading(false)
-    } else {
+    } else if (endpoint != null) {
       const token = store.getState().token
       opts.headers = opts.headers || {}
       if (token) {
