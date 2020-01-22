@@ -33,6 +33,15 @@ const Users = () => {
 }
 ```
 
+### Dependent Fetching
+
+Sometimes you need to load a request based on data from another request. Here's how you can orchestrate that:
+
+```javascript
+const { result: user } = useRequest(store, '/api/user')
+const { result: projects } = useRequest(store, user != null ? `/api/user/${user.id}/projects` : null)
+```
+
 ## Props
 
 | Prop                   | Type       | Default       | Description         |
