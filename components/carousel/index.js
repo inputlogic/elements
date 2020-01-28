@@ -62,9 +62,9 @@ export default class Carousel extends React.Component {
     }
     this.setState({ swipe: direction }, () => {
       if (direction === 'left') {
-        this.next()
+        this.handleNext()
       } else if (direction === 'right') {
-        this.prev()
+        this.handlePrev()
       }
     })
   }
