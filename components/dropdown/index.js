@@ -43,15 +43,20 @@ const Dropdown = connect({
     : isOpen === false
       ? 'dropdown-menu close'
       : 'dropdown-menu' // isOpen === null
+  const handleClick = ev => {
+    ev.preventDefault()
+    ev.stopPropagation()
+    toggle(uid)
+  }
   return (
     <div>
       {Trigger === undefined
         ? (
-          <button className='btn btn-dropdown black-ghost-btn' onClick={ev => toggle(uid)}>
+          <button className='btn btn-dropdown black-ghost-btn' onClick={handleClick}>
             <Level noPadding>{buttonText}</Level>
           </button>
         )
-        : <Trigger className='btn-dropdown' onClick={ev => toggle(uid)} />}
+        : <Trigger className='btn-dropdown' onClick={handleClick} />}
       {noWrapper
         ? isOpen && children
         : (
