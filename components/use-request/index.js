@@ -11,25 +11,25 @@ const validCache = (ts, maxTime = OK_TIME) => {
   return diff < maxTime
 }
 
-const requestPromise = ({ endpoint, opts }) => {
-  if (_existing[endpoint]) {
-    const { promise, xhr } = _existing[endpoint]
+const requestPromise = ({ uid, endpoint, opts }) => {
+  if (_existing[uid]) {
+    const { promise, xhr } = _existing[uid]
     if (xhr.readyState !== 4) {
       return promise
     }
   }
   const { promise, xhr } = makeRequest({ endpoint, ...opts })
-  _existing[endpoint] = { promise, xhr }
+  _existing[uid] = { promise, xhr }
   return promise
 }
 
-export function useRequest (store, endpoint, opts = {}) {
-  // Take props out of opts that don't need to be passed to the request.
+export function useRequest (store, endpoint, options = {}) {
+  // Take props out of options that don't need to be passed to the request.
   // Can be undefined, as they are not required.
-  const { maxTime } = opts
+  const { maxTime, uid = endpoint, ...opts } = options
 
   // Get existing request object in the global store, and stay in sync.
-  const requestSelector = (state) => (state.requests || {})[endpoint] || {}
+  const requestSelector = (state) => (state.requests || {})[uid] || {}
   const request = useMappedState(store, requestSelector)
 
   // We'll also track loading state locally
@@ -51,22 +51,22 @@ export function useRequest (store, endpoint, opts = {}) {
   const cache = (result) => store.setState({
     requests: {
       ...store.getState().requests || {},
-      [endpoint]: { result, timestamp: Date.now(), error: null }
+      [uid]: { result, timestamp: Date.now(), error: null }
     }
   })
 
   const clear = () => store.setState({
     requests: {
       ...store.getState().requests || {},
-      [endpoint]: null
+      [uid]: null
     }
   })
 
   const err = (error) => store.setState({
     requests: {
       ...store.getState().requests || {},
-      [endpoint]: {
-        ...(store.getState().requests || {})[endpoint] || {},
+      [uid]: {
+        ...(store.getState().requests || {})[uid] || {},
         error
       }
     }
@@ -83,30 +83,30 @@ export function useRequest (store, endpoint, opts = {}) {
       if (token) {
         opts.headers.Authorization = `Token ${token}`
       }
-      const promise = requestPromise({ endpoint, opts })
+      const promise = requestPromise({ uid, endpoint, opts })
       promise
         .then(result => {
           cache(result)
           safeSetIsLoading(false)
-          delete _existing[endpoint]
+          delete _existing[uid]
         })
         .catch(error => {
           err(error)
           safeSetIsLoading(false)
-          delete _existing[endpoint]
+          delete _existing[uid]
         })
     }
     return () => {
-      if (_existing[endpoint] && _existing[endpoint].xhr) {
-        _existing[endpoint].xhr.abort()
-        delete _existing[endpoint]
+      if (_existing[uid] && _existing[uid].xhr) {
+        _existing[uid].xhr.abort()
+        delete _existing[uid]
       }
     }
   }
 
-  // Load data if a new endpoint is passed down, or if timestamp changes.
+  // Load data if a new uid/endpoint is passed down, or if timestamp changes.
   // ie. calling `clear()` will trigger this effect to call `load`.
-  useEffect(load, [endpoint, request.timestamp])
+  useEffect(load, [uid, request.timestamp])
 
   return {
     ...request,
