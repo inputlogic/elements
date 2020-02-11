@@ -14,8 +14,12 @@ import LoadingIndicator from '@app-elements/loading-indicator'
 <LoadingIndicator />
 ```
 
-## Props
+## Size/Color
 
-| Prop                   | Type       | Default      | Description         |
-|------------------------|------------|--------------|---------------------|
-| **`variant`**          | _String_   | `'flashing'` | CSS class to use, either 'flashing' or 'pulse'.
+Set size and color in your local css.
+
+```css
+.loading-ellipsis span {
+  font-size: 1.25em;
+  color: @primary-color;
+}
