@@ -13,9 +13,3 @@ import LoadingIndicator from '@app-elements/loading-indicator'
 
 <LoadingIndicator />
 ```
-
-## Props
-
-| Prop                   | Type       | Default      | Description         |
-|------------------------|------------|--------------|---------------------|
-| **`variant`**          | _String_   | `'flashing'` | CSS class to use, either 'flashing' or 'pulse'.

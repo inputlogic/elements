@@ -1,7 +1,11 @@
 import './style.less'
 
-export default function LoadingIndicator ({ variant = 'flashing' }) {
+export default function LoadingIndicator() {
   return (
-    <div className={`dot-${variant}`} />
+    <span className='loading-ellipsis'>
+      <span>&bull;</span>
+      <span>&bull;</span>
+      <span>&bull;</span>
+    </span>
   )
 }
