@@ -34,13 +34,22 @@ export const SubmitButton = withState({
   // User provided
   Loading,
   className,
+  stopPropagation,
+  title,
   children
 }) => {
   const loader = Loading != null
     ? <Loading />
     : <LoadingIndicator />
   return (
-    <button key={`${formName}-submit-button`} className={className} type='submit' disabled={disabled || submitting}>
+    <button
+      key={`${formName}-submit-button`}
+      className={className}
+      type='submit'
+      disabled={disabled || submitting}
+      title={title || 'Submit'}
+      onClick={stopPropagation === true ? ev => ev.stopPropagation() : null}
+    >
       {submitting && loader}
       {!submitting && (children || 'Submit')}
     </button>
