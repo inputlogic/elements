@@ -84,25 +84,23 @@ const Modal = connect({
 
   children
 }) => (
-  <Portal>
+  <div
+    className={'modal-container ' + className}
+    onClick={onContainerClick}
+  >
     <div
-      className={'modal-container ' + className}
-      onClick={onContainerClick}
+      class='modal-content'
+      ref={focusRef}
+      tabIndex='-1'
+      onKeyDown={shouldCloseOnEsc && handleKeyDown(closeModal)}
     >
-      <div
-        class='modal-content'
-        ref={focusRef}
-        tabIndex='-1'
-        onKeyDown={shouldCloseOnEsc && handleKeyDown(closeModal)}
-      >
-        {!hideClose &&
-          <div className='close' onClick={closeModal}>
-            close
-          </div>}
-        {children}
-      </div>
+      {!hideClose &&
+        <div className='close' onClick={closeModal}>
+          close
+        </div>}
+      {children}
     </div>
-  </Portal>
+  </div>
 ))
 
 export default Modal
@@ -143,5 +141,5 @@ export const Modals = connect({
   const child = toType(children) === 'array'
     ? find(c => pathEq('type.name', modal, c), children)
     : children
-  return child
+  return <Portal>{child}</Portal>
 })
