@@ -1,6 +1,6 @@
 {
   "name": "@app-elements/modal",
-  "version": "2.2.2",
+  "version": "2.3.0",
   "description": "Display modals from anywhere in your component tree.",
   "main": "index.js",
   "scripts": {
