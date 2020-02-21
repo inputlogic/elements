@@ -10,9 +10,13 @@ export function request ({ endpoint }) {
     const userID = parseInt(endpoint.substr('/users/'.length), 10)
     const err = '404'
     setTimeout(() => {
-      users[userID]
-        ? resolve(users[userID])
-        : reject(err)
+      if (endpoint === '/users') {
+        resolve(users)
+      } else {
+        users[userID]
+          ? resolve(users[userID])
+          : reject(err)
+      }
     }, 100)
   })
   const xhr = {

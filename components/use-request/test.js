@@ -108,8 +108,38 @@ test('useRequest will cache by uid if provided', (done) => {
   expect(document.body.innerHTML).toBe('<p>Loading...</p>')
 })
 
+test('patchListRequest', (done) => {
+  const Requested = (props) => {
+    const store = useContext(Context)
+    const { result } = useRequest(store, '/users')
+    console.log({ result })
+    return (
+      <Fragment>
+        {result == null
+          ? <p>Loading...</p>
+          : <h1>First: {result[0].name}</h1>}
+      </Fragment>
+    )
+  }
+
+  // Wait for store to update
+  const listener = () => {
+    // Wait for React to re-render with updated state
+    setTimeout(() => {
+      render(<Context.Provider value={store}><Requested /></Context.Provider>, document.body)
+      expect(document.body.innerHTML).toBe('<h1>First: Mark</h1>')
+      done()
+    }, 2000)
+    store.unsubscribe(listener)
+  }
+  store.subscribe(listener)
+
+  render(<Context.Provider value={store}><Requested /></Context.Provider>, document.body)
+  expect(document.body.innerHTML).toBe('<p>Loading...</p>')
+})
+
 test('clearRequest action will clear cached request', (done) => {
-  expect(Object.keys(store.getState().requests).length).toBe(3)
+  expect(Object.keys(store.getState().requests).length).toBe(4)
 
   const listener = () => {
     expect(Object.keys(store.getState().requests).length).toBe(2)
