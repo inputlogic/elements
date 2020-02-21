@@ -42,6 +42,23 @@ const { result: user } = useRequest(store, '/api/user')
 const { result: projects } = useRequest(store, user != null ? `/api/user/${user.id}/projects` : null)
 ```
 
+### Request Reducer
+
+`useRequest` also ships with an optional reducer and actions that help with
+managing the cached request results.
+
+---
+#### clearRequest
+
+> clearRequest(fnN: Function, ..., fn1: Function): Function
+
+Desc TODO.
+
+```javascript
+clearRequest(...)
+```
+
+
 ## Props
 
 | Prop                   | Type       | Default       | Description         |
