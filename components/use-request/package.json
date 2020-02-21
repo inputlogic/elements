@@ -22,6 +22,7 @@
     "ui"
   ],
   "dependencies": {
+    "@wasmuth/without": "2.1.1",
     "check-arg-types": "1.1.2"
   },
   "peerDependencies": {
