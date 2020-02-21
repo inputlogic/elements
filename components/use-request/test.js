@@ -11,7 +11,7 @@ jest.mock('./request')
 const store = createStore([requestsReducer], { count: 0 })
 const Context = createContext(store)
 
-const { clearRequest, clearRequests } = actions
+const { clearRequest, clearRequests, patchListRequest } = actions
 
 test('useRequest exports', () => {
   expect(typeof useRequest).toBe('function')
@@ -108,38 +108,24 @@ test('useRequest will cache by uid if provided', (done) => {
   expect(document.body.innerHTML).toBe('<p>Loading...</p>')
 })
 
-test('patchListRequest', (done) => {
-  const Requested = (props) => {
-    const store = useContext(Context)
-    const { result } = useRequest(store, '/users')
-    console.log({ result })
-    return (
-      <Fragment>
-        {result == null
-          ? <p>Loading...</p>
-          : <h1>First: {result[0].name}</h1>}
-      </Fragment>
-    )
-  }
+test('patchListRequest should patch a nested item in a request result', () => {
+  const endpoint = '/users'
+  const result = [{ id: 4, name: 'Mark' }, { id: 5, name: 'Paul' }]
+  // fake existing/cached request
+  const store = createStore([requestsReducer], { requests: { [endpoint]: { result } } })
+  expect(store.getState().requests[endpoint].result[0].name).toBe('Mark')
 
-  // Wait for store to update
-  const listener = () => {
-    // Wait for React to re-render with updated state
-    setTimeout(() => {
-      render(<Context.Provider value={store}><Requested /></Context.Provider>, document.body)
-      expect(document.body.innerHTML).toBe('<h1>First: Mark</h1>')
-      done()
-    }, 2000)
-    store.unsubscribe(listener)
-  }
-  store.subscribe(listener)
+  store.dispatch(patchListRequest({
+    endpointOrUid: endpoint,
+    path: '',
+    dataToMerge: { id: 4, name: 'Patched' }
+  }))
 
-  render(<Context.Provider value={store}><Requested /></Context.Provider>, document.body)
-  expect(document.body.innerHTML).toBe('<p>Loading...</p>')
+  expect(store.getState().requests[endpoint].result[0].name).toBe('Patched')
 })
 
 test('clearRequest action will clear cached request', (done) => {
-  expect(Object.keys(store.getState().requests).length).toBe(4)
+  expect(Object.keys(store.getState().requests).length).toBe(3)
 
   const listener = () => {
     expect(Object.keys(store.getState().requests).length).toBe(2)
