@@ -45,7 +45,18 @@ const { result: projects } = useRequest(store, user != null ? `/api/user/${user.
 ### Request Reducer
 
 `useRequest` also ships with an optional reducer and actions that help with
-managing the cached request results.
+managing the cached request results. To use it, you must import the reducer and include it when creating your store.
+
+```javascript
+import { requestsReducer, actions as requestActions } from '@app-elements/use-request/reducer'
+
+const store = createStore([requestsReducer], initialState)
+
+// It's also convenient to export the actions from your store file:
+export const clearRequest = requestActions.clearRequest
+export const clearRequests = requestActions.clearRequests
+export const patchListRequest = requestActions.patchListRequest
+```
 
 #### clearRequest
 
