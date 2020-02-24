@@ -47,7 +47,6 @@ const { result: projects } = useRequest(store, user != null ? `/api/user/${user.
 `useRequest` also ships with an optional reducer and actions that help with
 managing the cached request results.
 
----
 #### clearRequest
 
 > clearRequest(endpointOrUid: String): FluxStandardAction
@@ -58,7 +57,6 @@ Removes the matching `endpointOrUid` from the `requests` object.
 clearRequest('/api/listings')
 ```
 
----
 #### clearRequests
 
 > clearRequests(predicate: Function): FluxStandardAction
@@ -69,7 +67,6 @@ Filters out any `endpointOrUid`s on the `requests` object that match the predica
 clearRequests(uid => uid.indexOf('listings') > -1)
 ```
 
----
 #### patchListRequest
 
 > patchListRequest({ endpointOrUid: String, dataToMerge: Object, matchKey?: String, path?: String }): FluxStandardAction
