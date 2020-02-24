@@ -50,14 +50,40 @@ managing the cached request results.
 ---
 #### clearRequest
 
-> clearRequest(fnN: Function, ..., fn1: Function): Function
+> clearRequest(endpointOrUid: String): FluxStandardAction
 
-Desc TODO.
+Removes the matching `endpointOrUid` from the `requests` object.
 
 ```javascript
-clearRequest(...)
+clearRequest('/api/listings')
 ```
 
+---
+#### clearRequests
+
+> clearRequests(predicate: Function): FluxStandardAction
+
+Filters out any `endpointOrUid`s on the `requests` object that match the predicate function.
+
+```javascript
+clearRequests(uid => uid.indexOf('listings') > -1)
+```
+
+---
+#### patchListRequest
+
+> patchListRequest({ endpointOrUid: String, dataToMerge: Object, matchKey?: String, path?: String }): FluxStandardAction
+
+This is for patching an endpoint that represents an array of items to render, ex. `api/listings`. Let's say you are rendering this array of items, and then perform an update to _one_ of the items contained in that array. When you go back to view the list, it very likely contains that one item but with outdated data. You _could_ clear the entire listings request, re-rendering the whole list, but it would be much nicer to just update the one item in the listings that we know has updated. This way, the entire list isn't re-rendered, rather only the one item.
+
+```javascript
+patchListRequest({
+  endpointOrUid: '/api/listings',
+  dataToMerge: { id: 4, title: 'Updated title' }, // Must include the `matchKey` value. In this case, `id: 4`.
+  matchKey = 'id', // Optional, defaults to 'id'.
+  path = 'results' // Optional, defaults to 'results'. This matches the response shape of Django-Rest-Framework. It should be the path to the actual array data returned in the API response.
+})
+```
 
 ## Props
 
