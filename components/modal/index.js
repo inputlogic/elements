@@ -12,7 +12,7 @@ const toType = check.prototype.toType
 const modalRoot = document.getElementById('modals')
 
 const isOverlay = (el) =>
-  (el.classList && el.classList.contains('modal-container'))
+  (el.classList && el.classList.contains('ae-modal-container'))
 
 export const actions = {
   onContainerClick: (state, event) => {
@@ -85,11 +85,11 @@ const Modal = connect({
   children
 }) => (
   <div
-    className={'modal-container ' + className}
+    className={'ae-modal-container ' + className}
     onClick={onContainerClick}
   >
     <div
-      class='modal-content'
+      class='ae-modal-content'
       ref={focusRef}
       tabIndex='-1'
       onKeyDown={shouldCloseOnEsc && handleKeyDown(closeModal)}
