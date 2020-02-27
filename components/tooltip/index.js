@@ -22,7 +22,7 @@ export default function Tooltip ({
 }) {
   return (
     <div
-      className={`tooltip ${className}`}
+      className={`ae-tooltip ${className}`}
       data-tooltip={text}
       data-tooltip-pos={getPos(props)}
       data-tooltip-length={length}
