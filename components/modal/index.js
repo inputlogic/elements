@@ -12,7 +12,7 @@ const toType = check.prototype.toType
 const modalRoot = document.getElementById('modals')
 
 const isOverlay = (el) =>
-  (el.classList && el.classList.contains('modal-container'))
+  (el.classList && el.classList.contains('ae-modal-container'))
 
 export const actions = {
   onContainerClick: (state, event) => {
@@ -84,25 +84,23 @@ const Modal = connect({
 
   children
 }) => (
-  <Portal>
+  <div
+    className={'ae-modal-container ' + className}
+    onClick={onContainerClick}
+  >
     <div
-      className={'modal-container ' + className}
-      onClick={onContainerClick}
+      class='ae-modal-content'
+      ref={focusRef}
+      tabIndex='-1'
+      onKeyDown={shouldCloseOnEsc && handleKeyDown(closeModal)}
     >
-      <div
-        class='modal-content'
-        ref={focusRef}
-        tabIndex='-1'
-        onKeyDown={shouldCloseOnEsc && handleKeyDown(closeModal)}
-      >
-        {!hideClose &&
-          <div className='close' onClick={closeModal}>
-            close
-          </div>}
-        {children}
-      </div>
+      {!hideClose &&
+        <div className='close' onClick={closeModal}>
+          close
+        </div>}
+      {children}
     </div>
-  </Portal>
+  </div>
 ))
 
 export default Modal
@@ -143,5 +141,5 @@ export const Modals = connect({
   const child = toType(children) === 'array'
     ? find(c => pathEq('type.name', modal, c), children)
     : children
-  return child
+  return <Portal>{child}</Portal>
 })

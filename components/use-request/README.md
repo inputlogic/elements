@@ -42,6 +42,57 @@ const { result: user } = useRequest(store, '/api/user')
 const { result: projects } = useRequest(store, user != null ? `/api/user/${user.id}/projects` : null)
 ```
 
+### Request Reducer
+
+`useRequest` also ships with an optional reducer and actions that help with
+managing the cached request results. To use it, you must import the reducer and include it when creating your store.
+
+```javascript
+import { requestsReducer, actions as requestActions } from '@app-elements/use-request/reducer'
+
+const store = createStore([requestsReducer], initialState)
+
+// It's also convenient to export the actions from your store file:
+export const clearRequest = requestActions.clearRequest
+export const clearRequests = requestActions.clearRequests
+export const patchListRequest = requestActions.patchListRequest
+```
+
+#### clearRequest
+
+> clearRequest(endpointOrUid: String): FluxStandardAction
+
+Removes the matching `endpointOrUid` from the `requests` object.
+
+```javascript
+clearRequest('/api/listings')
+```
+
+#### clearRequests
+
+> clearRequests(predicate: Function): FluxStandardAction
+
+Filters out any `endpointOrUid`s on the `requests` object that match the predicate function.
+
+```javascript
+clearRequests(uid => uid.indexOf('listings') > -1)
+```
+
+#### patchListRequest
+
+> patchListRequest({ endpointOrUid: String, dataToMerge: Object, matchKey?: String, path?: String }): FluxStandardAction
+
+This is for patching an endpoint that represents an array of items to render, ex. `api/listings`. Let's say you are rendering this array of items, and then perform an update to _one_ of the items contained in that array. When you go back to view the list, it very likely contains that one item but with outdated data. You _could_ clear the entire listings request, re-rendering the whole list, but it would be much nicer to just update the one item in the listings that we know has updated. This way, the entire list isn't re-rendered, rather only the one item.
+
+```javascript
+patchListRequest({
+  endpointOrUid: '/api/listings',
+  dataToMerge: { id: 4, title: 'Updated title' }, // Must include the `matchKey` value. In this case, `id: 4`.
+  matchKey = 'id', // Optional, defaults to 'id'.
+  path = 'results' // Optional, defaults to 'results'. This matches the response shape of Django-Rest-Framework. It should be the path to the actual array data returned in the API response.
+})
+```
+
 ## Props
 
 | Prop                   | Type       | Default       | Description         |

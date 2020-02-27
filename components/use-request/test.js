@@ -4,11 +4,14 @@ import createStore from 'atom'
 import { createContext, render, Fragment } from 'preact'
 import { useContext } from 'preact/hooks'
 import { useRequest } from './index'
+import { requestsReducer, actions } from './reducer'
 
 jest.mock('./request')
 
-const store = createStore([], { count: 0 })
+const store = createStore([requestsReducer], { count: 0 })
 const Context = createContext(store)
+
+const { clearRequest, clearRequests, patchListRequest } = actions
 
 test('useRequest exports', () => {
   expect(typeof useRequest).toBe('function')
@@ -103,4 +106,44 @@ test('useRequest will cache by uid if provided', (done) => {
 
   render(<Context.Provider value={store}><Requested /></Context.Provider>, document.body)
   expect(document.body.innerHTML).toBe('<p>Loading...</p>')
+})
+
+test('patchListRequest should patch a nested item in a request result', () => {
+  const endpoint = '/users'
+  const result = [{ id: 4, name: 'Mark' }, { id: 5, name: 'Paul' }]
+  // fake existing/cached request
+  const store = createStore([requestsReducer], { requests: { [endpoint]: { result } } })
+  expect(store.getState().requests[endpoint].result[0].name).toBe('Mark')
+
+  store.dispatch(patchListRequest({
+    endpointOrUid: endpoint,
+    path: '',
+    dataToMerge: { id: 4, name: 'Patched' }
+  }))
+
+  expect(store.getState().requests[endpoint].result[0].name).toBe('Patched')
+})
+
+test('clearRequest action will clear cached request', (done) => {
+  expect(Object.keys(store.getState().requests).length).toBe(3)
+
+  const listener = () => {
+    expect(Object.keys(store.getState().requests).length).toBe(2)
+    store.unsubscribe(listener)
+    done()
+  }
+  store.subscribe(listener)
+  store.dispatch(clearRequest('/users/4'))
+})
+
+test('clearRequests action will clear multiple requests', (done) => {
+  expect(Object.keys(store.getState().requests).length).toBe(2)
+
+  const listener = () => {
+    expect(Object.keys(store.getState().requests).length).toBe(0)
+    store.unsubscribe(listener)
+    done()
+  }
+  store.subscribe(listener)
+  store.dispatch(clearRequests(uid => uid.indexOf('users') > -1))
 })

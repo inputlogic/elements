@@ -39,10 +39,10 @@ const Dropdown = connect({
   children
 }) => {
   const cls = isOpen
-    ? 'dropdown-menu open'
+    ? 'ae-dropdown-menu open'
     : isOpen === false
-      ? 'dropdown-menu close'
-      : 'dropdown-menu' // isOpen === null
+      ? 'ae-dropdown-menu close'
+      : 'ae-dropdown-menu' // isOpen === null
   const handleClick = ev => {
     ev.preventDefault()
     ev.stopPropagation()
@@ -52,16 +52,15 @@ const Dropdown = connect({
     <div>
       {Trigger === undefined
         ? (
-          <button className='btn btn-dropdown black-ghost-btn' onClick={handleClick}>
+          <button className='ae-btn-dropdown' onClick={handleClick}>
             <Level noPadding>{buttonText}</Level>
           </button>
         )
-        : <Trigger className='btn-dropdown' onClick={handleClick} />}
+        : <Trigger className='ae-btn-dropdown' onClick={handleClick} />}
       {noWrapper
         ? isOpen && children
         : (
           <div className={cls}>
-            <div class='dropdown-arrow' />
             {children}
           </div>
         )}
