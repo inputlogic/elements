@@ -10,7 +10,7 @@ export default class Carousel extends React.Component {
     mouseSupport: true
   }
 
-  state = { active: this.props.active || 0, width: 0 }
+  state = { active: this.props.active || this.props.selectedSlide -1 || 0, width: 0 }
 
   gesture = { x: [], y: [], match: '' }
 
@@ -140,7 +140,8 @@ export default class Carousel extends React.Component {
       className = 'carousel-slide',
       noNav = false,
       withDots = false,
-      wrapperClass = ''
+      wrapperClass = '',
+      selectedSlide
     } = this.props
     const { active } = this.state
 
