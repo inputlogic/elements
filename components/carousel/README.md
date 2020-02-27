@@ -26,8 +26,9 @@ const items = ['fff', 'a7c', '09d', '411', '111']
 
 ## Props
 
-| Prop                   | Type       | Default       | Description         |
-|------------------------|------------|------------|---------------------|
+| Prop                   | Type       | Default            | Description         |
+|------------------------|------------|--------------------|---------------------|
+| **`selectedSlide`**    | _Number_   | `''`               | starting slide when carousel loads.
 | **`className`**        | _String_   | `'carousel-slide'` | className given to each slide element.
 | **`wrapperClass`**     | _String_   | `''`               | className given to top-level carousel div.
 | **`noNav`**            | _Boolean_  | `false`            | Set to `true` to skip rendering prev/next elements.
