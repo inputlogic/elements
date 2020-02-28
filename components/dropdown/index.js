@@ -103,7 +103,7 @@ try {
       return
     }
 
-    const withinDropdown = checkClass('dropdown-menu', el)
+    const withinDropdown = checkClass('ae-dropdown-menu', el)
     if (!withinDropdown || (withinDropdown && isClickable(el))) {
       storeRef.setState({ dropdown: null })
     }
