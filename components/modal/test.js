@@ -45,13 +45,29 @@ test('Modal should render', () => {
   expect(document.body.querySelector('#modal-content').textContent).toBe('ExampleModal')
 })
 
-test('Modal should NOT render two modals', () => {
+test('Modal should not render more than one modal', (done) => {
+  const listener = () => {
+    // Wait for React to re-render with updated state
+    render(
+      <Provider store={store}>
+        <Modals>
+          <ExampleModal />
+          <SampleModal />
+        </Modals>
+      </Provider>,
+      document.body
+    )
+    setTimeout(() => {
+      expect(document.body.querySelectorAll('#modal-content').length).toBe(1)
+      expect(document.body.querySelector('#modal-content').textContent).toBe('SampleModal')
+      done()
+    }, 2000)
+    store.unsubscribe(listener)
+  }
+  store.subscribe(listener)
+
   render(
     <Provider store={store}>
-      <Modals>
-        <ExampleModal />
-        <SampleModal />
-      </Modals>
       <Modals>
         <ExampleModal />
         <SampleModal />
@@ -59,6 +75,8 @@ test('Modal should NOT render two modals', () => {
     </Provider>,
     document.body
   )
-  const elms = document.body.querySelectorAll('#modal-content')
-  console.log({ elms }, elms.length)
+
+  expect(document.body.querySelector('#modals')).not.toBeNull()
+  expect(document.body.querySelector('#modal-content').textContent).toBe('ExampleModal')
+  store.setState({ modal: 'SampleModal' })
 })
