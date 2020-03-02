@@ -115,8 +115,8 @@ export default Modal
 */
 let prevState = {}
 
-export const Modals = connect({
-  name: 'Modals',
+export const MatchStateToModal = connect({
+  name: 'MatchStateToModal',
   withActions: actions,
   withState: ({ currentRoute, modal }) => ({ currentRoute, modal })
 })(({ currentRoute, modal, closeModal, children }) => {
@@ -141,5 +141,10 @@ export const Modals = connect({
   const child = toType(children) === 'array'
     ? find(c => pathEq('type.name', modal, c), children)
     : children
-  return <Portal>{child}</Portal>
+  return child
 })
+
+export const Modals = ({ children }) =>
+  <Portal>
+    <MatchStateToModal>{children}</MatchStateToModal>
+  </Portal>
