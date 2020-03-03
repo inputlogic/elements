@@ -6,6 +6,11 @@ import equal from '@app-elements/equal'
 import qs from './qs'
 
 let storeRef
+let anchorScope
+
+export const setAnchorScope = node => {
+  anchorScope = node
+}
 
 const hasProp = Object.prototype.hasOwnProperty
 
@@ -127,6 +132,9 @@ if (typeof window !== 'undefined') {
     while (anchor.parentNode) {
       if (anchor.nodeName === 'A') break
       anchor = anchor.parentNode
+    }
+    if (anchorScope != null && !anchorScope.contains(anchor)) {
+      return
     }
     if (anchor.nodeName === 'A' && storeRef) {
       const url = anchor.getAttribute('href')
