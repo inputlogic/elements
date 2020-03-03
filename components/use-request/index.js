@@ -98,7 +98,13 @@ export function useRequest (store, endpoint, options = {}) {
     }
     return () => {
       if (_existing[uid] && _existing[uid].xhr) {
-        _existing[uid].xhr.abort()
+        // If the request is pre-contact with server, do not abort.
+        // This solves strange race-condition in chrome, where the canceled
+        // xhr contacts the server without the proper headers set, resulting in 415.
+        // https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/readyState
+        if (_existing[uid].xhr.readyState > 1) {
+          _existing[uid].xhr.abort()
+        }
         delete _existing[uid]
       }
     }
