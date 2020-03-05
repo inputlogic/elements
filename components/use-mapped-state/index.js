@@ -21,5 +21,5 @@ export function useMappedState (store, mapper) {
     return () => unsubscribe()
   }, [store, mapper])
 
-  return mappedStateRef.current
+  return mapper(store.getState())
 }
