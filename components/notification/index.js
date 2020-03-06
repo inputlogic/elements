@@ -37,7 +37,7 @@ export default class Notification extends React.Component {
     if (!ref) ref = this
     if (!message) return null
     return (
-      <div className={`notification-bar ${type} ${open ? 'open' : 'close'}`}>
+      <div className={`notification-bar ${type} ${open ? 'bar-open' : 'bar-closed'}`}>
         <span className='text'>
           {message}
         </span>
