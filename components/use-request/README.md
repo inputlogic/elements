@@ -106,13 +106,13 @@ patchListRequest({
 
 | Prop                   | Type       | Default       | Description         |
 |------------------------|------------|---------------|---------------------|
-| **`maxTime`**          | _Number_   | 30000         | Time (ms) to cache result
-| **`uid`**              | _String_   | _None_        | A unique ID to store cached result under
-| **`headers`**          | _Object_   | _None_        | Your request headers
-| **`method`**           | _String_   | _None_        | Request method
-| **`data`**             | _Object_   | _None_        | Data to send. Typically with POST or PATCH requests
-| **`noAuth`**           | _Boolean_  | false         | Skip automatically setting the Authorization header
-| **`noContentType`**    | _Boolean_  | false         | Skip automatically setting Content-Type header to JSON
+| **`maxTime`**          | _Number_   | 30000              | Time (ms) to cache result
+| **`uid`**              | _String_   | _None_             | A unique ID to store cached result under
+| **`headers`**          | _Object_   | _None_             | Your request headers
+| **`method`**           | _String_   | _None_             | Request method
+| **`data`**             | _Object_   | _None_             | Data to send. Typically with POST or PATCH requests
+| **`noAuth`**           | _Boolean_  | false              | Skip automatically setting the Authorization header
+| **`contentType`**      | _String_   | 'application/json' | Set the Content-Type, or falsy for no Content-Type header
 
 
 ### Return values
