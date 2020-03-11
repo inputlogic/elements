@@ -9,7 +9,6 @@ import connect from '@app-elements/connect'
 import './style.less'
 
 const toType = check.prototype.toType
-const modalRoot = document.getElementById('modals')
 
 const isOverlay = (el) =>
   (el.classList && el.classList.contains('ae-modal-container'))
@@ -27,6 +26,7 @@ class Portal extends Component {
   constructor (props) {
     super(props)
     this.el = document.createElement('div')
+    this.modalRoot = document.getElementById('modals')
   }
 
   componentDidMount () {
@@ -38,11 +38,11 @@ class Portal extends Component {
     // DOM node, or uses 'autoFocus' in a descendant, add
     // state to Modal and only render the children when Modal
     // is inserted in the DOM tree.
-    modalRoot.appendChild(this.el)
+    this.modalRoot.appendChild(this.el)
   }
 
   componentWillUnmount () {
-    modalRoot.removeChild(this.el)
+    this.modalRoot.removeChild(this.el)
   }
 
   render () {
@@ -115,8 +115,8 @@ export default Modal
 */
 let prevState = {}
 
-export const Modals = connect({
-  name: 'Modals',
+export const MatchStateToModal = connect({
+  name: 'MatchStateToModal',
   withActions: actions,
   withState: ({ currentRoute, modal }) => ({ currentRoute, modal })
 })(({ currentRoute, modal, closeModal, children }) => {
@@ -141,5 +141,10 @@ export const Modals = connect({
   const child = toType(children) === 'array'
     ? find(c => pathEq('type.name', modal, c), children)
     : children
-  return <Portal>{child}</Portal>
+  return child
 })
+
+export const Modals = ({ children }) =>
+  <Portal>
+    <MatchStateToModal>{children}</MatchStateToModal>
+  </Portal>
