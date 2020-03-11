@@ -69,7 +69,7 @@ export default class Form extends React.Component {
           syncState: state => this.setState({
             values: {
               ...this.state.values,
-              [childProps.name]: state.value || state.text
+              [childProps.name]: state.value != null ? state.value : state.text
             }
           })
         }
