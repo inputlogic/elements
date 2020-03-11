@@ -51,7 +51,8 @@ export function request ({
   method = 'get',
   data,
   headers,
-  noAuth = false
+  noAuth = false,
+  contentType = 'application/json'
 }) {
   if (endpoint != null && endpoint.indexOf('http') === -1) {
     url = `${apiUrl}/${endpoint}`
@@ -73,7 +74,8 @@ export function request ({
         : resolve(safelyParse(xhr.response))
     }
     xhr.onerror = () => reject(xhr)
-    xhr.setRequestHeader('Content-Type', 'application/json')
+
+    contentType && xhr.setRequestHeader('Content-Type', contentType)
 
     getAuthHeader(headers, noAuth).then(headers => {
       // Our XHR may be aborted (by useRequest or user) and this reference

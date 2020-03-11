@@ -80,7 +80,7 @@ export function useRequest (store, endpoint, options = {}) {
     } else if (endpoint != null) {
       const token = store.getState().token
       opts.headers = opts.headers || {}
-      if (token) {
+      if (token && !opts.noAuth) {
         opts.headers.Authorization = `Token ${token}`
       }
       const promise = requestPromise({ uid, endpoint, opts })
