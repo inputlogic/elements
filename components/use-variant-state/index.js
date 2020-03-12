@@ -26,8 +26,8 @@ export function useVariantState ({ initial, states, transitions, effects }) {
     effects._ = effects._ || noop
     States.case(effects)(current)
   }, [current.type])
-  
-  const ret = { current, checkState, transitionTo } 
+
+  const ret = { current, checkState, transitionTo }
   Object.keys(states).forEach(k => (ret[k] = States[k]))
   return ret
 }

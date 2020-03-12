@@ -23,4 +23,3 @@ export function useSuccessiveTaps (numTaps, delay, callback) {
 
   return tapHandler
 }
-
