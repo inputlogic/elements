@@ -32,4 +32,6 @@ const items = ['fff', 'a7c', '09d', '411', '111']
 | **`wrapperClass`**     | _String_   | `''`               | className given to top-level carousel div.
 | **`noNav`**            | _Boolean_  | `false`            | Set to `true` to skip rendering prev/next elements.
 | **`withDots`**         | _Boolean_  | `false`            | If `true`, renders indicator dots below slides.
+| **`active`**           | _Number_   | `0`                | The active slide, must be an index of one of the children.
+| **`tolerance`**        | _Number_   | `100`              | Tolerance for detecting touch swipes.
 | **`children`**         | _Array_    | _None_             | Each child is one of the slides in the Carousel.
