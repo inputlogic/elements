@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { buildCalendar, monthNames, nextMonth, prevMonth } from './util'
+import { buildCalendar, monthNames, addMonths, subMonths } from './util'
 
 import './date-picker.less'
 
@@ -24,13 +24,13 @@ export function DatePicker ({ selectedDate, onChange }) {
   const handleNextMonth = (event) => {
     event.preventDefault()
     event.stopPropagation()
-    setDate(nextMonth(date))
+    setDate(addMonths(1, date))
   }
 
   const handlePrevMonth = (event) => {
     event.preventDefault()
     event.stopPropagation()
-    setDate(prevMonth(date))
+    setDate(subMonths(1, date))
   }
 
   const handleSelect = (day) => (event) => {
