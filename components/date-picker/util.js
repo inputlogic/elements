@@ -1,5 +1,7 @@
 import chunk from '@wasmuth/chunk'
 
+const MONTH_CELLS = 42 // 7 * 6
+
 export const monthNames = [
   'January',
   'February',
@@ -39,6 +41,7 @@ export function subMonths (amount, date) {
 export function addDays (amount, date) {
   const copy = new Date(date.getTime())
   copy.setDate(copy.getDate() + amount)
+  return copy
 }
 
 export function incrementingDays (length, date) {
@@ -47,14 +50,10 @@ export function incrementingDays (length, date) {
     .map((el, idx) => idx === 0 ? date : addDays(idx, date))
 }
 
-export const getDayOfWeekIndex = (dayShortName) =>
-  ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'].indexOf(dayShortName)
-
-const getStartOfWeek = (dayShortName, date) => {
-  const weekStartsOn = getDayOfWeekIndex(dayShortName)
+const getStartOfWeek = (weekStartDay, date) => {
   const copy = new Date(date.getTime())
   const day = copy.getDay()
-  const diff = (day < weekStartsOn ? 7 : 0) + day - weekStartsOn
+  const diff = (day < weekStartDay ? 7 : 0) + day - weekStartDay
   copy.setDate(copy.getDate() - diff)
   copy.setHours(0, 0, 0, 0)
   return copy
@@ -83,7 +82,7 @@ export function buildCalendar (weekStartDay, date, chunkWeeks = true) {
   // as defined by the user's `weekStartDay`
   const currentMonthFirstDay = currentMonth[0]
   const dayOfWeek = currentMonthFirstDay.getDay()
-  if (dayOfWeek !== getDayOfWeekIndex(weekStartDay)) {
+  if (dayOfWeek !== weekStartDay) {
     const startDay = getStartOfWeek(weekStartDay, currentMonthFirstDay)
     const diff = differenceInCalendarDays(startDay, currentMonthFirstDay)
     lpad = incrementingDays(diff, startDay)
@@ -93,6 +92,7 @@ export function buildCalendar (weekStartDay, date, chunkWeeks = true) {
   if (remainingNumberOfDays > 0) {
     // start with 1 day ahead of the last day of currentMonth, otherwise
     // you'll end up with `[..., Nov 30, Nov 30, ...]`
+    console.log('rpad', 1, currentMonth, daysInMonth)
     rpad = incrementingDays(remainingNumberOfDays, addDays(1, currentMonth[daysInMonth - 1]))
   }
 

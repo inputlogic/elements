@@ -4,10 +4,15 @@ import { buildCalendar, monthNames, addMonths, subMonths } from './util'
 
 import './date-picker.less'
 
-export function DatePicker ({ selectedDate, onChange }) {
+const dayStrings = ['S', 'M', 'T', 'W', 'T', 'F', 'S']
+
+export function DatePicker ({ weekStartDay = 1, selectedDate = new Date(), onChange }) {
   const [date, setDate] = useState(new Date())
 
-  const calendar = buildCalendar('mon', date)
+  const calendar = buildCalendar(weekStartDay, date)
+  const dayHeaders = weekStartDay === 0
+    ? dayStrings.slice(0)
+    : dayStrings.slice(weekStartDay).concat(dayStrings.slice(0, weekStartDay))
 
   const isCurrentMonth = d => d.getMonth() === date.getMonth()
   const isToday = d =>
@@ -39,7 +44,7 @@ export function DatePicker ({ selectedDate, onChange }) {
   }
 
   return (
-    <div className='date-picker'>
+    <div className='ae-date-picker'>
       <div className='date-picker-level'>
         <h5>{monthNames[date.getMonth()]} <span>{date.getFullYear()}</span></h5>
         <div className='controls'>
@@ -50,15 +55,8 @@ export function DatePicker ({ selectedDate, onChange }) {
       <div className='table-wrap'>
         <table>
           <tr>
-            <th>M</th>
-            <th>T</th>
-            <th>W</th>
-            <th>T</th>
-            <th>F</th>
-            <th>S</th>
-            <th>S</th>
+            {dayHeaders.map(header => <th>{header}</th>)}
           </tr>
-
           {calendar.map((week) =>
             <tr key={week.toString()}>
               {week.map((day) =>
