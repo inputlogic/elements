@@ -53,7 +53,7 @@ export function incrementingDays (length, date) {
 const getStartOfWeek = (weekStartDay, date) => {
   const copy = new Date(date.getTime())
   const day = copy.getDay()
-  const diff = (day < weekStartDay ? 7 : 0) + day - weekStartDay
+  const diff = (day - weekStartDay + 7) % 7
   copy.setDate(copy.getDate() - diff)
   copy.setHours(0, 0, 0, 0)
   return copy
@@ -84,7 +84,7 @@ export function buildCalendar (weekStartDay, date, chunkWeeks = true) {
   const dayOfWeek = currentMonthFirstDay.getDay()
   if (dayOfWeek !== weekStartDay) {
     const startDay = getStartOfWeek(weekStartDay, currentMonthFirstDay)
-    const diff = differenceInCalendarDays(startDay, currentMonthFirstDay)
+    const diff = differenceInCalendarDays(currentMonthFirstDay, startDay)
     lpad = incrementingDays(diff, startDay)
   }
 
@@ -92,7 +92,6 @@ export function buildCalendar (weekStartDay, date, chunkWeeks = true) {
   if (remainingNumberOfDays > 0) {
     // start with 1 day ahead of the last day of currentMonth, otherwise
     // you'll end up with `[..., Nov 30, Nov 30, ...]`
-    console.log('rpad', 1, currentMonth, daysInMonth)
     rpad = incrementingDays(remainingNumberOfDays, addDays(1, currentMonth[daysInMonth - 1]))
   }
 

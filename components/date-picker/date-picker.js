@@ -6,7 +6,11 @@ import './date-picker.less'
 
 const dayStrings = ['S', 'M', 'T', 'W', 'T', 'F', 'S']
 
-export function DatePicker ({ weekStartDay = 1, selectedDate = new Date(), onChange }) {
+export function DatePicker ({ weekStartDay = 0, selectedDate, onChange }) {
+  if (selectedDate != null && typeof selectedDate !== 'number') {
+    console.error('DatePicker only accepts a timestamp for selectedDate!')
+    return null
+  }
   const [date, setDate] = useState(new Date())
 
   const calendar = buildCalendar(weekStartDay, date)
@@ -16,14 +20,14 @@ export function DatePicker ({ weekStartDay = 1, selectedDate = new Date(), onCha
 
   const isCurrentMonth = d => d.getMonth() === date.getMonth()
   const isToday = d =>
-    date.getMonth() === (new Date()).getMonth() && d.getDate() === date.getDate()
-  const isSelected = d => d === selectedDate
+    d.getMonth() === (new Date()).getMonth() && d.getDate() === (new Date()).getDate()
+  const isSelected = d => selectedDate != null && d.getTime() === selectedDate
 
   const clsNames = (day) => [
-    'date',
-    isToday(day) && 'today',
-    !isCurrentMonth(day) && 'other',
-    isSelected(day) && 'selected'
+    'ae-date-picker-date',
+    isToday(day) && 'ae-date-picker-today',
+    !isCurrentMonth(day) && 'ae-date-picker-other',
+    isSelected(day) && 'ae-date-picker-selected'
   ].filter(Boolean).join(' ')
 
   const handleNextMonth = (event) => {
@@ -45,14 +49,14 @@ export function DatePicker ({ weekStartDay = 1, selectedDate = new Date(), onCha
 
   return (
     <div className='ae-date-picker'>
-      <div className='date-picker-level'>
+      <div className='ae-date-picker-level'>
         <h5>{monthNames[date.getMonth()]} <span>{date.getFullYear()}</span></h5>
-        <div className='controls'>
-          <button className='month-nav prev' onClick={handlePrevMonth}>{'<'}</button>
-          <button className='month-nav next' onClick={handleNextMonth}>{'>'}</button>
+        <div className='ae-date-picker-controls'>
+          <button className='ae-month-nav ae-date-picker-prev' onClick={handlePrevMonth}>{'<'}</button>
+          <button className='ae-month-nav ae-date-picker-next' onClick={handleNextMonth}>{'>'}</button>
         </div>
       </div>
-      <div className='table-wrap'>
+      <div className='ae-date-picker-table-wrap'>
         <table>
           <tr>
             {dayHeaders.map(header => <th>{header}</th>)}

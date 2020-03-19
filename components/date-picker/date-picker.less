@@ -5,7 +5,7 @@
     font-size: 60%;
   }
 
-  .date-picker-level {
+  .ae-date-picker-level {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -24,13 +24,13 @@
     }
   }
 
-  .controls {
+  .ae-date-picker-controls {
     display: flex;
     align-items: center;
     justify-content: space-between;
   }
 
-  .table-wrap {
+  .ae-date-picker-table-wrap {
     border: solid 1px @border-color-alt;
     border-radius: @border-radius;
   }
@@ -86,7 +86,7 @@
     border-bottom-right-radius: @border-radius;
   }
 
-  .month-nav {
+  .ae-date-picker-month-nav {
     outline: 0;
     background-color: transparent;
     display: block;
@@ -98,11 +98,11 @@
     background-repeat: no-repeat;
     text-indent: -9999px;
 
-    &.prev {
+    &.ae-date-picker-prev {
       background-image: url(/images/controls/arrow-left.svg);
     }
 
-    &.next {
+    &.ae-date-picker-next {
       background-image: url(/images/controls/arrow-right.svg);
       margin-left: 1em;
     }
@@ -130,7 +130,7 @@
     font-size: 0.75em;
   }
 
-  .date {
+  .ae-date-picker-date {
     text-align: center;
     font-size: 1.25em;
     font-weight: 400;
@@ -138,17 +138,17 @@
     font-family: @font-family;
     outline: 0;
 
-    p &.other {
+    &.ae-date-picker-other {
       color: @border-color-alt;
     }
 
-    &.today {
-      color: @primary-color;
+    &.ae-date-picker-today {
+      // color: @secondary-color;
       font-weight: 600;
     }
 
-    &.selected {
-      color: @secondary-color;
+    &.ae-date-picker-selected {
+      color: @primary-color;
     }
   }
 }
