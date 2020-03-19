@@ -18,5 +18,8 @@
   "license": "ISC",
   "publishConfig": {
     "access": "public"
+  },
+  "dependencies": {
+    "@wasmuth/chunk": "^2.1.1"
   }
 }
