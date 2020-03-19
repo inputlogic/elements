@@ -59,7 +59,7 @@ export function DatePicker ({ weekStartDay = 0, selectedDate, onChange }) {
       <div className='ae-date-picker-table-wrap'>
         <table>
           <tr>
-            {dayHeaders.map(header => <th>{header}</th>)}
+            {dayHeaders.map((header, idx) => <th key={`${header}-${idx}`}>{header}</th>)}
           </tr>
           {calendar.map((week) =>
             <tr key={week.toString()}>
