@@ -7,6 +7,7 @@ Fun!
 - [Avatar](components/avatar)
 - [Carousel](components/carousel)
 - [~~connect~~](components/connect) **deprecated**
+- [DatePicker](components/date-picker)
 - [Dropdown](components/dropdown)
 - [Form](components/form)
 - [Helmet](components/helmet)
@@ -24,6 +25,8 @@ Fun!
 - [useActions](components/use-actions)
 - [useMappedState](components/use-mapped-state)
 - [useRequest](components/use-request)
+- [useSuccessiveTaps](components/use-successive-taps)
+- [useVariantState](components/use-variant-state)
 - [~~withRequest~~](components/with-request) **deprecated**
 - [~~withState~~](components/with-state) **deprecated**
 
