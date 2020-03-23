@@ -127,8 +127,14 @@ export function DateRangePicker ({ weekStartDay = 0, startDate, endDate, onChang
   const isCurrentMonth = d => d.getMonth() === date.getMonth()
   const isToday = d =>
     d.getMonth() === (new Date()).getMonth() && d.getDate() === (new Date()).getDate()
-  // Should we select all days that fall in between start and end?
-  const isSelected = d => selectedDate != null && d.getTime() === selectedDate
+  const isSelected = d => {
+    const ts = d.getTime()
+    if (startDate && endDate) {
+      return ts >= startDate && ts <= endDate
+    } else {
+      return ts === startDate || ts === endDate
+    }
+  }
 
   const clsNames = (day) => [
     'ae-date-picker-date',
@@ -146,7 +152,17 @@ export function DateRangePicker ({ weekStartDay = 0, startDate, endDate, onChang
   }
 
   const onSelect = (day) => {
-    onChange(day)
+    if (startDate == null) {
+      onChange({ startDate: day })
+    } else if (endDate == null) {
+      onChange({ endDate: day })
+    } else if (day < startDate) {
+      onChange({ startDate: day })
+    } else if (day > startDate) {
+      onChange({ endDate: day })
+    } else {
+      onChange({ startDate: null, endDate: null })
+    }
   }
 
   return (
