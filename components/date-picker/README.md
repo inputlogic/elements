@@ -89,7 +89,7 @@ Sometimes you'll want full control over the layout and style of the datepicker, 
 ```javascript
 const MyCustomDateRangePicker = (props) =>
   <DateRangePicker {...props} />
-    {({month, year, onClickPreviousMonth, onClickNextMonth, dayHeaders, calendar, classNamesForDay, onClickDay}) => 
+    {({month, monthString, year, onClickPreviousMonth, onClickNextMonth, dayHeaders, calendar, classNamesForDay, onClickDay}) => 
       <div>
         {/* See `date-picker.js` for an example of what goes inside `div` */}
       </div>
