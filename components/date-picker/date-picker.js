@@ -4,12 +4,13 @@ import { buildCalendar, monthNames, addMonths, subMonths } from './util'
 
 import './date-picker.less'
 
-const dayStrings = ['S', 'M', 'T', 'W', 'T', 'F', 'S']
+const DAYS = ['S', 'M', 'T', 'W', 'T', 'F', 'S']
 
 export function BaseDatePicker ({
   weekStartDay,
   date,
   classNamesForDay,
+  dayOfWeekHeaders,
   onNextMonth,
   onPrevMonth,
   onSelect,
@@ -17,8 +18,8 @@ export function BaseDatePicker ({
 }) {
   const calendar = buildCalendar(weekStartDay, date)
   const dayHeaders = weekStartDay === 0
-    ? dayStrings.slice(0)
-    : dayStrings.slice(weekStartDay).concat(dayStrings.slice(0, weekStartDay))
+    ? dayOfWeekHeaders.slice(0)
+    : dayOfWeekHeaders.slice(weekStartDay).concat(dayOfWeekHeaders.slice(0, weekStartDay))
 
   const onClickNextMonth = (event) => {
     event.preventDefault()
@@ -83,7 +84,7 @@ export function BaseDatePicker ({
   )
 }
 
-export function DatePicker ({ weekStartDay = 0, selectedDate, onChange }) {
+export function DatePicker ({ weekStartDay = 0, dayOfWeekHeaders = DAYS, selectedDate, onChange, children }) {
   if (selectedDate != null && typeof selectedDate !== 'number') {
     console.error('DatePicker only accepts a timestamp for selectedDate!')
     return null
@@ -120,14 +121,16 @@ export function DatePicker ({ weekStartDay = 0, selectedDate, onChange }) {
       weekStartDay={weekStartDay}
       date={date}
       classNamesForDay={classNamesForDay}
+      dayOfWeekHeaders={dayOfWeekHeaders}
       onNextMonth={onNextMonth}
       onPrevMonth={onPrevMonth}
       onSelect={onSelect}
+      children={children}
     />
   )
 }
 
-export function DateRangePicker ({ weekStartDay = 0, startDate, endDate, onChange, children }) {
+export function DateRangePicker ({ weekStartDay = 0, dayOfWeekHeaders = DAYS, startDate, endDate, onChange, children }) {
   if (startDate != null && typeof startDate !== 'number') {
     console.error('DateRangePicker only accepts a timestamp for startDate!')
     return null
@@ -185,6 +188,7 @@ export function DateRangePicker ({ weekStartDay = 0, startDate, endDate, onChang
       weekStartDay={weekStartDay}
       date={date}
       classNamesForDay={classNamesForDay}
+      dayOfWeekHeaders={dayOfWeekHeaders}
       onNextMonth={onNextMonth}
       onPrevMonth={onPrevMonth}
       onSelect={onSelect}

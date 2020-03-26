@@ -62,6 +62,19 @@ function StatefulComponent () {
 }
 ```
 
+Sometimes you'll want full control over the layout and style of the DatePicker. If that's the case, just pass in your custom component as a child of DatePicker or DateRangePicker.
+
+```javascript
+const MyCustomDateRangePicker = (props) =>
+  <DateRangePicker {...props} />
+    {({month, monthString, year, onClickPreviousMonth, onClickNextMonth, dayHeaders, calendar, classNamesForDay, onClickDay}) => 
+      <div>
+        {/* See `date-picker.js` for an example of what goes inside `div` */}
+      </div>
+    )}
+  </DateRangePicker>
+```
+
 ## Props
 
 ### DatePicker
@@ -81,18 +94,3 @@ function StatefulComponent () {
 | **`startDate`**        | _Number_   | _None_        | The selected start Date in ms, use `.getTime()` or `.valueOf()`. [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getTime)
 | **`endDate`**          | _Number_   | _None_        | The selected end Date in ms, use `.getTime()` or `.valueOf()`. [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getTime)
 | **`onChange`**         | _Function_ | _None_        | Callback when user selects a day. Will be given an object that may contain `startDate` and/or `endDate`.
-
-## Custom Date Picker
-
-Sometimes you'll want full control over the layout and style of the datepicker, if that's the case just pass in your custom component as a child of DatePicker or DateRangePicker.
-
-```javascript
-const MyCustomDateRangePicker = (props) =>
-  <DateRangePicker {...props} />
-    {({month, monthString, year, onClickPreviousMonth, onClickNextMonth, dayHeaders, calendar, classNamesForDay, onClickDay}) => 
-      <div>
-        {/* See `date-picker.js` for an example of what goes inside `div` */}
-      </div>
-    )}
-  </DateRangePicker>
-```
