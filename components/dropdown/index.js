@@ -71,13 +71,14 @@ const Dropdown = connect({
 export default Dropdown
 
 // DOM event to close all Dropdown's on off-click
+const hasData = el => el.hasAttribute != null && el.hasAttribute('data-dropdown')
 const checkClass = (className, el) => {
-  if (el.classList && el.classList.contains(className)) {
+  if ((el.classList && el.classList.contains(className)) || hasData(el)) {
     return true
   }
   while (el.parentNode) {
     el = el.parentNode
-    if (el.classList && el.classList.contains(className)) {
+    if ((el.classList && el.classList.contains(className)) || hasData(el)) {
       return true
     }
   }
