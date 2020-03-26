@@ -99,7 +99,7 @@ try {
 
     const el = ev.target
 
-    if (checkClass('btn-dropdown', el)) {
+    if (checkClass('ae-btn-dropdown', el)) {
       return
     }
 
