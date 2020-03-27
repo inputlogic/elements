@@ -1,19 +1,18 @@
+import { useState } from 'react'
 import { useVariantState } from '@app-elements/use-variant-state'
-  
+
 import './file-upload.less'
+
+const FileListType = x => x.toString().includes('FileList')
 
 export const FileInput = ({
   accept = 'image/*',
   disabled,
-  uploading,
   onChange,
-  children
+  label
 }) =>
-  <label class={`file-container${disabled ? ' disabled' : ''}`}>
-    <span className='wrapper'>
-      <span className={`icon ${uploading ? 'loader' : 'upload'}`} />
-      {children}
-    </span>
+  <label className={`file-input${disabled ? ' disabled' : ''}`}>
+    {label}
     <input type='file' accept={accept} onChange={onChange} disabled={disabled} />
   </label>
 
@@ -34,7 +33,7 @@ const onChange = (file) => {
         formData.append(key, s3Data.fields[key])
       }
       formData.append('file', file)
-      return makeExternalRequest(s3Data.url, { data: formData, method: 'POST' }) 
+      return makeExternalRequest(s3Data.url, { data: formData, method: 'POST' })
     })
     .catch()
 }
@@ -47,6 +46,17 @@ function makeExternalRequest (url, opts = {}) {
       .catch(e => console.error(e) || reject(e))
   )
 }
+
+    <FileUpload
+      Initial={({ FileInput }) => <FileInput label='Upload Image' />}
+      Uploading={({ files }) => (
+        <div>
+          Uploading {files.length} file{files.length === 1 ? '' : 's'}
+          &nbsp;
+          <LoadingIndicator />
+        </div>  
+      )}
+    />
 */
 
 export function FileUpload ({
@@ -55,9 +65,15 @@ export function FileUpload ({
   accept,
   disabled,
   onChange,
-  children
+  Initial: InitialComponent,
+  Uploading: UploadingComponent,
+  Uploaded: UploadedComponent,
+  Failed: FailedComponent,
 }) {
+  const [files, setFiles] = useState()
+
   const {
+    current,
     checkState,
     transitionTo,
     Uploading,
@@ -67,7 +83,7 @@ export function FileUpload ({
     initial: 'Initial',
     states: {
       Initial: [],
-      Uploading: [],
+      Uploading: [FileListType],
       Uploaded: [],
       Failed: [String]
     },
@@ -77,7 +93,9 @@ export function FileUpload ({
       Failed: ['Initial']
     },
     effects: {
-      Uploading: () => {
+      Uploading: (fs) => {
+        setFiles(fs)
+        console.log('Uploading', { fs })
       },
       Uploaded: () => {
       },
@@ -85,4 +103,23 @@ export function FileUpload ({
       }
     }
   })
+
+  const handleChange = event => transitionTo(Uploading(event.target.files))
+
+  console.log({ current })
+
+  if (checkState('Initial')) {
+    const FileInputWrapper = ({ label }) =>
+      <FileInput
+        name={name}
+        accept={accept}
+        disabled={disabled}
+        uploading={checkState(Uploading)}
+        onChange={handleChange}
+        label={label}
+      />
+    return <InitialComponent FileInput={FileInputWrapper} />
+  } else if (checkState('Uploading') && files != null) {
+    return <UploadingComponent files={files} />
+  }
 }
