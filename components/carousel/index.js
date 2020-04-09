@@ -7,7 +7,8 @@ import './style.less'
 export default class Carousel extends React.Component {
   static defaultProps = {
     tolerance: 100,
-    mouseSupport: true
+    mouseSupport: true,
+    vertical: false
   }
 
   state = { active: this.props.active || 0, width: 0 }
@@ -61,10 +62,18 @@ export default class Carousel extends React.Component {
       this.props.onSwipe(direction)
     }
     this.setState({ swipe: direction }, () => {
-      if (direction === 'left') {
-        this.handleNext()
-      } else if (direction === 'right') {
-        this.handlePrev()
+      if (this.props.vertical) {
+        if (direction === 'up') {
+          this.handleNext()
+        } else if (direction === 'down') {
+          this.handlePrev()
+        }
+      } else {
+        if (direction === 'left') {
+          this.handleNext()
+        } else if (direction === 'right') {
+          this.handlePrev()
+        }
       }
     })
   }
@@ -98,28 +107,40 @@ export default class Carousel extends React.Component {
     this.ref = ref
     window.requestAnimationFrame(() => {
       const width = this.ref.offsetWidth
+      const height = this.ref.offsetHeight
       const parent = this.ref.parentNode
       const parentWidth = parent.offsetWidth
+      const parentHeight = parent.offsetHeight
       const numFit = parent != null
-        ? Math.max(0, Math.floor(parent.offsetWidth / width) - 1)
+        ? this.props.vertical
+          ? Math.max(0, Math.floor(parent.offsetHeight / height) - 1)
+          : Math.max(0, Math.floor(parent.offsetWidth / width) - 1)
         : 0
-      this.setState({ width, parentWidth, numFit })
+      this.setState({ width, parentWidth, parentHeight, numFit })
     })
   }
 
   getStyle = (idx, active) => {
-    const { parentWidth, width } = this.state
-    const style = parentWidth != null
-      ? `width: ${parentWidth}px;`
-      : ''
+    const { parentWidth, width, parentHeight, height } = this.state
+    const { vertical } = this.props
+    const style = vertical
+      ? parentHeight != null ? `height: ${parentHeight}px;` : ''
+      : parentWidth != null ? `width: ${parentWidth}px;` : ''
+
     if (active === 0 || idx >= active) {
       return style
     }
-    return `${style} margin-left: -${width}px;`
+
+    return vertical
+      ? `${style} margin-top: -${height}px;`
+      : `${style} margin-left: -${width}px;`
   }
 
   getSlidesStyle = () => {
-    return `width: ${this.state.parentWidth * this.props.children.length}px;`
+    console.log('getSlidesStyle', this.props, this.state)
+    return this.props.vertical
+      ? `height: ${this.state.parentHeight * this.props.children.length}px;`
+      : `width: ${this.state.parentWidth * this.props.children.length}px;`
   }
 
   componentDidMount () {
@@ -140,12 +161,13 @@ export default class Carousel extends React.Component {
       className = 'carousel-slide',
       noNav = false,
       withDots = false,
+      vertical = false,
       wrapperClass = ''
     } = this.props
     const { active } = this.state
 
     return (
-      <div className={`carousel ${wrapperClass}`}>
+      <div className={`carousel ${wrapperClass}${vertical ? ' vertical' : ''}`}>
         <div>
           <div className='carousel-inner'>
             {!noNav &&
