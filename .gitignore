@@ -64,5 +64,7 @@ typings/
 # Tern
 .tern-port
 
+# dist 
 public
 build
+dist
