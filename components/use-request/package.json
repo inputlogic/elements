@@ -2,9 +2,13 @@
   "name": "@app-elements/use-request",
   "version": "1.6.0",
   "description": "Connect a Component to the result of an API request.",
-  "main": "index.js",
+  "main": "dist/use-request.js",
+  "module": "dist/use-request.m.js",
+  "source": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "microbundle --jsx React.createElement --external react --no-compress",
+    "prepublishOnly": "npm run build",
+    "test": "exit 0"
   },
   "repository": {
     "type": "git",

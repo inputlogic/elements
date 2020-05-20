@@ -1,6 +1,6 @@
 import React from 'react' // Can be aliased to Preact in your project
 
-export default class Image extends React.Component {
+export class Image extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
@@ -80,3 +80,5 @@ export default class Image extends React.Component {
       )
   }
 }
+
+export default Image

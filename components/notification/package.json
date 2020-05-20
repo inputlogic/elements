@@ -2,9 +2,13 @@
   "name": "@app-elements/notification",
   "version": "2.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/notification.js",
+  "module": "dist/notification.m.js",
+  "source": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "microbundle --jsx React.createElement --external react --no-compress",
+    "prepublishOnly": "npm run build",
+    "test": "exit 0"
   },
   "repository": {
     "type": "git",

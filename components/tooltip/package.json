@@ -1,10 +1,14 @@
 {
   "name": "@app-elements/tooltip",
   "version": "2.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Simple tooltips.",
+  "main": "dist/tooltip.js",
+  "module": "dist/tooltip.m.js",
+  "source": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "microbundle --jsx React.createElement --external react --no-compress",
+    "prepublishOnly": "npm run build",
+    "test": "exit 0"
   },
   "repository": {
     "type": "git",

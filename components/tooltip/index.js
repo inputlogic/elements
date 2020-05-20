@@ -3,6 +3,7 @@ import path from '@wasmuth/path'
 import pick from '@wasmuth/pick'
 import pipe from '@wasmuth/pipe'
 import toPairs from '@wasmuth/to-pairs'
+import React from 'react'
 
 import './style.less'
 
@@ -13,7 +14,7 @@ const getPos = props => pipe(
   path('0.0')
 )(props)
 
-export default function Tooltip ({
+export function Tooltip ({
   className = '',
   text = 'I am default text',
   length = 'medium',
@@ -32,3 +33,5 @@ export default function Tooltip ({
     </div>
   )
 }
+
+export default Tooltip

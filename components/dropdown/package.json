@@ -2,9 +2,13 @@
   "name": "@app-elements/dropdown",
   "version": "3.0.2",
   "description": "Simple dropdown menus.",
-  "main": "index.js",
+  "main": "dist/dropdown.js",
+  "module": "dist/dropdown.m.js",
+  "source": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "microbundle --jsx React.createElement --external react --no-compress",
+    "prepublishOnly": "npm run build",
+    "test": "exit 0"
   },
   "repository": {
     "type": "git",

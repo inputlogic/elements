@@ -22,7 +22,7 @@ if (typeof document !== 'undefined') {
   }, true)
 }
 
-export default class LazyLoad extends React.Component {
+export class LazyLoad extends React.Component {
   constructor (props) {
     super(props)
     this.state = { show: false }
@@ -49,3 +49,5 @@ export default class LazyLoad extends React.Component {
       : <div style='height: 10px'>&nbsp;</div>
   }
 }
+
+export default LazyLoad

@@ -21,7 +21,7 @@ const mapper = ({ dropdown }, { uid }) => {
   return { isOpen: dropdown === uid }
 }
 
-const Dropdown = connect({
+export const Dropdown = connect({
   name: 'Dropdown',
   withActions: actions,
   withState: mapper,

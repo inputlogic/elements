@@ -4,7 +4,7 @@ import Level from '@app-elements/level'
 
 import './style.less'
 
-export default class Carousel extends React.Component {
+export class Carousel extends React.Component {
   static defaultProps = {
     tolerance: 100,
     mouseSupport: true
@@ -188,3 +188,5 @@ export default class Carousel extends React.Component {
     )
   }
 }
+
+export default Carousel

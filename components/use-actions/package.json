@@ -2,9 +2,13 @@
   "name": "@app-elements/use-actions",
   "version": "0.1.1",
   "description": "`useActions` let's you define actions and add their reducer to your store from a Component.",
-  "main": "index.js",
+  "main": "dist/use-actions.js",
+  "module": "dist/use-actions.m.js",
+  "source": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "microbundle --jsx React.createElement --external react --no-compress",
+    "prepublishOnly": "npm run build",
+    "test": "exit 0"
   },
   "repository": {
     "type": "git",

@@ -2,9 +2,13 @@
   "name": "@app-elements/lazy-load",
   "version": "1.0.2",
   "description": "Won't render children until it's in viewport.",
-  "main": "index.js",
+  "main": "dist/lazy-load.js",
+  "module": "dist/lazy-load.m.js",
+  "source": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "microbundle --jsx React.createElement --external react --no-compress",
+    "prepublishOnly": "npm run build",
+    "test": "exit 0"
   },
   "repository": {
     "type": "git",

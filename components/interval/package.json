@@ -2,9 +2,13 @@
   "name": "@app-elements/interval",
   "version": "1.0.4",
   "description": "Call some function on an interval during the lifecycle of a component",
-  "main": "index.js",
+  "main": "dist/interval.js",
+  "module": "dist/interval.m.js",
+  "source": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "microbundle --jsx React.createElement --external react --no-compress",
+    "prepublishOnly": "npm run build",
+    "test": "exit 0"
   },
   "repository": {
     "type": "git",
