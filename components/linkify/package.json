@@ -1,6 +1,6 @@
 {
   "name": "@app-elements/linkify",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Convert URLs found in a string to anchor elements.",
   "main": "dist/linkify.js",
   "module": "dist/linkify.m.js",
