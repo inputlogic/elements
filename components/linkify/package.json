@@ -1,0 +1,36 @@
+{
+  "name": "@app-elements/linkify",
+  "version": "0.0.1",
+  "description": "Convert URLs found in a string to anchor elements.",
+  "main": "dist/linkify.js",
+  "module": "dist/linkify.m.js",
+  "source": "index.js",
+  "scripts": {
+    "build": "microbundle --compress=false",
+    "prepublishOnly": "npm run build",
+    "test": "exit 0;"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/inputlogic/elements.git"
+  },
+  "bugs": {
+    "url": "https://github.com/inputlogic/elements/issues"
+  },
+  "files": [
+    "dist",
+    "index.js"
+  ],
+  "keywords": [
+    "react",
+    "react-component",
+    "preact",
+    "component",
+    "ui"
+  ],
+  "author": "Input Logic Team",
+  "license": "ISC",
+  "publishConfig": {
+    "access": "public"
+  }
+}
