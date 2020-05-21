@@ -26,9 +26,9 @@
   ],
   "author": "Input Logic Team",
   "license": "ISC",
-  "dependencies": {
-    "@app-elements/connect": "^1.1.0",
-    "@app-elements/level": "^1.0.3"
+  "peerDependencies": {
+    "@app-elements/level": "^1.0.3",
+    "@app-elements/use-mapped-state": "^0.3.2"
   },
   "gitHead": "d50087f5b15f56e544e7e52d0628bc3b7f0ea361"
 }

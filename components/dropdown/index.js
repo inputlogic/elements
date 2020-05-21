@@ -1,53 +1,38 @@
 import React from 'react' // Can be aliased to `preact` in host project
-
-import connect from '@app-elements/connect'
+import { useMappedState } from '@app-elements/use-mapped-state'
 import Level from '@app-elements/level'
 
 import './style.less'
 
-let storeRef // Will get populated by `getStoreReference`
+let storeRef // So our document click event can reference the store
 
-export const actions = {
-  toggle: ({ dropdown }, uid) => {
-    const isOpen = dropdown === uid
-    return { dropdown: isOpen ? null : uid }
-  }
-}
-
-const mapper = ({ dropdown }, { uid }) => {
-  if (!uid) {
-    console.warn('<Dropdown> must include a uid prop.')
-  }
-  return { isOpen: dropdown === uid }
-}
-
-export const Dropdown = connect({
-  name: 'Dropdown',
-  withActions: actions,
-  withState: mapper,
-  getStoreRef: store => { storeRef = store }
-})(({
-  // Store
-  isOpen,
-  toggle,
-
-  // Props
-  Trigger,
+export function Dropdown ({
   uid,
   buttonText = 'Select',
   noWrapper = false,
+  Trigger,
   children
-}) => {
+}) {
+  storeRef = this.context.store
+
+  if (!uid) {
+    console.warn('<Dropdown> must include a uid prop.')
+  }
+
+  const isOpen = useMappedState(storeRef, ({ dropdown }) => dropdown === uid)
+
   const cls = isOpen
     ? 'ae-dropdown-menu open'
     : isOpen === false
       ? 'ae-dropdown-menu close'
       : 'ae-dropdown-menu' // isOpen === null
+
   const handleClick = ev => {
     ev.preventDefault()
     ev.stopPropagation()
-    toggle(uid)
+    storeRef.setState({ dropdown: isOpen ? null : uid })
   }
+
   return (
     <div>
       {Trigger === undefined
@@ -66,7 +51,7 @@ export const Dropdown = connect({
         )}
     </div>
   )
-})
+}
 
 export default Dropdown
 

@@ -1,7 +1,7 @@
 InputLogic Elements
 ===================
 
-| Components                                            | Description                                                |
+| Component                                             | Description                                                |
 | ----------------------------------------------------- | ---------------------------------------------------------- |
 | [Avatar](components/avatar)                           | Display avatar image. Falls back to initial.
 | [Carousel](components/carousel)                       | Simple carousel with arrows and dot indicators. 
@@ -20,10 +20,10 @@ InputLogic Elements
 | [Router](components/router)                           | The best router. 😅
 | [Tooltip](components/tooltip)                         | Simple tooltips. 
 
-| Hooks                                                 | Description                                                |
+| Hook                                                  | Description                                                |
 | ----------------------------------------------------- | ---------------------------------------------------------- |
 | [useActions](components/use-actions)                  | Define actions and add their reducer to your global store from a Component.
-| [useMappedState](components/use-mapped-state)         | A hook to map part of global state to a child component.
+| [useMappedState](components/use-mapped-state)         | Map part of global state to a Component and keep it in sync.
 | [useRequest](components/use-request)                  | Connect a Component to the result of an API request.
 | [useSuccessiveTaps](components/use-successive-taps)   | A hook that fires a callback only after `n` taps or clicks.
 | [useVariantState](components/use-variant-state)       | A hook for defining strict state descriptors and transitions.
