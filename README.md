@@ -1,7 +1,7 @@
 InputLogic Elements
 ===================
 
-|                                                       |                                                            |
+| Components                                            | Description                                                |
 | ----------------------------------------------------- | ---------------------------------------------------------- |
 | [Avatar](components/avatar)                           | Display avatar image. Falls back to initial.
 | [Carousel](components/carousel)                       | Simple carousel with arrows and dot indicators. 
@@ -19,6 +19,9 @@ InputLogic Elements
 | [Pagination](components/pagination)                   | Display pagination links for a url that follows [DRF](https://www.django-rest-framework.org/) format.
 | [Router](components/router)                           | The best router. 😅
 | [Tooltip](components/tooltip)                         | Simple tooltips. 
+
+| Hooks                                                 | Description                                                |
+| ----------------------------------------------------- | ---------------------------------------------------------- |
 | [useActions](components/use-actions)                  | Define actions and add their reducer to your global store from a Component.
 | [useMappedState](components/use-mapped-state)         | A hook to map part of global state to a child component.
 | [useRequest](components/use-request)                  | Connect a Component to the result of an API request.
