@@ -3,10 +3,7 @@ import { getRouteComponent, getAllRoutes, getHref } from './util'
 import { createState, useGlobalState } from './create-state'
 
 const EMPTY = Symbol('Empty')
-const state = createState({
-  path: window.location.pathname + window.location.search,
-  route: EMPTY
-})
+const state = createState({ path: EMPTY, route: EMPTY })
 let allRoutes = EMPTY
 
 const routeTo = path => {
@@ -35,6 +32,7 @@ export function Link ({ to, args = {}, queries = {}, children, ...props }) {
 
   const rule = allRoutes[to]
   if (!rule) {
+    console.log({ allRoutes, to })
     throw new Error('No route found for name: ' + to)
   }
 
@@ -67,57 +65,59 @@ export function SyncRouterState ({ children }) {
   }
 }
 
-export function createRouter (routes) {
-  allRoutes = getAllRoutes(routes)
+export function RouteProvider ({ routes, initialPath, children }) {
+  const value = useGlobalState(state)
 
-  function RouteProvider ({ children }) {
-    const value = useGlobalState(state)
-
-    useEffect(() => {
-      const onPop = ev => {
-        const url = window.location.pathname
-        if (value.path !== url) {
-          window.history.replaceState(null, null, url)
-          setPath(url)
-        }
-      }
-      window.addEventListener('popstate', onPop)
-      return () => window.removeEventListener('popstate', onPop)
-    }, [value.path])
-
-    useEffect(() => {
-      if (value.path === EMPTY) {
-        setPath(window.location.pathname + window.location.search)
-      }
-    }, [value.path])
-
-    return children
+  if (allRoutes === EMPTY) {
+    allRoutes = getAllRoutes(routes)
   }
 
-  function Router (props) {
-    const localRoutes = props.routes || routes
-    const currentState = useGlobalState(state)
-
-    if (currentState === EMPTY) {
-      throw new Error('<Router /> must be wrapped with <RouteProvider>')
+  useEffect(() => {
+    if (value.path === EMPTY) {
+      setPath(initialPath || window.location.pathname + window.location.search)
     }
+  }, [value.path])
 
-    const { path } = currentState
-    if (path === EMPTY) {
-      return
+  useEffect(() => {
+    const onPop = ev => {
+      const url = window.location.pathname
+      if (value.path !== url) {
+        window.history.replaceState(null, null, url)
+        setPath(url)
+      }
     }
+    window.addEventListener('popstate', onPop)
+    return () => window.removeEventListener('popstate', onPop)
+  }, [value.path])
 
-    const [Component, newRoute] = getRouteComponent(localRoutes, path)
-    if (newRoute) {
-      setRoute(newRoute)
-    }
+  return children
+}
 
-    return typeof Component === 'function' ? (
-      <Component routeTo={routeTo} />
-    ) : (
-      Component
-    )
+export function Router (props) {
+  if (!props.routes) {
+    throw new Error('<Router /> must be given a routes object.')
   }
 
-  return { RouteProvider, Router }
+  const localRoutes = props.routes
+  const currentState = useGlobalState(state)
+
+  if (currentState === EMPTY) {
+    throw new Error('<Router /> must be wrapped with <RouteProvider>')
+  }
+
+  const { path } = currentState
+  if (path === EMPTY) {
+    return
+  }
+
+  const [Component, newRoute] = getRouteComponent(localRoutes, path)
+  if (newRoute) {
+    setRoute(newRoute)
+  }
+
+  return typeof Component === 'function' ? (
+    <Component routeTo={routeTo} />
+  ) : (
+    Component
+  )
 }
