@@ -1,123 +1,150 @@
-import React, { useEffect, useRef } from 'react'
+import React, { createContext, useContext, useEffect, useRef, useState } from 'react'
 import { getRouteComponent, getAllRoutes, getHref } from './util'
-import { createState, useGlobalState } from './create-state'
 
-const EMPTY = Symbol('Empty')
-const state = createState({
-  path: window.location.pathname + window.location.search,
-  route: EMPTY
-})
-let allRoutes = EMPTY
+const Context = createContext('Router')
+let allRoutes
 
-const routeTo = path => {
-  if (path !== state.get().path) {
-    window.history.pushState(null, null, path)
-    state.set({ path })
+function useRouterState () {
+  const [path, setPath] = useState(null)
+  const [route, setRoute] = useState(null)
+
+  const routeTo = newPath => {
+    if (newPath !== path) {
+      window.history.pushState(null, null, newPath)
+      setPath(newPath)
+    }
+  }
+
+  const setPathMaybe = newPath => {
+    if (path == null || path !== newPath) {
+      setPath(newPath)
+    }
+  }
+
+  const setRouteMaybe = newRoute => {
+    if (route == null || route.name !== newRoute.name) {
+      setRoute(newRoute)
+    }
+  }
+
+  return {
+    path,
+    setPath: setPathMaybe,
+    routeTo,
+    route,
+    setRoute: setRouteMaybe
   }
 }
 
-const setPath = path => {
-  if (state.get().path === EMPTY || state.get().path !== path) {
-    state.set({ path })
+export function useRouter () {
+  const value = useContext(Context)
+  if (value == null) {
+    throw new Error('Component must be wrapped with <RouteProvider>')
   }
-}
-
-const setRoute = route => {
-  if (state.get().route === EMPTY || state.get().route.name !== route.name) {
-    state.set({ route })
-  }
+  return value
 }
 
 export function Link ({ to, args = {}, queries = {}, children, ...props }) {
-  if (allRoutes === EMPTY) {
+  if (allRoutes == null) {
     throw new Error('<Link /> must be child of <RouteProvider />')
   }
 
   const rule = allRoutes[to]
   if (!rule) {
-    throw new Error('No route found for name: ' + to)
+    console.error('No route found for name: ' + to)
+    return
   }
 
   const href = getHref({ rule, args, queries })
 
-  const onClick = ev => {
-    ev.preventDefault()
-    routeTo(href)
-  }
-
   return (
-    <a href={href} onClick={onClick} {...props}>
-      {children}
-    </a>
+    <Context.Consumer>
+      {context => {
+        const onClick = ev => {
+          ev.preventDefault()
+          context.routeTo(href)
+        }
+        return (
+          <a href={href} onClick={onClick} {...props}>
+            {children}
+          </a>
+        )
+      }}
+    </Context.Consumer>
   )
 }
 
 export function SyncRouterState ({ children }) {
-  const routeNameRef = useRef(EMPTY)
-  const value = useGlobalState(state)
-  if (typeof children !== 'function') {
-    throw new Error('SyncRouterState expects a function as a child.')
+  const routeNameRef = useRef(null)
+
+  if (!children || typeof children !== 'function') {
+    throw new Error('<SyncRouterState /> requires a function as a child.')
   }
-  if (
-    routeNameRef.current === EMPTY ||
-    routeNameRef.current !== value.route.name
-  ) {
-    routeNameRef.current = value.route.name
-    children(value)
-  }
+
+  return (
+    <Context.Consumer>
+      {context => {
+        if (!context || context.route == null) return
+        if (
+          routeNameRef.current == null ||
+          routeNameRef.current !== context.route.name
+        ) {
+          children({ route: context.route, path: context.pat })
+          routeNameRef.current = context.route.name
+        }
+      }}
+    </Context.Consumer>
+  )
 }
 
-export function createRouter (routes) {
-  allRoutes = getAllRoutes(routes)
+export function RouteProvider ({ routes, initialPath, children }) {
+  const value = useRouterState()
 
-  function RouteProvider ({ children }) {
-    const value = useGlobalState(state)
-
-    useEffect(() => {
-      const onPop = ev => {
-        const url = window.location.pathname
-        if (value.path !== url) {
-          window.history.replaceState(null, null, url)
-          setPath(url)
-        }
-      }
-      window.addEventListener('popstate', onPop)
-      return () => window.removeEventListener('popstate', onPop)
-    }, [value.path])
-
-    useEffect(() => {
-      if (value.path === EMPTY) {
-        setPath(window.location.pathname + window.location.search)
-      }
-    }, [value.path])
-
-    return children
+  if (allRoutes == null) {
+    allRoutes = getAllRoutes(routes)
   }
 
-  function Router (props) {
-    const localRoutes = props.routes || routes
-    const currentState = useGlobalState(state)
-
-    if (currentState === EMPTY) {
-      throw new Error('<Router /> must be wrapped with <RouteProvider>')
+  useEffect(() => {
+    if (value.path == null) {
+      value.setPath(initialPath || window.location.pathname + window.location.search)
     }
+  }, [value.path, value.setPath])
 
-    const { path } = currentState
-    if (path === EMPTY) {
-      return
+  useEffect(() => {
+    const onPop = ev => {
+      const url = window.location.pathname
+      if (value.path !== url) {
+        window.history.replaceState(null, null, url)
+        value.setPath(url)
+      }
     }
+    window.addEventListener('popstate', onPop)
+    return () => window.removeEventListener('popstate', onPop)
+  }, [value.path, value.setPath])
 
-    const [Component, newRoute] = getRouteComponent(localRoutes, path)
-    if (newRoute) {
-      setRoute(newRoute)
-    }
+  return <Context.Provider value={value}>{children}</Context.Provider>
+}
 
-    return typeof Component === 'function' ? (
-      <Component routeTo={routeTo} />
-    ) : (
-      Component
-    )
+export function Router (props) {
+  if (!props.routes) {
+    throw new Error('<Router /> must be given a routes object.')
   }
 
-  return { RouteProvider, Router }
+  const localRoutes = props.routes
+  const context = useRouter()
+  if (context == null) {
+    throw new Error('<Router /> must be wrapped with <RouteProvider />.')
+  }
+
+  const { path, setRoute } = context
+  if (path == null) {
+    return
+  }
+
+  const [Component, newRoute] = getRouteComponent(localRoutes, path)
+  if (newRoute) {
+    setRoute(newRoute)
+  }
+
+  return typeof Component === 'function' ? <Component /> : Component
 }
