@@ -1,10 +1,28 @@
-import React from 'react' // Can be aliased to `preact` in host project
+import React, { createContext, useContext } from 'react' // Can be aliased to `preact` in host project
 import { useMappedState } from '@app-elements/use-mapped-state'
 import Level from '@app-elements/level'
 
 import './style.less'
 
-let storeRef // So our document click event can reference the store
+const Context = createContext('Dropdown')
+
+function useDropdownState () {
+  const [dropdown, setDropdown] = useState()
+  return [dropdown, setDropdown]
+}
+
+export function useDropdown () {
+  const value = useContext(Context)
+  if (value == null) {
+    throw new Error('Component must be wrapped with <DropdownProvider>')
+  }
+  return value
+}
+
+export function DropdownProvider ({ children }) {
+  const value = useDropdownState()
+  return <Context.Provider value={value}>{children}</Context.Provider>
+}
 
 export function Dropdown ({
   uid,
