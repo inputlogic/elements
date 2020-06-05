@@ -1,5 +1,6 @@
-import React, { createContext, useContext } from 'react' // Can be aliased to `preact` in host project
-import { useMappedState } from '@app-elements/use-mapped-state'
+/* eslint react/jsx-fragments: "off"  */
+
+import React, { Fragment, createContext, useContext, useState } from 'react' // Can be aliased to `preact` in host project
 import Level from '@app-elements/level'
 
 import './style.less'
@@ -31,47 +32,52 @@ export function Dropdown ({
   Trigger,
   children
 }) {
-  storeRef = this.context.store
-
   if (!uid) {
-    console.warn('<Dropdown> must include a uid prop.')
+    throw new Error('<Dropdown> must include a uid prop.')
   }
 
-  const isOpen = useMappedState(storeRef, ({ dropdown }) => dropdown === uid)
-
-  const cls = isOpen
-    ? 'ae-dropdown-menu open'
-    : isOpen === false
-      ? 'ae-dropdown-menu close'
-      : 'ae-dropdown-menu' // isOpen === null
-
-  const handleClick = ev => {
-    ev.preventDefault()
-    ev.stopPropagation()
-    storeRef.setState({ dropdown: isOpen ? null : uid })
-  }
+  console.log('Dropdown', uid)
 
   return (
-    <div>
-      {Trigger === undefined
-        ? (
-          <button className='ae-btn-dropdown' onClick={handleClick}>
-            <Level noPadding>{buttonText}</Level>
-          </button>
-        )
-        : <Trigger className='ae-btn-dropdown' onClick={handleClick} />}
-      {noWrapper
-        ? isOpen && children
-        : (
-          <div className={cls}>
-            {children}
-          </div>
-        )}
-    </div>
+    <DropdownProvider>
+      <Context.Consumer>
+        {([dropdown, setDropdown]) => {
+          const isOpen = dropdown === uid
+          const cls = isOpen
+            ? 'ae-dropdown-menu open'
+            : isOpen === false
+              ? 'ae-dropdown-menu close'
+              : 'ae-dropdown-menu' // isOpen === null
+
+          const handleClick = ev => {
+            ev.preventDefault()
+            ev.stopPropagation()
+            setDropdown(isOpen ? null : uid)
+          }
+
+          return (
+            <Fragment>
+              {Trigger === undefined
+                ? (
+                  <button className='ae-btn-dropdown' onClick={handleClick}>
+                    <Level noPadding>{buttonText}</Level>
+                  </button>
+                )
+                : <Trigger className='ae-btn-dropdown' onClick={handleClick} />}
+              {noWrapper
+                ? isOpen && children
+                : (
+                  <div className={cls}>
+                    {children}
+                  </div>
+                )}
+            </Fragment>
+          )
+        }}
+      </Context.Consumer>Context
+    </DropdownProvider>
   )
 }
-
-export default Dropdown
 
 // DOM event to close all Dropdown's on off-click
 const hasData = el => el.hasAttribute != null && el.hasAttribute('data-dropdown')
@@ -93,6 +99,7 @@ const isClickable = (el) =>
   el.tagName === 'BUTTON'
 
 try {
+  let storeRef
   document.body.addEventListener('click', (ev) => {
     if (!storeRef) return
 
