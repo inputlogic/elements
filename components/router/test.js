@@ -1,7 +1,7 @@
 /* global afterEach test expect */
 
 import { render } from 'preact'
-import { RouteProvider, Router } from './index.js'
+import { RouteProvider, Router, Link } from './index.js'
 
 const Home = () => (
   <div id='home'>Home</div>
@@ -79,4 +79,20 @@ test('Router should render parent routes', () => {
   expect(document.body.querySelector('#user')).toBeDefined()
   expect(document.body.querySelector('#home')).toBeNull()
   expect(document.body.querySelector('#users')).toBeNull()
+})
+
+test('Link should render', () => {
+  render(
+    <RouteProvider routes={routes}>
+      <Link to='home'>Go Home</Link>
+      <Router routes={routes} />
+    </RouteProvider>,
+    document.body
+  )
+
+  expect(document.body.querySelector('#home')).toBeDefined()
+  expect(document.body.querySelector('#users')).toBeNull()
+  expect(document.body.querySelector('#user')).toBeNull()
+  expect(document.body.querySelector('a')).toBeDefined()
+  console.log(document.body.children[0])
 })

@@ -54,7 +54,7 @@ test('Dropdown should not render children', () => {
   expect(document.body.querySelector('#child')).toBeNull()
 })
 
-test.only('Dropdown should be open after toggle action', () => {
+test('Dropdown should be open after toggle action', () => {
   render(
     <Dropdown uid='1' noWrapper>
       <p id='child'>Child</p>
@@ -63,4 +63,6 @@ test.only('Dropdown should be open after toggle action', () => {
   )
   document.body.querySelector('button').click()
   expect(document.body.querySelector('#child')).toBeDefined()
+  document.body.click()
+  expect(document.body.querySelector('#child')).toBeNull()
 })

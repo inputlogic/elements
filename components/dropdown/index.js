@@ -36,8 +36,6 @@ export function Dropdown ({
     throw new Error('<Dropdown> must include a uid prop.')
   }
 
-  console.log('Dropdown', uid)
-
   return (
     <DropdownProvider>
       <Context.Consumer>
