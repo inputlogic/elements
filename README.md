@@ -7,7 +7,6 @@ InputLogic Elements
 | [Carousel](components/carousel)                       | Simple carousel with arrows and dot indicators. 
 | [DatePicker](components/date-picker)                  | Simple calendar-style date-picker.     
 | [Dropdown](components/dropdown)                       | Simple dropdown menus.  
-| [Form](components/form)                               | Take the pain out of forms!
 | [Helmet](components/helmet)                           | Basic Component to set title and meta tags in your HTML.
 | [Image](components/image)                             | Renders an image from an array of src's, assuming the first is low resolution, and the last is high resolution.
 | [Interval](components/interval)                       | Call some function on an interval during the lifecycle of a component
@@ -25,6 +24,7 @@ InputLogic Elements
 | [useActions](components/use-actions)                  | Define actions and add their reducer to your global store from a Component.
 | [useMappedState](components/use-mapped-state)         | Map part of global state to a Component and keep it in sync.
 | [useRequest](components/use-request)                  | Connect a Component to the result of an API request.
+| [useForm](components/use-form)                        | Take the pain out of forms!
 | [useSuccessiveTaps](components/use-successive-taps)   | A hook that fires a callback only after `n` taps or clicks.
 | [useVariantState](components/use-variant-state)       | A hook for defining strict state descriptors and transitions.
 
@@ -32,6 +32,7 @@ InputLogic Elements
 - [~~withRequest~~](components/with-request) **deprecated**
 - [~~withState~~](components/with-state) **deprecated**
 - [~~ListResource~~](components/list-resource) **deprecated**
+- [~Form~](components/form) **deprecated**
 
 Making Changes
 --------------
