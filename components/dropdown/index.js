@@ -1,14 +1,28 @@
 /* eslint react/jsx-fragments: "off"  */
 
-import React, { Fragment, createContext, useContext, useState } from 'react' // Can be aliased to `preact` in host project
+import React, { Fragment, createContext, useContext, useEffect, useReducer } from 'react' // Can be aliased to `preact` in host project
 import Level from '@app-elements/level'
 
 import './style.less'
 
 const Context = createContext('Dropdown')
+const providers = {}
+let dropdown
 
-function useDropdownState () {
-  const [dropdown, setDropdown] = useState()
+function useDropdownState (uid) {
+  const [, update] = useReducer(s => s + 1, 0)
+  const setDropdown = uid => {
+    if (uid !== dropdown) {
+      dropdown = uid
+      Object.values(providers).forEach(fn => fn())
+    }
+  }
+  useEffect(() => {
+    providers[uid] = update
+    return () => {
+      delete providers[uid]
+    }
+  }, [])
   return [dropdown, setDropdown]
 }
 
@@ -20,8 +34,8 @@ export function useDropdown () {
   return value
 }
 
-export function DropdownProvider ({ children }) {
-  const value = useDropdownState()
+export function DropdownProvider ({ uid, children }) {
+  const value = useDropdownState(uid)
   return <Context.Provider value={value}>{children}</Context.Provider>
 }
 
@@ -37,7 +51,7 @@ export function Dropdown ({
   }
 
   return (
-    <DropdownProvider>
+    <DropdownProvider uid={uid}>
       <Context.Consumer>
         {([dropdown, setDropdown]) => {
           const isOpen = dropdown === uid
@@ -72,7 +86,7 @@ export function Dropdown ({
             </Fragment>
           )
         }}
-      </Context.Consumer>Context
+      </Context.Consumer>
     </DropdownProvider>
   )
 }
@@ -97,12 +111,8 @@ const isClickable = (el) =>
   el.tagName === 'BUTTON'
 
 try {
-  let storeRef
   document.body.addEventListener('click', (ev) => {
-    if (!storeRef) return
-
-    const activeDropdown = storeRef.getState().dropdown
-    if (!activeDropdown) {
+    if (dropdown == null || !Object.values(providers).length) {
       return
     }
 
@@ -114,7 +124,8 @@ try {
 
     const withinDropdown = checkClass('ae-dropdown-menu', el)
     if (!withinDropdown || (withinDropdown && isClickable(el))) {
-      storeRef.setState({ dropdown: null })
+      dropdown = null
+      Object.values(providers).forEach(fn => fn())
     }
   })
 } catch (_) {}
