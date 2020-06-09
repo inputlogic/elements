@@ -1,6 +1,6 @@
 /* eslint react/jsx-fragments: "off"  */
 
-import React, { Fragment, createContext, useContext, useEffect, useReducer } from 'react' // Can be aliased to `preact` in host project
+import React, { Fragment, createContext, useEffect, useReducer } from 'react' // Can be aliased to `preact` in host project
 import Level from '@app-elements/level'
 
 import './style.less'
@@ -24,14 +24,6 @@ function useDropdownState (uid) {
     }
   }, [])
   return [dropdown, setDropdown]
-}
-
-export function useDropdown () {
-  const value = useContext(Context)
-  if (value == null) {
-    throw new Error('Component must be wrapped with <DropdownProvider>')
-  }
-  return value
 }
 
 export function DropdownProvider ({ uid, children }) {
