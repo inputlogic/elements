@@ -31,20 +31,6 @@ const withState = optsOrMapper => PassedComponent => {
       this._unsubscribe()
     }
 
-    shouldComponentUpdate (nextProps, nextState) {
-      const mappedStateChanged = !equal(
-        mapper(this._store.getState(), nextProps),
-        this.state._mappedState
-      )
-      if (mappedStateChanged) {
-        return true
-      } else if (!equal(nextState, this.state)) {
-        return true
-      } else {
-        return !equal(this.props, nextProps)
-      }
-    }
-
     componentDidUpdate () {
       const _mappedState = mapper(this._store.getState(), this.props)
       if (!equal(_mappedState, this.state._mappedState)) {
