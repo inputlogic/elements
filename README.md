@@ -25,6 +25,7 @@ InputLogic Elements
 | [useActions](components/use-actions)                  | Define actions and add their reducer to your global store from a Component.
 | [useMappedState](components/use-mapped-state)         | Map part of global state to a Component and keep it in sync.
 | [useRequest](components/use-request)                  | Connect a Component to the result of an API request.
+| [useStorePath](components/use-store-path)             | Syncs the value of the given path, and exposes a convenient setter.
 | [useSuccessiveTaps](components/use-successive-taps)   | A hook that fires a callback only after `n` taps or clicks.
 | [useVariantState](components/use-variant-state)       | A hook for defining strict state descriptors and transitions.
 
