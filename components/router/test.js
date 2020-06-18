@@ -1,7 +1,7 @@
 /* global afterEach test expect */
 
 import { render } from 'preact'
-import { RouteProvider, Router, Link } from './index.js'
+import { RouteProvider, Router, Link, useRouter } from './index.js'
 
 const Home = () => (
   <div id='home'>Home</div>
@@ -19,6 +19,12 @@ const User = ({ id }) => (
   <div id='user'>User {id}</div>
 )
 
+const RouteTest = () => {
+  const { routeTo } = useRouter()
+  routeTo('/users')
+  return null
+}
+
 const routes = {
   home: {
     path: '/',
@@ -31,6 +37,10 @@ const routes = {
   user: {
     path: '/users/:id',
     component: User
+  },
+  routeTest: {
+    path: '/route-test',
+    component: RouteTest
   }
 }
 
@@ -94,5 +104,19 @@ test('Link should render', () => {
   expect(document.body.querySelector('#users')).toBeNull()
   expect(document.body.querySelector('#user')).toBeNull()
   expect(document.body.querySelector('a')).toBeDefined()
-  console.log(document.body.children[0])
+})
+
+test('useRouter should expose routeTo', () => {
+  let x
+  render(
+    <RouteProvider routes={routes} initialPath='/route-test'>
+      <Router routes={routes} />
+    </RouteProvider>,
+    document.body
+  )
+
+  expect(document.body.querySelector('#user')).toBeNull()
+  expect(document.body.querySelector('#home')).toBeNull()
+  expect(document.body.querySelector('#user')).toBeDefined()
+  expect(document.body.querySelector('#users')).toBeDefined()
 })
