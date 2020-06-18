@@ -29,10 +29,6 @@
     "access": "public"
   },
   "dependencies": {
-    "@wasmuth/find": "^2.1.1",
-    "@wasmuth/path": "^2.1.1",
-    "@wasmuth/path-eq": "^2.1.1",
-    "check-arg-types": "1.1.2"
   },
   "gitHead": "d50087f5b15f56e544e7e52d0628bc3b7f0ea361"
 }
