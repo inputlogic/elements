@@ -105,18 +105,3 @@ test('Link should render', () => {
   expect(document.body.querySelector('#user')).toBeNull()
   expect(document.body.querySelector('a')).toBeDefined()
 })
-
-test('useRouter should expose routeTo', () => {
-  let x
-  render(
-    <RouteProvider routes={routes} initialPath='/route-test'>
-      <Router routes={routes} />
-    </RouteProvider>,
-    document.body
-  )
-
-  expect(document.body.querySelector('#user')).toBeNull()
-  expect(document.body.querySelector('#home')).toBeNull()
-  expect(document.body.querySelector('#user')).toBeDefined()
-  expect(document.body.querySelector('#users')).toBeDefined()
-})
