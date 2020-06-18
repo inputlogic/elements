@@ -2,9 +2,13 @@
   "name": "@app-elements/modal",
   "version": "3.1.1",
   "description": "Display modals from anywhere in your component tree.",
-  "main": "index.js",
+  "main": "dist/modal.js",
+  "module": "dist/modal.m.js",
+  "source": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "microbundle --jsx React.createElement --external react --no-compress",
+    "prepublishOnly": "npm run build",
+    "test": "exit 0"
   },
   "repository": {
     "type": "git",

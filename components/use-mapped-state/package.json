@@ -2,9 +2,13 @@
   "name": "@app-elements/use-mapped-state",
   "version": "0.3.2",
   "description": "A (P)React hook to map part of global state to a child component.",
-  "main": "index.js",
+  "main": "dist/use-mapped-state.js",
+  "module": "dist/use-mapped-state.m.js",
+  "source": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "microbundle --jsx React.createElement --external react --no-compress",
+    "prepublishOnly": "npm run build",
+    "test": "exit 0"
   },
   "repository": {
     "type": "git",

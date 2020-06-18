@@ -1,10 +1,7 @@
-/* global getProvider afterEach jest test expect */
+/* global afterEach test expect */
 
 import { render } from 'preact'
-import createStore from 'atom'
-import Router from './index.js'
-
-const Provider = getProvider()
+import { RouteProvider, Router, Link, useRouter } from './index.js'
 
 const Home = () => (
   <div id='home'>Home</div>
@@ -22,6 +19,12 @@ const User = ({ id }) => (
   <div id='user'>User {id}</div>
 )
 
+const RouteTest = () => {
+  const { routeTo } = useRouter()
+  routeTo('/users')
+  return null
+}
+
 const routes = {
   home: {
     path: '/',
@@ -34,10 +37,12 @@ const routes = {
   user: {
     path: '/users/:id',
     component: User
+  },
+  routeTest: {
+    path: '/route-test',
+    component: RouteTest
   }
 }
-
-const store = createStore([], { currentPath: '/' })
 
 afterEach(() => {
   document.getElementsByTagName('html')[0].innerHTML = ''
@@ -49,9 +54,9 @@ test('Router exports', () => {
 
 test('Router should render Home', () => {
   render(
-    <Provider store={store}>
+    <RouteProvider routes={routes}>
       <Router routes={routes} />
-    </Provider>,
+    </RouteProvider>,
     document.body
   )
 
@@ -60,70 +65,7 @@ test('Router should render Home', () => {
   expect(document.body.querySelector('#user')).toBeNull()
 })
 
-test('Router should automatically wire up <a /> elements', () => {
-  window.scrollTo = jest.fn()
-
-  store.setState({ currentPath: '/users' })
-
-  render(
-    <Provider store={store}>
-      <Router routes={routes} />
-    </Provider>,
-    document.body
-  )
-
-  expect(document.querySelector('#home')).toBeNull()
-  expect(document.querySelector('#users')).toBeDefined()
-  expect(document.querySelector('#user')).toBeNull()
-
-  const anchor = document.querySelector('a')
-
-  anchor.click()
-
-  expect(store.getState().currentPath).toEqual(anchor.href.replace('http://localhost', ''))
-})
-
-test('Router should ignore `mailto:` links', () => {
-  window.scrollTo = jest.fn()
-
-  store.setState({ currentPath: '/wont-change' })
-
-  render(
-    <Provider store={store}>
-      <a href='mailto:email@exampleo.org'>Email Me</a>
-    </Provider>,
-    document.body
-  )
-
-  const anchor = document.body.querySelector('a')
-
-  anchor.click()
-
-  expect(store.getState().currentPath).toEqual('/wont-change')
-})
-
-test('Router should ignore links with attribute `data-external-link`', () => {
-  window.scrollTo = jest.fn()
-
-  store.setState({ currentPath: '/wont-change' })
-
-  render(
-    <Provider store={store}>
-      <a href='http://google.com' data-external-link>External Link</a>
-    </Provider>,
-    document.body
-  )
-
-  const anchor = document.body.querySelector('a')
-
-  anchor.click()
-
-  expect(store.getState().currentPath).toEqual('/wont-change')
-})
-
 test('Router should render parent routes', () => {
-  store.setState({ currentPath: '/users/2' })
-
   const Parent = () => (
     <div id='parent'>
       <Router routes={routes} />
@@ -137,9 +79,9 @@ test('Router should render parent routes', () => {
   }
 
   render(
-    <Provider store={store}>
+    <RouteProvider routes={routes} initialPath='/users/2'>
       <Router routes={parentRoutes} />
-    </Provider>,
+    </RouteProvider>,
     document.body
   )
 
@@ -147,4 +89,19 @@ test('Router should render parent routes', () => {
   expect(document.body.querySelector('#user')).toBeDefined()
   expect(document.body.querySelector('#home')).toBeNull()
   expect(document.body.querySelector('#users')).toBeNull()
+})
+
+test('Link should render', () => {
+  render(
+    <RouteProvider routes={routes}>
+      <Link to='home'>Go Home</Link>
+      <Router routes={routes} />
+    </RouteProvider>,
+    document.body
+  )
+
+  expect(document.body.querySelector('#home')).toBeDefined()
+  expect(document.body.querySelector('#users')).toBeNull()
+  expect(document.body.querySelector('#user')).toBeNull()
+  expect(document.body.querySelector('a')).toBeDefined()
 })

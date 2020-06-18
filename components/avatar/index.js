@@ -1,6 +1,8 @@
+import React from 'react'
+
 import './style.less'
 
-const Avatar = ({
+export const Avatar = ({
   src,
   fullName = '',
   className = '',

@@ -8,7 +8,7 @@ import './style.less'
 
 const pageBuilder = page => updateQuery({ page })
 
-export default class Pagination extends React.Component {
+export class Pagination extends React.Component {
   render () {
     const { activePage, pageSize, request } = this.props
     const { count, next, previous } = request
@@ -50,3 +50,5 @@ export default class Pagination extends React.Component {
     )
   }
 }
+
+export default Pagination

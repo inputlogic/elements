@@ -1,6 +1,7 @@
+import React from 'react'
 import './style.less'
 
-const Level = ({
+export const Level = ({
   children,
   ...props
 }) =>

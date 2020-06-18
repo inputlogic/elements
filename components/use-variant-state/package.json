@@ -2,9 +2,13 @@
   "name": "@app-elements/use-variant-state",
   "version": "0.1.0",
   "description": "A (P)React hook for defining strict state descriptors and transitions.",
-  "main": "index.js",
+  "main": "dist/use-variant-state.js",
+  "module": "dist/use-variant-state.m.js",
+  "source": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "microbundle --jsx React.createElement --external react --no-compress",
+    "prepublishOnly": "npm run build",
+    "test": "exit 0"
   },
   "repository": {
     "type": "git",

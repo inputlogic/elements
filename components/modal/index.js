@@ -2,7 +2,7 @@ import check from 'check-arg-types'
 import find from '@wasmuth/find'
 import path from '@wasmuth/path'
 import pathEq from '@wasmuth/path-eq'
-import { createPortal, Component } from 'react'
+import React, { createPortal, Component } from 'react'
 
 import connect from '@app-elements/connect'
 
@@ -53,7 +53,7 @@ class Portal extends Component {
   }
 }
 
-const Modal = connect({
+export const Modal = connect({
   name: 'Modal',
   withActions: actions,
   focusRef: dom => {

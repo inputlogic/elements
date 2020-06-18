@@ -1,6 +1,7 @@
+import React from 'react'
 import './style.less'
 
-export default function LoadingIndicator () {
+export function LoadingIndicator () {
   return (
     <span className='loading-ellipsis'>
       <span>&bull;</span>
@@ -9,3 +10,5 @@ export default function LoadingIndicator () {
     </span>
   )
 }
+
+export default LoadingIndicator

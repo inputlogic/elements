@@ -13,7 +13,7 @@ export function showNotification (notification) {
  *
  * @TODO: Update to use store/global state.
  */
-export default class Notification extends React.Component {
+export class Notification extends React.Component {
   constructor (props) {
     super(props)
     this.state = { open: false, message: null, type: 'error', length: 3000 }
@@ -46,3 +46,5 @@ export default class Notification extends React.Component {
     )
   }
 }
+
+export default Notification

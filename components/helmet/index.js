@@ -1,4 +1,4 @@
-import { Component } from 'react'
+import React from 'react'
 
 let refs = []
 
@@ -22,7 +22,7 @@ const Wrapper = ({ children }) => {
   }
 }
 
-export default class Helmet extends Component {
+export class Helmet extends React.Component {
   constructor (props) {
     super(props)
     refs.push(this)
@@ -60,3 +60,5 @@ export default class Helmet extends Component {
     )
   }
 }
+
+export default Helmet

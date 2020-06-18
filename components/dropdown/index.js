@@ -1,74 +1,87 @@
-import React from 'react' // Can be aliased to `preact` in host project
+/* eslint react/jsx-fragments: "off"  */
 
-import connect from '@app-elements/connect'
+import React, { Fragment, createContext, useEffect, useReducer } from 'react' // Can be aliased to `preact` in host project
 import Level from '@app-elements/level'
 
 import './style.less'
 
-let storeRef // Will get populated by `getStoreReference`
+const Context = createContext('Dropdown')
+const providers = {}
+let dropdown
 
-export const actions = {
-  toggle: ({ dropdown }, uid) => {
-    const isOpen = dropdown === uid
-    return { dropdown: isOpen ? null : uid }
+function useDropdownState (uid) {
+  const [, update] = useReducer(s => s + 1, 0)
+  const setDropdown = uid => {
+    if (uid !== dropdown) {
+      dropdown = uid
+      Object.values(providers).forEach(fn => fn())
+    }
   }
+  useEffect(() => {
+    providers[uid] = update
+    return () => {
+      delete providers[uid]
+    }
+  }, [])
+  return [dropdown, setDropdown]
 }
 
-const mapper = ({ dropdown }, { uid }) => {
-  if (!uid) {
-    console.warn('<Dropdown> must include a uid prop.')
-  }
-  return { isOpen: dropdown === uid }
+export function DropdownProvider ({ uid, children }) {
+  const value = useDropdownState(uid)
+  return <Context.Provider value={value}>{children}</Context.Provider>
 }
 
-const Dropdown = connect({
-  name: 'Dropdown',
-  withActions: actions,
-  withState: mapper,
-  getStoreRef: store => { storeRef = store }
-})(({
-  // Store
-  isOpen,
-  toggle,
-
-  // Props
-  Trigger,
+export function Dropdown ({
   uid,
   buttonText = 'Select',
   noWrapper = false,
+  Trigger,
   children
-}) => {
-  const cls = isOpen
-    ? 'ae-dropdown-menu open'
-    : isOpen === false
-      ? 'ae-dropdown-menu close'
-      : 'ae-dropdown-menu' // isOpen === null
-  const handleClick = ev => {
-    ev.preventDefault()
-    ev.stopPropagation()
-    toggle(uid)
+}) {
+  if (!uid) {
+    throw new Error('<Dropdown> must include a uid prop.')
   }
-  return (
-    <div>
-      {Trigger === undefined
-        ? (
-          <button className='ae-btn-dropdown' onClick={handleClick}>
-            <Level noPadding>{buttonText}</Level>
-          </button>
-        )
-        : <Trigger className='ae-btn-dropdown' onClick={handleClick} />}
-      {noWrapper
-        ? isOpen && children
-        : (
-          <div className={cls}>
-            {children}
-          </div>
-        )}
-    </div>
-  )
-})
 
-export default Dropdown
+  return (
+    <DropdownProvider uid={uid}>
+      <Context.Consumer>
+        {([dropdown, setDropdown]) => {
+          const isOpen = dropdown === uid
+          const cls = isOpen
+            ? 'ae-dropdown-menu open'
+            : isOpen === false
+              ? 'ae-dropdown-menu close'
+              : 'ae-dropdown-menu' // isOpen === null
+
+          const handleClick = ev => {
+            ev.preventDefault()
+            ev.stopPropagation()
+            setDropdown(isOpen ? null : uid)
+          }
+
+          return (
+            <Fragment>
+              {Trigger === undefined
+                ? (
+                  <button className='ae-btn-dropdown' onClick={handleClick}>
+                    <Level noPadding>{buttonText}</Level>
+                  </button>
+                )
+                : <Trigger className='ae-btn-dropdown' onClick={handleClick} />}
+              {noWrapper
+                ? isOpen && children
+                : (
+                  <div className={cls}>
+                    {children}
+                  </div>
+                )}
+            </Fragment>
+          )
+        }}
+      </Context.Consumer>
+    </DropdownProvider>
+  )
+}
 
 // DOM event to close all Dropdown's on off-click
 const hasData = el => el.hasAttribute != null && el.hasAttribute('data-dropdown')
@@ -91,10 +104,7 @@ const isClickable = (el) =>
 
 try {
   document.body.addEventListener('click', (ev) => {
-    if (!storeRef) return
-
-    const activeDropdown = storeRef.getState().dropdown
-    if (!activeDropdown) {
+    if (dropdown == null || !Object.values(providers).length) {
       return
     }
 
@@ -106,7 +116,8 @@ try {
 
     const withinDropdown = checkClass('ae-dropdown-menu', el)
     if (!withinDropdown || (withinDropdown && isClickable(el))) {
-      storeRef.setState({ dropdown: null })
+      dropdown = null
+      Object.values(providers).forEach(fn => fn())
     }
   })
 } catch (_) {}

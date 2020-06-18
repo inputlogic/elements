@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default class Interval extends React.Component {
+export class Interval extends React.Component {
   componentDidMount () {
     if (!this.props.function) {
       console.warn('Interval should receive `function` prop.')
@@ -23,3 +23,5 @@ export default class Interval extends React.Component {
     return this.props.children || null
   }
 }
+
+export default Interval
