@@ -3,7 +3,7 @@
 import React, { Fragment, createContext, useEffect, useReducer } from 'react' // Can be aliased to `preact` in host project
 import Level from '@app-elements/level'
 
-import './style.less'
+import styles from './style.less'
 
 const Context = createContext('Dropdown')
 const providers = {}
@@ -47,12 +47,7 @@ export function Dropdown ({
       <Context.Consumer>
         {([dropdown, setDropdown]) => {
           const isOpen = dropdown === uid
-          const cls = isOpen
-            ? 'ae-dropdown-menu open'
-            : isOpen === false
-              ? 'ae-dropdown-menu close'
-              : 'ae-dropdown-menu' // isOpen === null
-
+          const cls = [styles.dropdown, isOpen && styles.open, isOpen === false && styles.close].filter(Boolean)
           const handleClick = ev => {
             ev.preventDefault()
             ev.stopPropagation()
@@ -71,7 +66,7 @@ export function Dropdown ({
               {noWrapper
                 ? isOpen && children
                 : (
-                  <div className={cls}>
+                  <div className={cls.join(' ')}>
                     {children}
                   </div>
                 )}
@@ -114,7 +109,7 @@ try {
       return
     }
 
-    const withinDropdown = checkClass('ae-dropdown-menu', el)
+    const withinDropdown = checkClass(styles.dropdown, el)
     if (!withinDropdown || (withinDropdown && isClickable(el))) {
       dropdown = null
       Object.values(providers).forEach(fn => fn())
