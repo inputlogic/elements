@@ -1,19 +1,16 @@
 import React from 'react'
 
-import './style.less'
+import { avatar, hasImage, image, initial } from './style.less'
 
-export const Avatar = ({
-  src,
-  fullName = '',
-  className = '',
-  size = '100'
-}) =>
-  <div style={{ fontSize: `${size}%` }} className={`avatar-wrap ${className}`}>
-    <div className={`avatar ${src && 'hasImage'}`}>
-      {src
-        ? <img src={src} alt={fullName} />
-        : <div className='initial'>{fullName[0]}</div>}
+export function Avatar ({ src, fullName = '', className = '', size = 100 }) {
+  const cls = [avatar, src && hasImage, className].filter(Boolean)
+  return (
+    <div style={{ fontSize: `${size}%` }}>
+      <div className={cls}>
+        {src
+          ? <img src={src} alt={fullName} className={image} />
+          : <div className={initial}>{fullName[0]}</div>}
+      </div>
     </div>
-  </div>
-
-export default Avatar
+  )
+}

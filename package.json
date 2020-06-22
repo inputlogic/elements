@@ -24,7 +24,7 @@
     "babel-preset-react": "6.24",
     "jest": "23.6.0",
     "lerna": "3.20.2",
-    "less": "3.11.1",
+    "less": "^3.11.3",
     "microbundle": "0.12.0",
     "preact": "10.3.2",
     "react": "16.12.0",
