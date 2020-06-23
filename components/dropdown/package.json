@@ -1,6 +1,6 @@
 {
   "name": "@app-elements/dropdown",
-  "version": "3.0.2",
+  "version": "4.0.0-alpha.0",
   "description": "Simple dropdown menus.",
   "main": "dist/dropdown.js",
   "module": "dist/dropdown.m.js",

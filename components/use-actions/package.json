@@ -1,6 +1,6 @@
 {
   "name": "@app-elements/use-actions",
-  "version": "0.1.1",
+  "version": "1.0.0-alpha.0",
   "description": "`useActions` let's you define actions and add their reducer to your store from a Component.",
   "main": "dist/use-actions.js",
   "module": "dist/use-actions.m.js",

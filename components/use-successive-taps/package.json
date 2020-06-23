@@ -1,6 +1,6 @@
 {
   "name": "@app-elements/use-successive-taps",
-  "version": "0.1.0",
+  "version": "1.0.0-alpha.0",
   "description": "A (P)React hook that fires a callback only after `n` taps or clicks.",
   "main": "dist/use-successive-taps.js",
   "module": "dist/use-successive-taps.m.js",
