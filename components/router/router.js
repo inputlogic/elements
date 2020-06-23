@@ -180,5 +180,9 @@ export function Router (props) {
     setRoute(newRoute)
   }
 
-  return typeof Component === 'function' ? <Component {...newRoute.args} /> : Component
+  const childProps = newRoute != null ? newRoute.args : {}
+
+  return typeof Component === 'function'
+    ? <Component {...childProps} />
+    : Component
 }
