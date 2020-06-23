@@ -1,6 +1,6 @@
 import React from 'react' // Can be aliased to Preact in your project
 
-import './style.less'
+import styles from './style.less'
 
 let ref
 
@@ -36,12 +36,13 @@ export class Notification extends React.Component {
   render (_, { open, message, type }) {
     if (!ref) ref = this
     if (!message) return null
+    const cls = [styles.bar, styles[type], open ? styles.open : styles.closed].filter(Boolean)
     return (
-      <div className={`notification-bar ${type} ${open ? 'bar-open' : 'bar-closed'}`}>
-        <span className='text'>
+      <div className={cls.join(' ')}>
+        <span className={styles.text}>
           {message}
         </span>
-        <div className='close-icon' />
+        <div className={styles.closeIcon} />
       </div>
     )
   }

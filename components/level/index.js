@@ -1,12 +1,12 @@
 import React from 'react'
-import './style.less'
+import styles from './style.less'
 
 export const Level = ({
   children,
   ...props
 }) =>
   <div {...props}>
-    <div className='level'>
+    <div className={styles.level}>
       {children}
     </div>
   </div>

@@ -1,3 +1,5 @@
+@import "../../theme.less";
+
 .pagination {
   display: flex;
   padding: 2rem 0;
@@ -13,31 +15,6 @@
     &:hover {
       color: currentColor;
       opacity: 0.8;
-    }
-
-    &.disabled {
-      opacity: 0.4;
-
-      &:hover {
-        opacity: 0.4;
-      }
-    }
-
-    span.arrow {
-      display: inline-block;
-      border: solid currentColor;
-      border-width: 0 2px 2px 0;
-      padding: 4px;
-
-      &.next {
-        transform: rotate(-45deg);
-        margin-right: 4px;
-      }
-
-      &.back {
-        transform: rotate(135deg);
-        margin-left: 4px;
-      }
     }
   }
 
@@ -61,15 +38,40 @@
 
       a {
         color: @light-grey;
-
-        &.active {
-          color: @white;
-          font-weight: 500;
-          background-color: @primary-color;
-          padding: 0.2rem 0.65rem;
-          border-radius: 4px;
-        }
       }
     }
+  }
+}
+
+.arrow {
+  display: inline-block;
+  border: solid currentColor;
+  border-width: 0 2px 2px 0;
+  padding: 4px; 
+}
+
+.next {
+  transform: rotate(-45deg);
+  margin-right: 4px;
+}
+
+.back {
+  transform: rotate(135deg);
+  margin-left: 4px;
+}
+
+.active {
+  color: @white;
+  font-weight: 500;
+  background-color: @primary-color;
+  padding: 0.2rem 0.65rem;
+  border-radius: 4px;
+}
+
+.disabled {
+  opacity: 0.4;
+
+  &:hover {
+    opacity: 0.4;
   }
 }

@@ -1,15 +1,15 @@
 import React from 'react'
 
-import { avatar, hasImage, image, initial } from './style.less'
+import styles from './style.less'
 
 export function Avatar ({ src, fullName = '', className = '', size = 100 }) {
-  const cls = [avatar, src && hasImage, className].filter(Boolean)
+  const cls = [styles.avatar, src && styles.hasImage, className].filter(Boolean)
   return (
     <div style={{ fontSize: `${size}%` }}>
       <div className={cls.join(' ')}>
         {src
-          ? <img src={src} alt={fullName} className={image} />
-          : <div className={initial}>{fullName[0]}</div>}
+          ? <img src={src} alt={fullName} className={styles.image} />
+          : <div className={styles.initial}>{fullName[0]}</div>}
       </div>
     </div>
   )

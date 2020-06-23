@@ -1,3 +1,5 @@
+@import "../../theme.less";
+
 .ae-date-picker {
   margin: 0;
 
@@ -31,7 +33,7 @@
   }
 
   .ae-date-picker-table-wrap {
-    border: solid 1px @border-color-alt;
+    border: solid 1px @border-color;
     border-radius: @border-radius;
   }
 
@@ -48,8 +50,8 @@
     border-top-right-radius: @border-radius;
   }
   table tr th {
-    border-right: solid 1px @border-color-alt;
-    border-left: solid 1px @border-color-alt;
+    border-right: solid 1px @border-color;
+    border-left: solid 1px @border-color;
   }
   table th:first-child {
     border-left: none;
@@ -59,7 +61,7 @@
   }
 
   table td {
-    border: solid 1px @border-color-alt;
+    border: solid 1px @border-color;
   }
   table td:first-child {
     border-left: none;
@@ -139,7 +141,7 @@
     outline: 0;
 
     &.ae-date-picker-other {
-      color: @border-color-alt;
+      color: @border-color;
     }
 
     &.ae-date-picker-today {

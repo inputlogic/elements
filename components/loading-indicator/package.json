@@ -6,7 +6,7 @@
   "module": "dist/loading-indicator.m.js",
   "source": "index.js",
   "scripts": {
-    "build": "microbundle --jsx React.createElement --external react --no-compress",
+    "build": "microbundle --jsx React.createElement --external react --no-compress --css-modules true",
     "prepublishOnly": "npm run build",
     "test": "exit 0"
   },

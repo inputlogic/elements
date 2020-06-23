@@ -1,9 +1,9 @@
 import React from 'react'
-import './style.less'
+import styles from './style.less'
 
 export function LoadingIndicator () {
   return (
-    <span className='loading-ellipsis'>
+    <span className={styles.loading}>
       <span>&bull;</span>
       <span>&bull;</span>
       <span>&bull;</span>

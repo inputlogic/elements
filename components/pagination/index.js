@@ -1,10 +1,8 @@
 import React from 'react'
-
 import { updateQuery } from '@app-elements/router'
 
 import paginationRange from './paginationRange'
-
-import './style.less'
+import styles from './style.less'
 
 const pageBuilder = page => updateQuery({ page })
 
@@ -20,16 +18,16 @@ export class Pagination extends React.Component {
     const pages = paginationRange(activePage, numPages)
 
     return (
-      <nav class='pagination'>
+      <nav className={styles.pagination}>
         {previous
           ? (
             <a href={pageBuilder(activePage - 1)}>
-              <span className='arrow back' /> Back
+              <span className={[styles.arrow, styles.back].join(' ')} /> Back
             </a>
           )
           : (
-            <span className='disabled'>
-              <span className='arrow back' /> Back
+            <span className={styles.disabled}>
+              <span className={[styles.arrow, styles.back].join(' ')} /> Back
             </span>
           )}
         <ul>
@@ -37,18 +35,16 @@ export class Pagination extends React.Component {
             (page, index) => page
               ? (
                 <li key={`page-${page}`}>
-                  <a href={pageBuilder(page)} className={activePage === page ? 'active' : ''}>{page}</a>
+                  <a href={pageBuilder(page)} className={activePage === page ? styles.active : ''}>{page}</a>
                 </li>
               )
               : <li key={`break-${index}`}>&hellip;</li>
           )}
         </ul>
         {next
-          ? <a href={pageBuilder(activePage + 1)}>Next <span className='arrow next' /></a>
-          : <span className='disabled'>Next <span className='arrow next' /></span>}
+          ? <a href={pageBuilder(activePage + 1)}>Next <span className={[styles.arrow, styles.next].join(' ')} /></a>
+          : <span className={styles.disabled}>Next <span className={[styles.arrow, styles.next].join(' ')} /></span>}
       </nav>
     )
   }
 }
-
-export default Pagination

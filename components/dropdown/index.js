@@ -1,7 +1,6 @@
 /* eslint react/jsx-fragments: "off"  */
 
 import React, { Fragment, createContext, useEffect, useReducer } from 'react' // Can be aliased to `preact` in host project
-import Level from '@app-elements/level'
 
 import styles from './style.less'
 
@@ -59,7 +58,7 @@ export function Dropdown ({
               {Trigger === undefined
                 ? (
                   <button className='ae-btn-dropdown' onClick={handleClick}>
-                    <Level noPadding>{buttonText}</Level>
+                    {buttonText}
                   </button>
                 )
                 : <Trigger className='ae-btn-dropdown' onClick={handleClick} />}
@@ -81,6 +80,7 @@ export function Dropdown ({
 // DOM event to close all Dropdown's on off-click
 const hasData = el => el.hasAttribute != null && el.hasAttribute('data-dropdown')
 const checkClass = (className, el) => {
+  console.log('checkClass', { className })
   if ((el.classList && el.classList.contains(className)) || hasData(el)) {
     return true
   }

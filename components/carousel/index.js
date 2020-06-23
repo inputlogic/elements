@@ -1,8 +1,7 @@
 import React from 'react' // Can be aliased to Preact in your project
-
 import Level from '@app-elements/level'
 
-import './style.less'
+import styles from './style.less'
 
 export class Carousel extends React.Component {
   static defaultProps = {
@@ -137,29 +136,29 @@ export class Carousel extends React.Component {
   render () {
     const {
       children,
-      className = 'carousel-slide',
+      className = styles.slide,
       noNav = false,
       withDots = false,
-      wrapperClass = ''
+      wrapperClass
     } = this.props
     const { active } = this.state
 
     return (
-      <div className={`carousel ${wrapperClass}`}>
+      <div className={[styles.carousel, wrapperClass].filter(Boolean).join(' ')}>
         <div>
-          <div className='carousel-inner'>
+          <div className={styles.inner}>
             {!noNav &&
-              <nav className='nav prev'>
+              <nav className={[styles.nav, styles.prev].join(' ')}>
                 <button onClick={this.handlePrev} />
               </nav>}
-            <div className='slides-wrapper'>
-              <div className='slides' style={this.getSlidesStyle()}>
+            <div className={styles.wrapper}>
+              <div className={styles.slides} style={this.getSlidesStyle()}>
                 {children.map((c, idx) =>
                   <div
                     key={`caurosel-${idx}`}
                     ref={(ref) => idx === 0 && this.getRef(ref)}
                     style={this.getStyle(idx, active)}
-                    class={`${className}${idx === active ? ' active' : ''}`}
+                    class={[className, idx === active && styles.activeSlide].filter(Boolean).join(' ')}
                   >
                     {c}
                   </div>
@@ -167,17 +166,17 @@ export class Carousel extends React.Component {
               </div>
             </div>
             {!noNav &&
-              <nav className='nav next'>
+              <nav className={[styles.nav, styles.next].join(' ')}>
                 <button onClick={this.handleNext} />
               </nav>}
           </div>
           {withDots &&
-            <Level className='carousel-dots'>
+            <Level className={styles.dots}>
               {children.map((_, idx) =>
                 <button
                   onClick={this.setActive(idx)}
                   key={`dots-${idx}`}
-                  className={`${idx === active ? 'active' : ''}`}
+                  className={`${idx === active ? styles.activeDot : ''}`}
                 >
                   {idx}
                 </button>
