@@ -166,16 +166,26 @@ export function Router (props) {
 
   const localRoutes = props.routes
   const context = useRouter()
+
   if (context == null) {
     throw new Error('<Router /> must be wrapped with <RouteProvider />.')
   }
 
   const { path, setRoute } = context
+
   if (path == null) {
     return
   }
 
-  const [Component, newRoute] = getRouteComponent(localRoutes, path)
+  const pair = getRouteComponent(localRoutes, path)
+
+  if (pair == null) {
+    setRoute({ name: 'Not Found', args: {}, notFound: true, path })
+    return null
+  }
+
+  const [Component, newRoute] = pair
+
   if (newRoute) {
     setRoute(newRoute)
   }
