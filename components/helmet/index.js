@@ -1,4 +1,4 @@
-import React from 'react'
+import { Component, createPortal } from 'react'
 
 let refs = []
 
@@ -7,22 +7,49 @@ export const rewind = () => {
   return res
 }
 
-const Wrapper = ({ children }) => {
-  if (typeof window !== 'undefined') {
-    const titleChild = children.find(({ type }) => type === 'title')
+class Portal extends Component {
+  constructor (props) {
+    super(props)
+    this.el = new DocumentFragment()
+  }
+
+  componentDidMount () {
+    // The portal element is inserted in the DOM tree after
+    // the Modal's children are mounted, meaning that children
+    // will be mounted on a detached DOM node. If a child
+    // component requires to be attached to the DOM tree
+    // immediately when mounted, for example to measure a
+    // DOM node, or uses 'autoFocus' in a descendant, add
+    // state to Modal and only render the children when Modal
+    // is inserted in the DOM tree.
+    document.head.appendChild(this.el.cloneNode(true))
+  }
+
+  componentWillUnmount () {
+    const metas = document.head.querySelectorAll('[data-helmet]')
+    for (let x = 0; x < metas.length; x++) {
+      document.head.removeChild(metas[x])
+    }
+  }
+
+  render () {
+    const { children } = this.props
+    const titleChild = children[0]
+
     if (titleChild) {
       const title = titleChild.props.children
       if (title !== document.title) {
         document.title = title
       }
     }
-    return null
-  } else {
-    return <div>{children}</div>
+
+    const metaChildren = children[1]
+
+    return createPortal(metaChildren, this.el)
   }
 }
 
-export class Helmet extends React.Component {
+export class Helmet extends Component {
   constructor (props) {
     super(props)
     refs.push(this)
@@ -53,10 +80,10 @@ export class Helmet extends React.Component {
 
   render () {
     return (
-      <Wrapper>
+      <Portal>
         <title data-helmet='true'>{this._getTitle(this.props)}</title>
         {this._getMeta(this.props)}
-      </Wrapper>
+      </Portal>
     )
   }
 }
