@@ -2,9 +2,13 @@
   "name": "@app-elements/router",
   "version": "3.0.0-alpha.0",
   "description": "The best router.",
-  "main": "index.js",
+  "main": "dist/router.js",
+  "module": "dist/router.m.js",
+  "source": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "microbundle --jsx React.createElement --external react --no-compress --css-modules true",
+    "prepublishOnly": "npm run build",
+    "test": "exit 0"
   },
   "repository": {
     "type": "git",
