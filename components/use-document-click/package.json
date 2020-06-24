@@ -1,0 +1,33 @@
+{
+  "name": "@app-elements/use-document-click",
+  "version": "0.0.1",
+  "description": "A (P)React hook to handle document clicks or taps.",
+  "main": "dist/use-document-click.js",
+  "module": "dist/use-document-click.m.js",
+  "source": "index.js",
+  "scripts": {
+    "build": "microbundle --jsx React.createElement --external react --no-compress",
+    "prepublishOnly": "npm run build",
+    "test": "exit 0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/inputlogic/elements.git"
+  },
+  "bugs": {
+    "url": "https://github.com/inputlogic/elements/issues"
+  },
+  "keywords": [
+    "react",
+    "react-component",
+    "preact",
+    "component",
+    "hook",
+    "ui"
+  ],
+  "author": "Input Logic Team",
+  "license": "ISC",
+  "publishConfig": {
+    "access": "public"
+  }
+}
