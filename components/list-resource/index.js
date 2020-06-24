@@ -1,6 +1,6 @@
+import React from 'react'
 import map from '@wasmuth/map'
 import pathOr from '@wasmuth/path-or'
-
 import connect from '@app-elements/connect'
 import Pagination from '@app-elements/pagination'
 import qs from '@app-elements/router/qs'
