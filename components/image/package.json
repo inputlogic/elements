@@ -1,6 +1,6 @@
 {
   "name": "@app-elements/image",
-  "version": "2.0.0-alpha.0",
+  "version": "2.0.0",
   "description": "Renders an image from an array of src's, assuming the first is low resolution, and the last is high resolution.",
   "main": "dist/image.js",
   "module": "dist/image.m.js",

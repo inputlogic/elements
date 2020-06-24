@@ -1,6 +1,6 @@
 {
   "name": "@app-elements/loading-indicator",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Show a three dots loading indicator.",
   "main": "dist/loading-indicator.js",
   "module": "dist/loading-indicator.m.js",

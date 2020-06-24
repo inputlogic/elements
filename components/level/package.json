@@ -1,6 +1,6 @@
 {
   "name": "@app-elements/level",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Position all children on a level row.",
   "main": "dist/level.js",
   "module": "dist/level.m.js",

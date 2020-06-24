@@ -1,6 +1,6 @@
 {
   "name": "@app-elements/carousel",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Simple carousel with arrows and dot indicators.",
   "main": "dist/carousel.js",
   "module": "dist/carousel.m.js",
@@ -27,7 +27,7 @@
   "author": "Input Logic Team",
   "license": "ISC",
   "dependencies": {
-    "@app-elements/level": "^2.0.0"
+    "@app-elements/level": "^2.0.1"
   },
   "gitHead": "d50087f5b15f56e544e7e52d0628bc3b7f0ea361"
 }

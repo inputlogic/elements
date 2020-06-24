@@ -1,6 +1,6 @@
 {
   "name": "@app-elements/lazy-load",
-  "version": "2.0.0-alpha.0",
+  "version": "2.0.0",
   "description": "Won't render children until it's in viewport.",
   "main": "dist/lazy-load.js",
   "module": "dist/lazy-load.m.js",
