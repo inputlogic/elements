@@ -1,9 +1,6 @@
 /* eslint react/jsx-fragments: "off"  */
 
 import React, { Fragment, createContext, useEffect, useReducer } from 'react' // Can be aliased to `preact` in host project
-import Level from '@app-elements/level'
-
-import './style.less'
 
 const Context = createContext('Dropdown')
 const providers = {}
@@ -64,7 +61,7 @@ export function Dropdown ({
               {Trigger === undefined
                 ? (
                   <button className='ae-btn-dropdown' onClick={handleClick}>
-                    <Level noPadding>{buttonText}</Level>
+                    {buttonText}
                   </button>
                 )
                 : <Trigger className='ae-btn-dropdown' onClick={handleClick} />}

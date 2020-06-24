@@ -4,6 +4,9 @@ module.exports = {
   setupFiles: [
     './tests-setup.js'
   ],
+  moduleNameMapper: {
+    '\\.(css|less)$': 'identity-obj-proxy'
+  },
   // Let babel transpile certain node_modules
   transformIgnorePatterns: [
     'node_modules/(?!(@wasmuth)/)'

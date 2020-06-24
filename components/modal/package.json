@@ -1,6 +1,6 @@
 {
   "name": "@app-elements/modal",
-  "version": "3.1.1",
+  "version": "4.0.0",
   "description": "Display modals from anywhere in your component tree.",
   "main": "dist/modal.js",
   "module": "dist/modal.m.js",
@@ -27,8 +27,6 @@
   "license": "ISC",
   "publishConfig": {
     "access": "public"
-  },
-  "dependencies": {
   },
   "gitHead": "d50087f5b15f56e544e7e52d0628bc3b7f0ea361"
 }

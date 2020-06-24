@@ -1,8 +1,5 @@
 import React from 'react' // Can be aliased to Preact in your project
-
 import Level from '@app-elements/level'
-
-import './style.less'
 
 export class Carousel extends React.Component {
   static defaultProps = {

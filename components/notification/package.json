@@ -1,12 +1,12 @@
 {
   "name": "@app-elements/notification",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "Displays a notification message.",
   "main": "dist/notification.js",
   "module": "dist/notification.m.js",
   "source": "index.js",
   "scripts": {
-    "build": "microbundle --jsx React.createElement --external react --no-compress",
+    "build": "microbundle --jsx React.createElement --external react --no-compress --css-modules true",
     "prepublishOnly": "npm run build",
     "test": "exit 0"
   },

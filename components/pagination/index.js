@@ -4,8 +4,6 @@ import { updateQuery } from '@app-elements/router'
 
 import paginationRange from './paginationRange'
 
-import './style.less'
-
 const pageBuilder = page => updateQuery({ page })
 
 export class Pagination extends React.Component {
