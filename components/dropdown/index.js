@@ -1,8 +1,7 @@
 /* eslint react/jsx-fragments: "off"  */
 
 import React, { Fragment, createContext, useEffect, useReducer } from 'react' // Can be aliased to `preact` in host project
-
-import styles from './style.less'
+import Level from '@app-elements/level'
 
 const Context = createContext('Dropdown')
 const providers = {}
@@ -46,7 +45,12 @@ export function Dropdown ({
       <Context.Consumer>
         {([dropdown, setDropdown]) => {
           const isOpen = dropdown === uid
-          const cls = [styles.dropdown, isOpen && styles.open, isOpen === false && styles.close].filter(Boolean)
+          const cls = isOpen
+            ? 'ae-dropdown-menu open'
+            : isOpen === false
+              ? 'ae-dropdown-menu close'
+              : 'ae-dropdown-menu' // isOpen === null
+
           const handleClick = ev => {
             ev.preventDefault()
             ev.stopPropagation()
@@ -58,14 +62,14 @@ export function Dropdown ({
               {Trigger === undefined
                 ? (
                   <button className='ae-btn-dropdown' onClick={handleClick}>
-                    {buttonText}
+                    <Level noPadding>{buttonText}</Level>
                   </button>
                 )
                 : <Trigger className='ae-btn-dropdown' onClick={handleClick} />}
               {noWrapper
                 ? isOpen && children
                 : (
-                  <div className={cls.join(' ')}>
+                  <div className={cls}>
                     {children}
                   </div>
                 )}
@@ -80,7 +84,6 @@ export function Dropdown ({
 // DOM event to close all Dropdown's on off-click
 const hasData = el => el.hasAttribute != null && el.hasAttribute('data-dropdown')
 const checkClass = (className, el) => {
-  console.log('checkClass', { className })
   if ((el.classList && el.classList.contains(className)) || hasData(el)) {
     return true
   }
@@ -109,7 +112,7 @@ try {
       return
     }
 
-    const withinDropdown = checkClass(styles.dropdown, el)
+    const withinDropdown = checkClass('ae-dropdown-menu', el)
     if (!withinDropdown || (withinDropdown && isClickable(el))) {
       dropdown = null
       Object.values(providers).forEach(fn => fn())

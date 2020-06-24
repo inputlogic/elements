@@ -10,7 +10,7 @@ export const rewind = () => {
 class Portal extends Component {
   constructor (props) {
     super(props)
-    this.el = new DocumentFragment()
+    this.el = new window.DocumentFragment()
   }
 
   componentDidMount () {

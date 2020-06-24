@@ -1,65 +1,64 @@
-@import "../../theme.less";
-
 .carousel {
   width: 100%;
   padding: 0 @gutter;
-  margin: 0 auto; 
-}
+  margin: 0 auto;
 
-.inner {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  align-items: center;
-  overflow: visible; 
+  .carousel-inner {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    overflow: visible;
 
-  nav {
-    a {
-      &:first-of-type {
-        margin-right: 0;
+    .slides-wrapper {
+      position: relative;
+      overflow: hidden;
+
+      .slides {
+        .carousel-slide {
+          width: 100%;
+          float: left;
+          transition: margin .2s cubic-bezier(0.46, 0.03, 0.52, 0.96);
+          opacity: 1;
+
+          &.active {
+            opacity: 1;
+          }
+        }
+      }
+    }
+
+    nav {
+      a {
+        &:first-of-type {
+          margin-right: 0;
+        }
+      }
+    }
+  }
+
+  .carousel-dots {
+    width: auto;
+    margin: 1rem auto;
+
+    .level {
+      justify-content: center;
+    }
+
+    button {
+      overflow: hidden;
+      width: 16px;
+      height: 16px;
+      border-radius: 16px;
+      background-color: @border-color;
+      border: 0;
+      text-indent: -9999px;
+      outline: none;
+      cursor: pointer;
+
+      &.active {
+        background-color: @primary-color;
       }
     }
   }
 }
 
-.slides {}
-
-.wrapper {
-  position: relative;
-  overflow: hidden;
-}
-
-.slide {
-  width: 100%;
-  float: left;
-  transition: margin .2s cubic-bezier(0.46, 0.03, 0.52, 0.96);
-  opacity: 1;
-}
-
-.activeSlide {
-  opacity: 1;
-}
-
-.carousel-dots {
-  width: auto;
-  margin: 1rem auto;
-
-  .level {
-    justify-content: center;
-  }
-
-  button {
-    overflow: hidden;
-    width: 16px;
-    height: 16px;
-    border-radius: 16px;
-    background-color: @border-color;
-    border: 0;
-    text-indent: -9999px;
-    outline: none;
-    cursor: pointer;
-  }
-}
-
-.activeDot {
-  background-color: @primary-color;
-}
