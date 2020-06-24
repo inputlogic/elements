@@ -1,6 +1,6 @@
 {
   "name": "@app-elements/avatar",
-  "version": "2.0.0-alpha.0",
+  "version": "2.0.0",
   "description": "Display avatar image. Falls back to initial.",
   "main": "dist/avatar.js",
   "module": "dist/avatar.m.js",
