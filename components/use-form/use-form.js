@@ -10,6 +10,7 @@ const SuccessShape = (v) => hasProp.call(v, 'formData') || hasProp.call(v, 'resp
 const Errors = (v) => Object.keys(v).length > 0
 const XhrShape = (v) => hasProp.call(v, 'response') || hasProp.call(v, 'status')
 const Maybe = (check) => (v) => !v ? true : check(v)
+const defaultOpts = { method: 'POST' }
 
 const safelyGetErrorResponse = (jsonString) => {
   try {
@@ -32,8 +33,7 @@ export const useForm = (formProps) => {
     action,
     validations,
     invalidate,
-    method = 'post',
-    noAuth = false,
+    opts = {},
     initialData = {},
     preProcess = id
   } = formProps
@@ -49,7 +49,7 @@ export const useForm = (formProps) => {
     setFormErrors({})
   }
 
-  const syncValue = useCallback((fieldName, handlerName = 'onChangeText') => {
+  const syncValue = useCallback((fieldName, handlerName = 'onChange') => {
     fieldNames.add(fieldName)
     return {
       value: formData[fieldName],
@@ -94,18 +94,12 @@ export const useForm = (formProps) => {
     if (action == null) {
       setFormState(FormState.Success({ formData }))
     } else {
-      const { promise, xhr } = request({
-        endpoint: action,
-        method,
-        noAuth,
-        data: preProcess(formData),
-        invalidate: invalidate
-      })
-      promise
-        .then((response) => {
+      fetch(action, Object.assign({ body: JSON.stringify(preProcess(formData)) }, defaultOpts, opts)
+        .then(res => res.json())
+        .then(response => {
           setFormState(FormState.Success({ response }))
         })
-        .catch(() => {
+        .catch(err => {
           setFormData({})
           const errors = safelyGetErrorResponse(xhr.response)
           setFormErrors([...fieldNames].reduce((acc, field) => ({
