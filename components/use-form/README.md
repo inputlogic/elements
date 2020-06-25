@@ -1,36 +1,117 @@
-# useMappedState
+# useForm
 
-useMappedState maps values from the provided (atom/Redux) store and keeps your Component synced with any changes to those mapped values.
+Manage Preact, React, and React Native forms with a simple hook.
 
 ## Installation
 
-`npm install --save @app-elements/use-mapped-state`
+`npm install --save @app-elements/use-form`
 
 ## Usage
 
 ```javascript
-import { useMappedState } from '@app-elements/use-mapped-state'
-import createStore from 'atom'
+import { useForm } from '@app-elements/use-form'
 
-const store = createStore([], { count: 0 })
-
-// Here is a simple view that expects a `count` value
-// form the global state.
-const Stateful = (props) => {
-  // `mapper` is a function that is given the entire state object from your store.
-  // Your job is to return the portion of that state object that this Component
-  // is concerned with.
-  const mapper = ({ count }) => ({ count })
-  const { count } = useMappedState(store, mapper)
+const MyComponent = (props) => {
+  const { clear, field, submit, isSubmitting } = useForm({
+    action: 'auth/login',
+    validations: {
+      email: s => !s && 'Please provide your email address.',
+      password: s => (!s || s.length < 6) && 'Password must be at least 6 characters'
+    },
+    onSuccess: ({ response }) => {
+      console.log('onSuccess', response)
+      clear(true)
+    },
+    onFailure: (errors) => console.log('onFailure', errors)
+  })
   return (
-    <p>Count: {count}</p>
+    <div>
+      <h1>useForm</h1>
+      <form onSubmit={submit}>
+        <input
+          label='Email Address'
+          placeholder='Your Email'
+          required
+          {...field('email')}
+        />
+        <input
+          type='password'
+          label='Password'
+          placeholder='Your Password'
+          required
+          {...field('password')}
+        />
+        <button type='submit' className='btn' disabled={isSubmitting }>Login</button>
+      </form>
+    </div>
   )
 }
 ```
 
 ## Props
 
-| Prop                   | Type       | Default       | Description         |
-|------------------------|------------|---------------|---------------------|
-| **`store`**            | _Object_   | _None_        | An (atom) store instance
-| **`mapper`**           | _Function_ | _None_        | A function that accepts `(state)` and returns an object
+| Prop                | Type       | Default              | Description         |
+|---------------------|------------|----------------------|---------------------|
+| **`action`**        | _String_   | _None_               | A URL to send form data to on submit.
+| **`opts`**          | _Object_   | `{ method: 'POST' }` | [`init`](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch#Syntax) object to pass to fetch.
+| **`initialData`**   | _Object_   | `{}`                 | Initial values for any fields.
+| **`validations`**   | _Object_   | _None_               | Each key should match a field name, and the value is a function that accepts the field value and returns falsey or a string describing the validation error.
+| **`preProcess`**    | _Function_ | `x => x`             | A function to process the form data before it's sent to the `action` URL.
+| **`onSuccess`**     | _Function_ | _None_               | Function called when the form is submitted and validations pass. If `action` is set, called with `{ response }` from the server, otherwise called with `{ formData }`.
+| **`onFailure`**     | _Function_ | _None_               | Function called when validations fail, or if `action` is set and the server response was unsuccessful. 
+
+## Return Values
+
+---
+#### field
+
+> field(fieldName: String, opts?: { handlerName = 'onChange', errorClass = 'error', hintProp = 'title'}): Object
+
+Return props to assign to a form input.
+
+```javascript
+<input
+  label='Email Address'
+  placeholder='Your Email'
+  required
+  {...field('email')}
+/>
+```
+
+---
+#### submit
+
+> submit(ev?: SubmitEvent): _None_
+
+Submits the form. Can also be called manually without an event.
+
+```javascript
+<form onSubmit={submit}>
+```
+
+---
+#### clear
+
+> clear(clearErrors = true): _None_
+
+Clears the form data, defaulting to the `InitialData` provided. Optionally clears form errors as well.
+
+```javascript
+clear(true)
+```
+
+---
+#### formData
+
+> Object
+
+The current form data represented as an object. Could be referenced to sync data
+outside of the form.
+
+---
+#### isSubmitting
+
+> Boolean
+
+Boolean representing if the form is currently submitting. Can be used to display
+a loading indicator, or disable the submit button.
