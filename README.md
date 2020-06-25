@@ -1,4 +1,4 @@
-InputLogic Elements
+Input Logic Elements
 ===================
 
 | Component                                             | Description                                                |
