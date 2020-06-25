@@ -1,11 +1,13 @@
 # Router
 
-Provides a `<Router />` component that accepts an object definition of routes, conditionally rendering them when the URL matches their path. It also supports nested Routers and automatically wires up `<a />` elements to the router.
+Provides a `<Router />` component that accepts an object definition of routes, conditionally rendering them when the URL matches their path. It also supports nested Routers, a `<Link />` component, and a `useRouter` hook to interact with the router.
 
-**Related components**
+**Related components/hooks**
 
 - [Link](#link)
 - [RouteTo](#routeto)
+- [SyncRouterState](#syncrouterstate)
+- [useRouter](#userouter)
 
 ## Installation
 
@@ -14,13 +16,17 @@ Provides a `<Router />` component that accepts an object definition of routes, c
 ## Usage
 
 ```javascript
-import Router from '@app-elements/router'
+import { RouteProvider, Router } from '@app-elements/router'
 
 // import your top-level routes (details about the routes object below)
 import routes from './routes'
 
 // ...
-<Router routes={routes} />
+// The RouteProvider and top-most Router should both be provided the same
+// top-level routes object.
+<RouteProvider routes={routes}>
+  <Router routes={routes} />
+</RouteProvider>
 ```
 
 ### Defining Your Routes
@@ -103,14 +109,6 @@ export const Account = () => (
 
 Now you have a top-level router that renders different components based on nested routes. Those top-level, or _parent_ route components can then include a nested `<Router />` to gain finer control over what gets rendered based on the current URL.
 
-### External Links
-
-Since `Router` automatically wires up `<a />` elements to the router, you may wish to bypass this for external links, in these cases just add `data-external-link` to your anchor:
-
-```javascript
-<a href='http://some-external-link.com' data-external-link>External Link</a>
-```
-
 
 ## Router Props
 
@@ -126,7 +124,7 @@ Since `Router` automatically wires up `<a />` elements to the router, you may wi
 import { Link } from '@app-elements/router'
 
 // Render an anchor with a named route
-return <Link name='post' args={{ id: post.id }}>{post.title}</Link>
+return <Link to='post' args={{ id: post.id }}>{post.title}</Link>
 ```
 
 
@@ -144,6 +142,51 @@ return <RouteTo name='blogPost' args={{ id }} />
 
 | Prop              | Type        | Default  | Description         |
 |-------------------|-------------|----------|---------------------|
-| **`name`**        | _String_    | _None_   | String that matches a key in your routes object.
+| **`name|to`**     | _String_    | _None_   | String that matches a key in your routes object.
 | **`args`**        | _Object_    | _None_   | Object of key-value pairs to replace dynamic values in a route definition. Ex. `posts/:id` => { id: 1 }
+| **`queries`**     | _Object_    | _None_   | Object of key-value pairs to convert to querystring params.
+
+
+# SyncRouterState
+
+```javascript
+import { SyncRouterState } from '@app-elements/router'
+
+// If you wish to sync the router state to your own global state (redux, atom, mobx, etc.)
+// {
+//   route: {
+//     name: "post",
+//     path: "/posts/:id",
+//     args: { id: 1 }
+//   },
+//   currentPath: "/posts/1"
+// }
+return (
+  <SyncRouterState>
+    {state => console.log("SyncRouterState", state)}
+  </SyncRouterState>
+)
+```
+
+# useRouter
+
+```javascript
+import { useRouter } from '@app-elements/router'
+
+// Access some of the internal functions of the router
+const {
+  path,
+  setPath,
+  routeTo,
+  route,
+  setRoute
+} = useRouter()
+```
+
+## useRouter props
+
+| Prop              | Type        | Description         |
+|-------------------|-------------|----------|---------------------|
+| **`path`**        | _String_    | _None_   | Current path (will match `window.location.pathname + window.location.search`
+| **`setPath`**     | _Function_  | _None_   | Object of key-value pairs to replace dynamic values in a route definition. Ex. `posts/:id` => { id: 1 }
 | **`queries`**     | _Object_    | _None_   | Object of key-value pairs to convert to querystring params.
