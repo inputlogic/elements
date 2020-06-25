@@ -2,8 +2,6 @@ import React, { useState } from 'react'
 
 import { buildCalendar, monthNames, addMonths, subMonths } from './util'
 
-import './date-picker.less'
-
 const DAYS = ['S', 'M', 'T', 'W', 'T', 'F', 'S']
 
 export function BaseDatePicker ({

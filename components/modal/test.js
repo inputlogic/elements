@@ -2,7 +2,7 @@
 
 import { render } from 'preact'
 import createStore from 'atom'
-import Modal, { Modals } from './index.js'
+import { Modal, Modals } from './index.js'
 
 const store = createStore([], { modal: 'ExampleModal' })
 const Provider = getProvider()
@@ -35,7 +35,7 @@ test('Modal exports', () => {
 test('Modal should render', () => {
   render(
     <Provider store={store}>
-      <Modals>
+      <Modals value={store.getState().modal} syncState={modal => store.setState({ modal })}>
         <ExampleModal />
       </Modals>
     </Provider>,
@@ -50,7 +50,7 @@ test('Modal should not render more than one modal', (done) => {
     // Wait for React to re-render with updated state
     render(
       <Provider store={store}>
-        <Modals>
+        <Modals value={store.getState().modal} syncState={modal => store.setState({ modal })}>
           <ExampleModal />
           <SampleModal />
         </Modals>

@@ -1,5 +1,14 @@
+import { parse, stringify } from './qs'
+
+const hasProp = Object.prototype.hasOwnProperty
+
 const segmentize = url => {
   return url.replace(/(^\/+|\/+$)/g, '').split('/')
+}
+
+export function updateQuery (queries) {
+  const existingParams = parse(window.location.search)
+  return window.location.pathname + `?${stringify({ ...existingParams, ...queries })}`
 }
 
 // route matching logic, taken from preact-router
@@ -48,13 +57,6 @@ export const exec = (url, route) => {
   return matches
 }
 
-export function equal (a, b) {
-  if ((a == null && b != null) || (a != null && b == null)) {
-    return false
-  }
-  return true
-}
-
 export function getRouteComponent (routes, currentPath) {
   for (const route in routes) {
     if (hasProp.call(routes[route], 'routes')) {
@@ -81,25 +83,6 @@ export function getRouteComponent (routes, currentPath) {
       }
     }
   }
-}
-
-const hasProp = Object.prototype.hasOwnProperty
-
-function stringify (obj, prefix = '') {
-  const pairs = []
-
-  //
-  // Optionally prefix with a '?' if needed
-  //
-  if (typeof prefix !== 'string') prefix = '?'
-
-  for (const key in obj) {
-    if (hasProp.call(obj, key)) {
-      pairs.push(encodeURIComponent(key) + '=' + encodeURIComponent(obj[key]))
-    }
-  }
-
-  return pairs.length ? prefix + pairs.join('&') : ''
 }
 
 export const getAllRoutes = routes =>

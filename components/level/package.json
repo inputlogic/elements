@@ -1,12 +1,12 @@
 {
   "name": "@app-elements/level",
-  "version": "1.0.3",
+  "version": "2.0.1",
   "description": "Position all children on a level row.",
   "main": "dist/level.js",
   "module": "dist/level.m.js",
   "source": "index.js",
   "scripts": {
-    "build": "microbundle --jsx React.createElement --external react --no-compress",
+    "build": "microbundle --jsx React.createElement --external react --no-compress --css-modules true",
     "prepublishOnly": "npm run build",
     "test": "exit 0"
   },

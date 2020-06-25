@@ -25,6 +25,7 @@ InputLogic Elements
 | [useMappedState](components/use-mapped-state)         | Map part of global state to a Component and keep it in sync.
 | [useRequest](components/use-request)                  | Connect a Component to the result of an API request.
 | [useForm](components/use-form)                        | Take the pain out of forms!
+| [useStorePath](components/use-store-path)             | Syncs the value of the given path, and exposes a convenient setter.
 | [useSuccessiveTaps](components/use-successive-taps)   | A hook that fires a callback only after `n` taps or clicks.
 | [useVariantState](components/use-variant-state)       | A hook for defining strict state descriptors and transitions.
 
@@ -32,7 +33,7 @@ InputLogic Elements
 - [~~withRequest~~](components/with-request) **deprecated**
 - [~~withState~~](components/with-state) **deprecated**
 - [~~ListResource~~](components/list-resource) **deprecated**
-- [~Form~](components/form) **deprecated**
+- [~~Form~~](components/form) **deprecated**
 
 Making Changes
 --------------

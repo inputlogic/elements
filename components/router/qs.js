@@ -16,7 +16,7 @@ const decode = input => decodeURIComponent(input.replace(/\+/g, ' '))
  * @returns {Object}
  * @api public
  */
-function parse (query) {
+export function parse (query) {
   const parser = /([^=?&]+)=?([^&]*)/g
   const result = {}
   let part
@@ -44,7 +44,7 @@ function parse (query) {
  * @returns {String}
  * @api public
  */
-function stringify (obj, prefix = '') {
+export function stringify (obj, prefix = '') {
   const pairs = []
 
   //
@@ -59,9 +59,4 @@ function stringify (obj, prefix = '') {
   }
 
   return pairs.length ? prefix + pairs.join('&') : ''
-}
-
-export default {
-  stringify,
-  parse
 }

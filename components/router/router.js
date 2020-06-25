@@ -44,10 +44,12 @@ export function useRouter () {
   return value
 }
 
-export function Link ({ to, args = {}, queries = {}, children, ...props }) {
+export function Link ({ to, name, args = {}, queries = {}, children, ...props }) {
   if (allRoutes == null) {
     throw new Error('<Link /> must be child of <RouteProvider />')
   }
+
+  to = to || name
 
   const rule = allRoutes[to]
   if (!rule) {
@@ -69,6 +71,38 @@ export function Link ({ to, args = {}, queries = {}, children, ...props }) {
             {children}
           </a>
         )
+      }}
+    </Context.Consumer>
+  )
+}
+
+export function RouteTo ({ to, name, url, args = {}, queries = {} }) {
+  let href
+
+  to = to || name
+
+  if (url != null) {
+    href = url
+  } else {
+    if (allRoutes == null) {
+      throw new Error('<RouteTo /> must be child of <RouteProvider />')
+    }
+
+    const rule = allRoutes[to]
+    if (!rule) {
+      throw new Error('No route found for name: ' + to)
+    }
+
+    href = getHref({ rule, args, queries })
+  }
+
+  return (
+    <Context.Consumer>
+      {context => {
+        if (href) {
+          context.routeTo(href)
+        }
+        return null
       }}
     </Context.Consumer>
   )
@@ -132,19 +166,33 @@ export function Router (props) {
 
   const localRoutes = props.routes
   const context = useRouter()
+
   if (context == null) {
     throw new Error('<Router /> must be wrapped with <RouteProvider />.')
   }
 
   const { path, setRoute } = context
+
   if (path == null) {
     return
   }
 
-  const [Component, newRoute] = getRouteComponent(localRoutes, path)
+  const pair = getRouteComponent(localRoutes, path)
+
+  if (pair == null) {
+    setRoute({ name: 'Not Found', args: {}, notFound: true, path })
+    return null
+  }
+
+  const [Component, newRoute] = pair
+
   if (newRoute) {
     setRoute(newRoute)
   }
 
-  return typeof Component === 'function' ? <Component /> : Component
+  const childProps = newRoute != null ? newRoute.args : {}
+
+  return typeof Component === 'function'
+    ? <Component {...childProps} />
+    : Component
 }

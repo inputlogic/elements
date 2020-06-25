@@ -1,9 +1,9 @@
 {
-  "name": "@app-elements/interval",
-  "version": "2.0.0",
-  "description": "Call some function on an interval during the lifecycle of a component",
-  "main": "dist/interval.js",
-  "module": "dist/interval.m.js",
+  "name": "@app-elements/use-document-click",
+  "version": "0.0.1",
+  "description": "A (P)React hook to handle document clicks or taps.",
+  "main": "dist/use-document-click.js",
+  "module": "dist/use-document-click.m.js",
   "source": "index.js",
   "scripts": {
     "build": "microbundle --jsx React.createElement --external react --no-compress",
@@ -22,12 +22,12 @@
     "react-component",
     "preact",
     "component",
+    "hook",
     "ui"
   ],
-  "publishConfig": {
-    "access": "public"
-  },
   "author": "Input Logic Team",
   "license": "ISC",
-  "gitHead": "d50087f5b15f56e544e7e52d0628bc3b7f0ea361"
+  "publishConfig": {
+    "access": "public"
+  }
 }

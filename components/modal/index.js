@@ -1,26 +1,16 @@
-import check from 'check-arg-types'
-import find from '@wasmuth/find'
-import path from '@wasmuth/path'
-import pathEq from '@wasmuth/path-eq'
-import React, { createPortal, Component } from 'react'
+import React, {
+  createContext,
+  createPortal,
+  useEffect,
+  useRef,
+  useState,
+  Children,
+  Component
+} from 'react'
 
-import connect from '@app-elements/connect'
-
-import './style.less'
-
-const toType = check.prototype.toType
-
+const Context = createContext('Modals')
 const isOverlay = (el) =>
   (el.classList && el.classList.contains('ae-modal-container'))
-
-export const actions = {
-  onContainerClick: (state, event) => {
-    if (isOverlay(event.target)) {
-      return { modal: null }
-    }
-  },
-  closeModal: (state) => ({ modal: null })
-}
 
 class Portal extends Component {
   constructor (props) {
@@ -53,98 +43,94 @@ class Portal extends Component {
   }
 }
 
-export const Modal = connect({
-  name: 'Modal',
-  withActions: actions,
-  focusRef: dom => {
-    setTimeout(() => {
-      dom && dom.focus()
-    }, 0)
-  },
-  handleKeyDown: closeModal => ev => {
-    const pressedEscape = ev.keyCode === 27
-    if (pressedEscape) {
-      ev.stopPropagation()
-      closeModal()
-    }
-  }
-})(({
-  // connect actions
-  onContainerClick,
-  closeModal,
-
-  // Component functions
-  focusRef,
-  handleKeyDown,
-
-  // props
+export function Modal ({
   className = '',
   hideClose = false,
   shouldCloseOnEsc = true,
-
   children
-}) => (
-  <div
-    className={'ae-modal-container ' + className}
-    onClick={onContainerClick}
-  >
-    <div
-      class='ae-modal-content'
-      ref={focusRef}
-      tabIndex='-1'
-      onKeyDown={shouldCloseOnEsc && handleKeyDown(closeModal)}
-    >
-      {!hideClose &&
-        <div className='close' onClick={closeModal}>
-          close
-        </div>}
-      {children}
-    </div>
-  </div>
-))
-
-export default Modal
-
-/**
-* Component that should wrap any modal instances.
-*
-*   <Modals>
-*     <SomeModal />
-*     <AnotherModal />
-*   </Modals>
-*/
-let prevState = {}
-
-export const MatchStateToModal = connect({
-  name: 'MatchStateToModal',
-  withActions: actions,
-  withState: ({ currentRoute, modal }) => ({ currentRoute, modal })
-})(({ currentRoute, modal, closeModal, children }) => {
-  const prevModal = prevState.modal
-  const prevRouteName = path('currentRoute.name', prevState)
-
-  prevState = { currentRoute, modal }
-
-  if (!modal) {
-    if (prevModal != null) {
-      document.body.classList.remove('modal-open')
+}) {
+  const focusRef = useRef()
+  useEffect(() => {
+    if (focusRef.current) {
+      focusRef.current.focus()
     }
+  }, [])
+  return (
+    <Context.Consumer>
+      {([_, setModal]) => {
+        const closeModal = () => setModal(null)
+        const onContainerClick = (event) => {
+          if (isOverlay(event.target)) {
+            closeModal()
+          }
+        }
+        const handleKeyDown = (event) => {
+          const pressedEsc = event.keyCode === 27
+          if (pressedEsc) {
+            event.stopPropagation()
+            closeModal()
+          }
+        }
+        return (
+          <div
+            className={'ae-modal-container ' + className}
+            onClick={onContainerClick}
+          >
+            <div
+              class='ae-modal-content'
+              ref={focusRef}
+              tabIndex='-1'
+              onKeyDown={shouldCloseOnEsc && handleKeyDown}
+            >
+              {!hideClose &&
+                <div className='close' onClick={closeModal}>
+                  close
+                </div>}
+              {children}
+            </div>
+          </div>
+        )
+      }}
+    </Context.Consumer>
+  )
+}
+
+export function Modals ({ value, syncState, children }) {
+  const valueRef = useRef(value)
+  const [modal, setModal] = useState(value)
+  const setModalMaybe = (uid) => {
+    if (uid !== modal) {
+      setModal(uid)
+      syncState && syncState(uid)
+    }
+  }
+
+  useEffect(() => {
+    if (value !== valueRef.current) {
+      valueRef.current = value
+      setModal(value)
+      syncState && syncState(value)
+    }
+  }, [value, modal, syncState])
+
+  if (modal == null) {
     return
-  } else if (modal !== prevModal) {
-    document.body.classList.add('modal-open')
   }
 
-  if (path('name', currentRoute || {}) !== prevRouteName) {
-    closeModal()
+  let child
+  Children.forEach(children, c => {
+    if (c.type.name === modal) {
+      child = c
+    }
+  })
+
+  if (modal != null && child == null) {
+    console.warn('No modal found for: ' + modal)
   }
 
-  const child = toType(children) === 'array'
-    ? find(c => pathEq('type.name', modal, c), children)
-    : children
-  return child
-})
-
-export const Modals = ({ children }) =>
-  <Portal>
-    <MatchStateToModal>{children}</MatchStateToModal>
-  </Portal>
+  return (
+    <Context.Provider value={[modal, setModalMaybe]}>
+      <Portal>{child}</Portal>
+    </Context.Provider>
+  )
+}

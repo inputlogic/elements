@@ -11,7 +11,7 @@ jest.mock('./request')
 const store = createStore([requestsReducer], { count: 0 })
 const Context = createContext(store)
 
-const { clearRequest, clearRequests, patchListRequest } = actions
+const { appendRequest, clearRequest, clearRequests, patchListRequest } = actions
 
 test('useRequest exports', () => {
   expect(typeof useRequest).toBe('function')
@@ -106,6 +106,27 @@ test('useRequest will cache by uid if provided', (done) => {
 
   render(<Context.Provider value={store}><Requested /></Context.Provider>, document.body)
   expect(document.body.innerHTML).toBe('<p>Loading...</p>')
+})
+
+test('appendRequest should append an item to a request result', () => {
+  const endpoint = '/users'
+  const result = [{ id: 4, name: 'Mark' }, { id: 5, name: 'Paul' }]
+  // fake existing/cached request
+  const store = createStore([requestsReducer], { requests: { [endpoint]: { result } } })
+  expect(store.getState().requests[endpoint].result[0].name).toBe('Mark')
+
+  store.dispatch(appendRequest({
+    endpointOrUid: endpoint,
+    path: '',
+    item: { id: 6, name: 'Margo' }
+  }))
+
+  const results = store.getState().requests[endpoint].result
+  const len = results.length
+  const last = results[len - 1]
+
+  expect(len).toBe(3)
+  expect(last.name).toBe('Margo')
 })
 
 test('patchListRequest should patch a nested item in a request result', () => {

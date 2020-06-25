@@ -23,33 +23,19 @@ const withState = optsOrMapper => PassedComponent => {
       }
     }
 
-    _update (state) {
-      this.setState({ _mappedState: mapper(this._store.getState(), this.props) })
+    _update () {
+      const _mappedState = mapper(this._store.getState(), this.props)
+      if (!equal(_mappedState, this.state._mappedState)) {
+        this.setState({ _mappedState })
+      }
     }
 
     componentWillUnmount () {
       this._unsubscribe()
     }
 
-    shouldComponentUpdate (nextProps, nextState) {
-      const mappedStateChanged = !equal(
-        mapper(this._store.getState(), nextProps),
-        this.state._mappedState
-      )
-      if (mappedStateChanged) {
-        return true
-      } else if (!equal(nextState, this.state)) {
-        return true
-      } else {
-        return !equal(this.props, nextProps)
-      }
-    }
-
     componentDidUpdate () {
-      const _mappedState = mapper(this._store.getState(), this.props)
-      if (!equal(_mappedState, this.state._mappedState)) {
-        this.setState({ _mappedState })
-      }
+      this._update()
     }
 
     render () {

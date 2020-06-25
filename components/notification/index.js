@@ -1,7 +1,5 @@
 import React from 'react' // Can be aliased to Preact in your project
 
-import './style.less'
-
 let ref
 
 export function showNotification (notification) {

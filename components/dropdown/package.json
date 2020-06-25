@@ -1,12 +1,12 @@
 {
   "name": "@app-elements/dropdown",
-  "version": "3.0.2",
+  "version": "4.0.1",
   "description": "Simple dropdown menus.",
   "main": "dist/dropdown.js",
   "module": "dist/dropdown.m.js",
   "source": "index.js",
   "scripts": {
-    "build": "microbundle --jsx React.createElement --external react --no-compress",
+    "build": "microbundle --jsx React.createElement --external react --no-compress --css-modules true",
     "prepublishOnly": "npm run build",
     "test": "exit 0"
   },
@@ -27,8 +27,7 @@
   "author": "Input Logic Team",
   "license": "ISC",
   "peerDependencies": {
-    "@app-elements/level": "^1.0.3",
-    "@app-elements/use-mapped-state": "^0.3.2"
+    "@app-elements/level": "^1.0.3"
   },
   "gitHead": "d50087f5b15f56e544e7e52d0628bc3b7f0ea361"
 }

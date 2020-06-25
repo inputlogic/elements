@@ -1,18 +1,14 @@
 import filter from '@wasmuth/filter'
-import path from '@wasmuth/path'
 import pick from '@wasmuth/pick'
 import pipe from '@wasmuth/pipe'
-import toPairs from '@wasmuth/to-pairs'
 import React from 'react'
 
-import './style.less'
-
-const getPos = props => pipe(
+const getPos = pipe(
   pick(['up', 'right', 'down', 'left']),
-  filter(x => !!x),
-  toPairs,
-  path('0.0')
-)(props)
+  filter(Boolean),
+  Object.keys,
+  ls => ls[0]
+)
 
 export function Tooltip ({
   className = '',

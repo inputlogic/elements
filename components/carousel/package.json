@@ -1,12 +1,12 @@
 {
   "name": "@app-elements/carousel",
-  "version": "1.2.3",
+  "version": "2.0.1",
   "description": "Simple carousel with arrows and dot indicators.",
   "main": "dist/carousel.js",
   "module": "dist/carousel.m.js",
   "source": "index.js",
   "scripts": {
-    "build": "microbundle --jsx React.createElement --external react --no-compress",
+    "build": "microbundle --jsx React.createElement --external react --no-compress --css-modules true",
     "prepublishOnly": "npm run build",
     "test": "exit 0"
   },
@@ -27,7 +27,7 @@
   "author": "Input Logic Team",
   "license": "ISC",
   "dependencies": {
-    "@app-elements/level": "^1.0.3"
+    "@app-elements/level": "^2.0.1"
   },
   "gitHead": "d50087f5b15f56e544e7e52d0628bc3b7f0ea361"
 }

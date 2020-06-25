@@ -4,9 +4,6 @@
     "react"
   ],
   "plugins": [
-    ["babel-plugin-transform-require-ignore", {
-      "extensions": [".less"]
-    }],
     ["module-resolver", {
       "alias": {
         "react": "preact/compat",
