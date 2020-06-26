@@ -142,7 +142,8 @@ return <RouteTo name='blogPost' args={{ id }} />
 
 | Prop              | Type        | Default  | Description         |
 |-------------------|-------------|----------|---------------------|
-| **`name|to`**     | _String_    | _None_   | String that matches a key in your routes object.
+| **`to`**          | _String_    | _None_   | String that matches a key in your routes object.
+| **`name`**        | _String_    | _None_   | Same as `to`, for backwards compatibility/preference.
 | **`args`**        | _Object_    | _None_   | Object of key-value pairs to replace dynamic values in a route definition. Ex. `posts/:id` => { id: 1 }
 | **`queries`**     | _Object_    | _None_   | Object of key-value pairs to convert to querystring params.
 
@@ -186,7 +187,9 @@ const {
 ## useRouter props
 
 | Prop              | Type        | Description         |
-|-------------------|-------------|----------|---------------------|
-| **`path`**        | _String_    | _None_   | Current path (will match `window.location.pathname + window.location.search`
-| **`setPath`**     | _Function_  | _None_   | Object of key-value pairs to replace dynamic values in a route definition. Ex. `posts/:id` => { id: 1 }
-| **`queries`**     | _Object_    | _None_   | Object of key-value pairs to convert to querystring params.
+|-------------------|-------------|---------------------|
+| **`path`**        | _String_    | Current path (defaults to `window.location.pathname + window.location.search`
+| **`setPath`**     | _Function_  | Programmatically set the path
+| **`routeTo`**     | _Function_  | Perform a "route change", calling `history.pushState` and `setPath`
+| **`route`**       | _Object_    | The current matched route. [Example values](#syncrouterstate)
+| **`setRoute`**    | _Function_  | Programmatically set the route. Only sets if the name does not match current `route.name`
