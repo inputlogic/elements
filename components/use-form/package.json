@@ -1,6 +1,6 @@
 {
   "name": "@app-elements/use-form",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A (P)React hook to take the pain out of forms!",
   "main": "dist/use-form.js",
   "module": "dist/use-form.m.js",
