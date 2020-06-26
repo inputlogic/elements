@@ -47,7 +47,6 @@ export const useForm = ({
     hintProp = 'title'
   } = {}) => {
     fieldNames.add(fieldName)
-    console.log('field', fieldName, dataRef.current[fieldName])
     return {
       name: fieldName,
       value: dataRef.current[fieldName],
@@ -68,7 +67,7 @@ export const useForm = ({
   }
 
   const validate = (selectFields) => {
-    const fields = selectFields || [...fieldNames]
+    const fields = selectFields || Array.from(fieldNames)
     const errors = validations == null
       ? {}
       : fields.reduce((errs, name) => {
@@ -121,7 +120,7 @@ export const useForm = ({
         const handleErrRes = body => body
           .then(errors => {
             dataRef.current = {}
-            errorsRef.current = [...fieldNames].reduce((acc, field) => ({
+            errorsRef.current = Array.from(fieldNames).reduce((acc, field) => ({
               ...acc,
               ...(hasProp.call(errors, field) ? { [field]: errors[field].join(' ') } : {})
             }), {})
