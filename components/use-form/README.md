@@ -67,7 +67,19 @@ const MyComponent = (props) => {
 
 > field(fieldName: String, opts?: { handlerName = 'onChange', errorClass = 'error', hintProp = 'title'}): Object
 
-Return props to assign to a form input.
+Return props to assign to a form input:
+
+```javascript
+{
+  name,
+  value,
+  [handlerName],
+  [hintProp?],
+  [className?]
+}
+```
+
+Usage:
 
 ```javascript
 <input
