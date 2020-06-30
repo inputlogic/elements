@@ -1,3 +1,5 @@
+import { createElement } from 'react'
+global.createElement = createElement
 // Expose simple store Provider
 global.getProvider = function () {
   function Provider (props) { this.getChildContext = () => ({ store: props.store }) }

@@ -196,3 +196,57 @@ export function Router (props) {
     ? <Component {...childProps} />
     : Component
 }
+
+export function StackRouter ({ routes: localRoutes, limit = 2, children }) {
+  const stackRef = useRef([])
+
+  if (!localRoutes) {
+    throw new Error('<StackRouter /> must be given a routes object.')
+  }
+
+  const context = useRouter()
+
+  if (context == null) {
+    throw new Error('<StackRouter /> must be wrapped with <RouteProvider />.')
+  }
+
+  useEffect(() => {
+    const onPop = () => {
+      stackRef.current = stackRef.current.slice(0, -1)
+    }
+    window.addEventListener('popstate', onPop)
+    return () => window.removeEventListener('popstate', onPop)
+  }, [stackRef])
+
+  const { path, setRoute } = context
+
+  if (path == null) {
+    return null
+  }
+
+  const pair = getRouteComponent(localRoutes, path)
+
+  if (pair == null) {
+    setRoute({ name: 'Not Found', args: {}, notFound: true, path })
+    return null
+  }
+
+  const [Component, newRoute] = pair
+
+  if (newRoute) {
+    setRoute(newRoute)
+    const last = stackRef.current[stackRef.current.length - 1]
+    if (last == null || last.name !== newRoute.name) {
+      stackRef.current = [].concat(
+        stackRef.current,
+        Object.assign({}, newRoute, { Component })
+      )
+    }
+  }
+
+  const stack = stackRef.current.length > limit
+    ? stackRef.current.slice(-limit)
+    : [].concat(stackRef.current)
+
+  return children({ stack })
+}
