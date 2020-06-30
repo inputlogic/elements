@@ -37,7 +37,7 @@ export function parse (query) {
 }
 
 /**
- * Transform a query string to an object.
+ * Transform an object into a query string.
  *
  * @param {Object} obj Object that should be transformed.
  * @param {String} prefix Optional prefix.
