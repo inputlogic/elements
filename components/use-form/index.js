@@ -47,23 +47,28 @@ export const useForm = ({
     hintProp = 'title'
   } = {}) => {
     fieldNames.add(fieldName)
-    return {
-      name: fieldName,
-      value: dataRef.current[fieldName],
-      [handlerName]: (ev) => {
+    const fieldProps = {}
+    Object.defineProperty(fieldProps, 'name', { value: fieldName })
+    Object.defineProperty(fieldProps, 'value', { value: dataRef.current[fieldName] })
+    Object.defineProperty(fieldProps, handlerName, {
+      value: (ev) => {
         const value = ev instanceof Event ? ev.target.value : ev
         if (formState === FAILURE) {
           setFormState(INIT)
           errorsRef.current = (errorsRef.current || {})[fieldName]
         }
         if (dataRef.current[fieldName] !== value) {
-          dataRef.current = { ...dataRef.current, [fieldName]: value }
+          const newData = Object.assign({}, dataRef.current)
+          Object.defineProperty(newData, fieldName, { value })
+          dataRef.current = newData
         }
-      },
-      ...(hasProp.call(errorsRef.current || {}, fieldName)
-        ? { [hintProp]: errorsRef.current[fieldName], className: errorClass }
-        : {})
+      }
+    })
+    if (hasProp.call(errorsRef.current || {}, fieldName)) {
+      Object.defineProperty(fieldProps, hintProp, { value: errorsRef.current[fieldName] })
+      Object.defineProperty(fieldProps, 'className', { value: errorClass })
     }
+    return fieldProps
   }
 
   const validate = (selectFields) => {

@@ -1,6 +1,6 @@
 /* global afterEach test expect */
 
-import { useForm } from './use-form'
+import { useForm } from './index'
 
 afterEach(() => {
   document.body.innerHTML = ''

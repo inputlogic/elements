@@ -250,4 +250,3 @@ export function StackRouter ({ routes: localRoutes, limit = 2, children }) {
 
   return children({ stack })
 }
-
