@@ -38,5 +38,6 @@
     "ignore": [
       "build"
     ]
-  }
+  },
+  "dependencies": {}
 }

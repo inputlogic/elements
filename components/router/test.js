@@ -1,7 +1,7 @@
 /* global afterEach test expect */
 
 import { render } from 'preact'
-import { RouteProvider, Router, Link, useRouter } from './index.js'
+import { RouteProvider, Router, StackRouter, Link, useRouter } from './index.js'
 
 const Home = () => (
   <div id='home'>Home</div>
@@ -49,7 +49,9 @@ afterEach(() => {
 })
 
 test('Router exports', () => {
+  expect(typeof RouteProvider).toBe('function')
   expect(typeof Router).toBe('function')
+  expect(typeof StackRouter).toBe('function')
 })
 
 test('Router should render Home', () => {

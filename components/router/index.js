@@ -3,6 +3,7 @@ export {
   Router,
   RouteProvider,
   RouteTo,
+  StackRouter,
   SyncRouterState,
   useRouter
 } from './router'
