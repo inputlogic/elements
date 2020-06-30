@@ -1,6 +1,6 @@
 {
   "name": "@app-elements/use-store-path",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A (P)React hook that returns the value at the given path on your store, keeps your Component synced with any changes, and provides a convenient setter to update the value.",
   "main": "dist/use-store-path.js",
   "module": "dist/use-store-path.m.js",
