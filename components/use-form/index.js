@@ -48,25 +48,23 @@ export const useForm = ({
   } = {}) => {
     fieldNames.add(fieldName)
     const fieldProps = {}
-    Object.defineProperty(fieldProps, 'name', { value: fieldName })
-    Object.defineProperty(fieldProps, 'value', { value: dataRef.current[fieldName] })
-    Object.defineProperty(fieldProps, handlerName, {
-      value: (ev) => {
-        const value = ev instanceof Event ? ev.target.value : ev
-        if (formState === FAILURE) {
-          setFormState(INIT)
-          errorsRef.current = (errorsRef.current || {})[fieldName]
-        }
-        if (dataRef.current[fieldName] !== value) {
-          const newData = Object.assign({}, dataRef.current)
-          Object.defineProperty(newData, fieldName, { value })
-          dataRef.current = newData
-        }
+    fieldProps.name = fieldName
+    fieldProps.value = dataRef.current[fieldName]
+    fieldProps[handlerName] = (ev) => {
+      const value = ev instanceof Event ? ev.target.value : ev
+      if (formState === FAILURE) {
+        setFormState(INIT)
+        errorsRef.current = (errorsRef.current || {})[fieldName]
       }
-    })
+      if (dataRef.current[fieldName] !== value) {
+        const valueObj = {}
+        valueObj[fieldName] = value
+        Object.assign(dataRef.current, valueObj)
+      }
+    }
     if (hasProp.call(errorsRef.current || {}, fieldName)) {
-      Object.defineProperty(fieldProps, hintProp, { value: errorsRef.current[fieldName] })
-      Object.defineProperty(fieldProps, 'className', { value: errorClass })
+      fieldProps[hintProp] = errorsRef.current[fieldName]
+      fieldProps.className = errorClass
     }
     return fieldProps
   }
