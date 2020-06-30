@@ -239,7 +239,7 @@ export function StackRouter ({ routes: localRoutes, limit = 2, children }) {
     if (last == null || last.name !== newRoute.name) {
       stackRef.current = [].concat(
         stackRef.current,
-        Object.assign({}, newRoute, { Component })
+        Object.assign({}, newRoute, { Component, path })
       )
     }
   }
