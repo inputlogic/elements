@@ -1,6 +1,6 @@
 {
   "name": "@app-elements/router",
-  "version": "3.1.2",
+  "version": "3.1.3",
   "description": "The best router.",
   "main": "dist/router.js",
   "module": "dist/router.m.js",

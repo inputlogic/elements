@@ -1,6 +1,6 @@
 {
   "name": "@app-elements/pagination",
-  "version": "2.0.10",
+  "version": "2.0.11",
   "description": "Display pagination links for a url that follows DRF format.",
   "main": "dist/pagination.js",
   "module": "dist/pagination.m.js",
@@ -30,7 +30,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@app-elements/router": "^3.1.2"
+    "@app-elements/router": "^3.1.3"
   },
   "peerDependencies": {
     "wasmuth": "2.0.6"
