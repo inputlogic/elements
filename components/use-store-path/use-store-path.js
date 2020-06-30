@@ -5,8 +5,7 @@ import pathSet from '@wasmuth/path-set'
 export function useStorePath (store, path) {
   const value = useMappedState(store, pathGet(path))
   const setter = (val) => {
-    const updated = pathSet(path, val, store.getState())
-    store.setState(updated, { useStorePath: path })
+    store.setState(pathSet(path, val, {}))
   }
 
   return [value, setter]
