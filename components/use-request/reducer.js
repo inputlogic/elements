@@ -104,14 +104,12 @@ export function requestsReducer (action, state) {
     }
     const foundItem = results[idx]
     const patchedResults = pathSet([idx], { ...foundItem, ...dataToMerge }, results)
-    let updatePath = ['requests', endpointOrUid, 'result']
-    if (path && path.length) {
-      if (toType(path) === 'array') {
-        updatePath = updatePath.concat(path)
-      } else if (toType(path) === 'string') {
-        updatePath = updatePath.concat(path).join('.')
-      }
-    }
+    let updatePath = [
+      'requests',
+      endpointOrUid,
+      'result',
+      ...(toType(path) === 'string' ? [path] : path)
+    ]
 
     return pathSet(updatePath, patchedResults, state)
   }
