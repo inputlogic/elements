@@ -237,6 +237,9 @@ export function StackRouter ({ routes: localRoutes, limit = 2, children }) {
     setRoute(newRoute)
     const last = stackRef.current[stackRef.current.length - 1]
     if (last == null || last.path !== path) {
+      if (last != null) {
+        stackRef.current[stackRef.current.length - 1].isBack = true
+      }
       stackRef.current = [].concat(
         stackRef.current,
         Object.assign({}, newRoute, { Component, path })
