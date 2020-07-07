@@ -109,7 +109,7 @@ export function requestsReducer (action, state) {
       if (toType(path) === 'array') {
         updatePath = updatePath.concat(path)
       } else if (toType(path) === 'string') {
-        updatePath = updatePath.concat(path).join('.')
+        updatePath = updatePath.concat(path.split('.'))
       }
     }
 

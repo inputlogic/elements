@@ -145,6 +145,38 @@ test('patchListRequest should patch a nested item in a request result', () => {
   expect(store.getState().requests[endpoint].result[0].name).toBe('Patched')
 })
 
+test('patchListRequest should support string delim path value', () => {
+  const endpoint = 'https://coolapi.com/users'
+  const data = [{ id: 4, name: 'Mark' }, { id: 5, name: 'Paul' }]
+  // fake existing/cached request
+  const store = createStore([requestsReducer], { requests: { [endpoint]: { result: { results: { data } } } } })
+  expect(store.getState().requests[endpoint].result.results.data[0].name).toBe('Mark')
+
+  store.dispatch(patchListRequest({
+    endpointOrUid: endpoint,
+    path: 'results.data',
+    dataToMerge: { id: 4, name: 'Patched' }
+  }))
+
+  expect(store.getState().requests[endpoint].result.results.data[0].name).toBe('Patched')
+})
+
+test('patchListRequest should support array path value', () => {
+  const endpoint = 'https://coolapi.com/users'
+  const data = [{ id: 4, name: 'Mark' }, { id: 5, name: 'Paul' }]
+  // fake existing/cached request
+  const store = createStore([requestsReducer], { requests: { [endpoint]: { result: { results: { data } } } } })
+  expect(store.getState().requests[endpoint].result.results.data[0].name).toBe('Mark')
+
+  store.dispatch(patchListRequest({
+    endpointOrUid: endpoint,
+    path: ['results', 'data'],
+    dataToMerge: { id: 4, name: 'Patched' }
+  }))
+
+  expect(store.getState().requests[endpoint].result.results.data[0].name).toBe('Patched')
+})
+
 test('clearRequest action will clear cached request', (done) => {
   expect(Object.keys(store.getState().requests).length).toBe(3)
 
