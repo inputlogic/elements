@@ -4,6 +4,7 @@ Provides a `<Router />` component that accepts an object definition of routes, c
 
 **Related components/hooks**
 
+- [StackRouter](#stackrouter)
 - [Link](#link)
 - [RouteTo](#routeto)
 - [SyncRouterState](#syncrouterstate)
@@ -117,6 +118,43 @@ Now you have a top-level router that renders different components based on neste
 | **`routes`**      | _Object_    | _None_   | An object of objects representing the routes. Supported keys are `path`, `component`, and `routes`.
 
 
+# StackRouter
+
+`<StackRouter />` builds on `<Router />` by maintaining a "stack" or history of the rendered components, and exposing that stack to a [Function as Child](https://medium.com/merrickchristensen/function-as-child-components-5f3920a9ace9). From there you can determine how you want to manage or render the stack. For instance, by wrapping the current active component/route in the stack with `react-transition-group` components, you can easily add animations to your route transitions.
+
+```javascript
+import { StackRouter } from '@app-elements/router'
+import { CSSTransition, TransitionGroup } from "react-transition-group"
+
+// ...
+  {/*
+    The current active route is always the last in the `stack`
+    array. In this case, we are going to limit the stack to only
+    hold 1 route, and just utilize the function as child pattern,
+    so we can wrap the route component with a TransitionGroup.
+  */}
+  <StackRouter routes={routes}>
+    {({ stack, limit = 1 }) => {
+      const { path, args, isBack, Component } = stack[stack.length - 1]
+      return (
+        <TransitionGroup className="stack">
+          <CSSTransition
+            key={path}
+            classNames={isBack ? "fade-reverse" : "fade"}
+            addEndListener={(node, done) => {
+              node.addEventListener("transitionend", done, false)
+            }}
+          >
+            <div className='page'>
+              <Component {...args} />
+            </div>
+          </CSSTransition>
+        </TransitionGroup>
+      )
+    }}
+  </StackRouter>
+```
+
 
 # Link
 
@@ -146,7 +184,6 @@ return <RouteTo name='blogPost' args={{ id }} />
 | **`name`**        | _String_    | _None_   | Same as `to`, for backwards compatibility/preference.
 | **`args`**        | _Object_    | _None_   | Object of key-value pairs to replace dynamic values in a route definition. Ex. `posts/:id` => { id: 1 }
 | **`queries`**     | _Object_    | _None_   | Object of key-value pairs to convert to querystring params.
-
 
 # SyncRouterState
 
