@@ -44,6 +44,34 @@ export function useRouter () {
   return value
 }
 
+export function useScrollToTop () {
+  const backRef = useRef(false)
+  const nodeRef = useRef()
+  const pathRef = useRef()
+  const { path } = useRouter()
+
+  useEffect(() => {
+    const onPop = () => (backRef.current = true)
+    window.addEventListener('popstate', onPop)
+    return () => window.removeEventListener('popstate', onPop)
+  }, [])
+
+  const isBack = backRef && backRef.current
+
+  if (!isBack && path !== pathRef.current) {
+    if (nodeRef && nodeRef.current) {
+      nodeRef.current.scrollIntoView()
+    } else {
+      window.scrollTo(0, 0)
+    }
+    pathRef.current = path
+  } else if (isBack) {
+    backRef.current = false
+  }
+
+  return nodeRef
+}
+
 export function Link ({ to, name, args = {}, queries = {}, children, ...props }) {
   if (allRoutes == null) {
     throw new Error('<Link /> must be child of <RouteProvider />')

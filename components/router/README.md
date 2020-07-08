@@ -9,6 +9,7 @@ Provides a `<Router />` component that accepts an object definition of routes, c
 - [RouteTo](#routeto)
 - [SyncRouterState](#syncrouterstate)
 - [useRouter](#userouter)
+- [useScrollToTop](#usescrolltotop)
 
 ## Installation
 
@@ -109,7 +110,6 @@ export const Account = () => (
 ```
 
 Now you have a top-level router that renders different components based on nested routes. Those top-level, or _parent_ route components can then include a nested `<Router />` to gain finer control over what gets rendered based on the current URL.
-
 
 ## Router Props
 
@@ -230,3 +230,23 @@ const {
 | **`routeTo`**     | _Function_  | Perform a "route change", calling `history.pushState` and `setPath`
 | **`route`**       | _Object_    | The current matched route. [Example values](#syncrouterstate)
 | **`setRoute`**    | _Function_  | Programmatically set the route. Only sets if the name does not match current `route.name`
+
+
+# useScrollToTop
+
+We're trying not to make too many assumptions, so the Router *does not* scroll to top automatically. But, there is a super simple hook to enable such behavior.
+
+```javascript
+import { useScrollToTop } from '@app-elements/router'
+
+// ... in your top-level component
+useScrollToTop()
+
+// also returns a ref, if you would like to scroll a specific element to the
+// top, rather than the whole window
+const ref = useScrollToTop()
+
+<div id="main-nav" ref={ref}>
+```
+
+
