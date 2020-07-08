@@ -1,7 +1,7 @@
 /* global afterEach test expect */
 
 import { render } from 'preact'
-import { RouteProvider, Router, StackRouter, Link, useRouter } from './index.js'
+import { RouteProvider, Router, StackRouter, SyncRouterState, Link, useRouter } from './index.js'
 
 const Home = () => (
   <div id='home'>Home</div>
@@ -93,11 +93,24 @@ test('Router should render parent routes', () => {
   expect(document.body.querySelector('#users')).toBeNull()
 })
 
-test('Link should render', () => {
+test('Link should render', (done) => {
+  // Wait till Router state is set, then check if Link
+  // rendered the active class.
+  const sync = state => {
+    const link = document.body.querySelector('a')
+
+    expect(link).toBeDefined()
+    expect(link.className).toContain('active')
+    expect(link.className).toContain('test')
+
+    done()
+  }
+
   render(
     <RouteProvider routes={routes}>
-      <Link to='home'>Go Home</Link>
+      <Link to='home' className='test' activeClass='active'>Go Home</Link>
       <Router routes={routes} />
+      <SyncRouterState>{sync}</SyncRouterState>
     </RouteProvider>,
     document.body
   )
@@ -105,5 +118,4 @@ test('Link should render', () => {
   expect(document.body.querySelector('#home')).toBeDefined()
   expect(document.body.querySelector('#users')).toBeNull()
   expect(document.body.querySelector('#user')).toBeNull()
-  expect(document.body.querySelector('a')).toBeDefined()
 })

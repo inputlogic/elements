@@ -72,7 +72,16 @@ export function useScrollToTop () {
   return nodeRef
 }
 
-export function Link ({ to, name, args = {}, queries = {}, children, ...props }) {
+export function Link ({
+  to,
+  name,
+  className,
+  activeClass,
+  args = {},
+  queries = {},
+  children,
+  ...props
+}) {
   if (allRoutes == null) {
     throw new Error('<Link /> must be child of <RouteProvider />')
   }
@@ -89,13 +98,19 @@ export function Link ({ to, name, args = {}, queries = {}, children, ...props })
 
   return (
     <Context.Consumer>
-      {context => {
+      {({ path, routeTo }) => {
+        const isActive = path === href
         const onClick = ev => {
           ev.preventDefault()
-          context.routeTo(href)
+          routeTo(href)
         }
         return (
-          <a href={href} onClick={onClick} {...props}>
+          <a
+            href={href}
+            onClick={onClick}
+            className={(`${className || ''} ${isActive ? activeClass : ''}`).trim()}
+            {...props}
+          >
             {children}
           </a>
         )
