@@ -5,7 +5,8 @@ export {
   RouteTo,
   StackRouter,
   SyncRouterState,
-  useRouter
+  useRouter,
+  useScrollToTop
 } from './router'
 
 export {
