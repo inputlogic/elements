@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from 'react' // alias to 'preact/hooks'
 import { useMappedState } from '@app-elements/use-mapped-state'
 import { request as makeRequest } from './request'
 
+export { actions, requestsReducer } from './reducer'
+
 const OK_TIME = 30000
 const _existing = {}
 

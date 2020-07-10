@@ -3,8 +3,7 @@
 import createStore from 'atom'
 import { createContext, render, Fragment } from 'preact'
 import { useContext } from 'preact/hooks'
-import { useRequest } from './index'
-import { requestsReducer, actions } from './reducer'
+import { useRequest, requestsReducer, actions } from './index'
 
 jest.mock('./request')
 
