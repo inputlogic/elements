@@ -58,6 +58,20 @@ export const clearRequests = requestActions.clearRequests
 export const patchListRequest = requestActions.patchListRequest
 ```
 
+#### appendRequest
+
+> appendRequest({ endpointOrUid: String, item: Object, path?: String }): FluxStandardAction
+
+This is for appending a new item for an endpoint that represents an array of items to render, ex. `api/listings`. Say, you create a new listing, instead of getting the whole listing array from your API again, you can just append the new listing to the end of the existing array of items you have.
+
+```javascript
+appendRequest({
+  endpointOrUid: '/users',
+  path: '',
+  item: { id: 6, name: 'Margo' }
+})
+```
+
 #### clearRequest
 
 > clearRequest(endpointOrUid: String): FluxStandardAction
