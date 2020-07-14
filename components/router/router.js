@@ -166,7 +166,7 @@ export function SyncRouterState ({ children }) {
           routeNameRef.current == null ||
           routeNameRef.current !== context.route.name
         ) {
-          children({ route: context.route, path: context.pat })
+          children({ route: context.route, path: context.path })
           routeNameRef.current = context.route.name
         }
       }}

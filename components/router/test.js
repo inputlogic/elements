@@ -99,6 +99,9 @@ test('Link should render', (done) => {
   const sync = state => {
     const link = document.body.querySelector('a')
 
+    expect(state.path).toBeDefined()
+    expect(state.route).toBeDefined()
+
     expect(link).toBeDefined()
     expect(link.className).toContain('active')
     expect(link.className).toContain('test')
