@@ -137,7 +137,7 @@ export const useForm = ({
               handleErrRes(res.json())
             } else {
               if (res.status === 204) {
-                handleRes(new Promise((resolve, reject) => resolve({})))
+                handleRes(Promise.resolve({}))
               } else {
                 handleRes(res.json())
               }
