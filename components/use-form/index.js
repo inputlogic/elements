@@ -133,11 +133,14 @@ export const useForm = ({
 
         fetch(action, fetchOpts)
           .then(res => {
-            const json = res.json()
             if (!res.ok) {
-              handleErrRes(json)
+              handleErrRes(res.json())
             } else {
-              handleRes(json)
+              if (res.status === 204) {
+                handleRes(Promise.resolve({}))
+              } else {
+                handleRes(res.json())
+              }
             }
           })
           .catch(err => {
