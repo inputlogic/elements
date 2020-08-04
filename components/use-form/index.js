@@ -1,8 +1,12 @@
-/* global Event fetch */
+/* global fetch */
 import { useEffect, useRef, useState } from 'react' // alias to 'preact/compat'
 
 const id = val => val
 const hasProp = Object.prototype.hasOwnProperty
+const getVal = valOrEvent =>
+  valOrEvent != null && valOrEvent.target != null
+    ? valOrEvent.target.value
+    : valOrEvent
 const defaultOpts = { method: 'POST' }
 const INIT = 'INIT'
 const SUBMIT = 'SUBMIT'
@@ -51,7 +55,7 @@ export const useForm = ({
     fieldProps.name = fieldName
     fieldProps.value = dataRef.current[fieldName]
     fieldProps[handlerName] = (ev) => {
-      const value = ev instanceof Event ? ev.target.value : ev
+      const value = getVal(ev)
       if (formState === FAILURE) {
         setFormState(INIT)
         errorsRef.current = (errorsRef.current || {})[fieldName]
@@ -87,7 +91,7 @@ export const useForm = ({
   }
 
   const submit = (ev) => {
-    if (ev instanceof Event) {
+    if (hasProp.call(ev, 'preventDefault')) {
       ev.preventDefault()
     }
     setFormState(SUBMIT)
