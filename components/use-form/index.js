@@ -32,14 +32,14 @@ export const useForm = ({
 
   // Functions
 
-  const clear = (clearErrors = true) => {
+  const clear = (clearErrors = true, newFormValues) => {
     dataRef.current = Object.assign(
       {},
       Object.fromEntries(
         // needs to be null not undefined, to reset inputs
         Object.keys(dataRef.current).map(k => [k, null])
       ),
-      initialData
+      newFormValues || initialData
     )
     clearErrors && (errorsRef.current = {})
     setFormState(INIT)
@@ -91,7 +91,7 @@ export const useForm = ({
   }
 
   const submit = (ev) => {
-    if (hasProp.call(ev, 'preventDefault')) {
+    if (ev != null && hasProp.call(ev, 'preventDefault')) {
       ev.preventDefault()
     }
     setFormState(SUBMIT)
