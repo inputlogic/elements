@@ -7,7 +7,10 @@ const getVal = valOrEvent =>
   valOrEvent != null && valOrEvent.target != null
     ? valOrEvent.target.value
     : valOrEvent
-const defaultOpts = { method: 'POST' }
+const defaultOpts = {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' }
+}
 const INIT = 'INIT'
 const SUBMIT = 'SUBMIT'
 const SUCCESS = 'SUCCESS'
@@ -22,12 +25,11 @@ export const useForm = ({
   initialData = {},
   preProcess = id
 }) => {
-  const fieldNames = new Set()
-
   // State
 
-  const errorsRef = useRef({})
   const dataRef = useRef(initialData)
+  const errorsRef = useRef({})
+  const fieldNames = useRef([])
   const [formState, setFormState] = useState(INIT)
 
   // Functions
@@ -50,7 +52,9 @@ export const useForm = ({
     errorClass = 'error',
     hintProp = 'title'
   } = {}) => {
-    fieldNames.add(fieldName)
+    if (!fieldNames.current.includes(fieldName)) {
+      fieldNames.current = [fieldName].concat(fieldNames)
+    }
     const fieldProps = {}
     fieldProps.name = fieldName
     fieldProps.value = dataRef.current[fieldName]
@@ -75,7 +79,7 @@ export const useForm = ({
   }
 
   const validate = (selectFields) => {
-    const fields = selectFields || Array.from(fieldNames)
+    const fields = selectFields || fieldNames.current
     const errors = validations == null
       ? {}
       : fields.reduce((errs, name) => {
