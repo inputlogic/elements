@@ -7,7 +7,10 @@ const getVal = valOrEvent =>
   valOrEvent != null && valOrEvent.target != null
     ? valOrEvent.target.value
     : valOrEvent
-const defaultOpts = { method: 'POST' }
+const defaultOpts = {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' }
+}
 const INIT = 'INIT'
 const SUBMIT = 'SUBMIT'
 const SUCCESS = 'SUCCESS'
