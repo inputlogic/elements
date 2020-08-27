@@ -25,12 +25,11 @@ export const useForm = ({
   initialData = {},
   preProcess = id
 }) => {
-  const fieldNames = new Set()
-
   // State
 
-  const errorsRef = useRef({})
   const dataRef = useRef(initialData)
+  const errorsRef = useRef({})
+  const fieldNames = useRef([])
   const [formState, setFormState] = useState(INIT)
 
   // Functions
@@ -53,7 +52,9 @@ export const useForm = ({
     errorClass = 'error',
     hintProp = 'title'
   } = {}) => {
-    fieldNames.add(fieldName)
+    if (!fieldNames.current.includes(fieldName)) {
+      fieldNames.current = [fieldName].concat(fieldNames)
+    }
     const fieldProps = {}
     fieldProps.name = fieldName
     fieldProps.value = dataRef.current[fieldName]
@@ -77,7 +78,7 @@ export const useForm = ({
   }
 
   const validate = (selectFields) => {
-    const fields = selectFields || Array.from(fieldNames)
+    const fields = selectFields || fieldNames.current
     const errors = validations == null
       ? {}
       : fields.reduce((errs, name) => {
@@ -130,7 +131,7 @@ export const useForm = ({
         const handleErrRes = body => body
           .then(errors => {
             dataRef.current = {}
-            errorsRef.current = Array.from(fieldNames).reduce((acc, field) => ({
+            errorsRef.current = fieldNames.current.reduce((acc, field) => ({
               ...acc,
               ...(hasProp.call(errors, field) ? { [field]: errors[field].join(' ') } : {})
             }), {})
