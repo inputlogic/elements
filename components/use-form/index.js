@@ -71,7 +71,8 @@ export const useForm = ({
       }
     }
     if (hasProp.call(errorsRef.current || {}, fieldName)) {
-      fieldProps[hintProp] = errorsRef.current[fieldName]
+      const fieldErr = errorsRef.current[fieldName]
+      fieldProps[hintProp] = Array.isArray(fieldErr) ? fieldErr.join(' ') : fieldErr
       fieldProps.className = errorClass
     }
     return fieldProps
@@ -131,10 +132,7 @@ export const useForm = ({
         const handleErrRes = body => body
           .then(errors => {
             dataRef.current = {}
-            errorsRef.current = fieldNames.current.reduce((acc, field) => ({
-              ...acc,
-              ...(hasProp.call(errors, field) ? { [field]: errors[field].join(' ') } : {})
-            }), {})
+            errorsRef.current = Object.assign({}, errors)
             setFormState(FAILURE)
           })
           .catch(err => console.error('handleErrRes', err))
