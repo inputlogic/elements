@@ -53,7 +53,7 @@ export const useForm = ({
     hintProp = 'title'
   } = {}) => {
     if (!fieldNames.current.includes(fieldName)) {
-      fieldNames.current = [fieldName].concat(fieldNames)
+      fieldNames.current = [fieldName].concat(fieldNames.current)
     }
     const fieldProps = {}
     fieldProps.name = fieldName
