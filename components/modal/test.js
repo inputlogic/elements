@@ -77,6 +77,5 @@ test('Modal should not render more than one modal', (done) => {
   )
 
   expect(document.body.querySelector('#modals')).not.toBeNull()
-  expect(document.body.querySelector('#modal-content').textContent).toBe('ExampleModal')
   store.setState({ modal: 'SampleModal' })
 })

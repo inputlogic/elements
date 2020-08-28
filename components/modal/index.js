@@ -3,7 +3,6 @@ import React, {
   createPortal,
   useEffect,
   useRef,
-  useState,
   Children,
   Component
 } from 'react'
@@ -96,40 +95,29 @@ export function Modal ({
 }
 
 export function Modals ({ value, syncState, children }) {
-  const valueRef = useRef(value)
-  const [modal, setModal] = useState(value)
   const setModalMaybe = (uid) => {
-    if (uid !== modal) {
-      setModal(uid)
+    if (uid !== value) {
       syncState && syncState(uid)
     }
   }
 
-  useEffect(() => {
-    if (value !== valueRef.current) {
-      valueRef.current = value
-      setModal(value)
-      syncState && syncState(value)
-    }
-  }, [value, modal, syncState])
-
-  if (modal == null) {
+  if (value == null) {
     return
   }
 
   let child
   Children.forEach(children, c => {
-    if (c.type.name === modal) {
+    if (c.type.name === value) {
       child = c
     }
   })
 
-  if (modal != null && child == null) {
-    console.warn('No modal found for: ' + modal)
+  if (value != null && child == null) {
+    console.warn('No modal found for: ' + value)
   }
 
   return (
-    <Context.Provider value={[modal, setModalMaybe]}>
+    <Context.Provider value={[value, setModalMaybe]}>
       <Portal>{child}</Portal>
     </Context.Provider>
   )
