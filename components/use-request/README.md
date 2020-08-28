@@ -42,6 +42,28 @@ const { result: user } = useRequest(store, '/api/user')
 const { result: projects } = useRequest(store, user != null ? `/api/user/${user.id}/projects` : null)
 ```
 
+### Making a Request Without Hooks
+
+The core request function that useRequest utilizes comes with some nice defaults that you may want to reuse outside of a hook context:
+
+1. Sets auth headers by default
+2. Uses your configured `apiUrl`
+3. Safely parses server response
+4. Unlike Fetch, the promise fails if the status code is `>= 400`
+
+
+```javascript
+import { request } from '@app-elements/use-request/request'
+
+const { promise, xhr } = request({
+  url: 'https://my-cool-api.com/resource',
+  method: 'POST',
+  data: {
+    // ...
+  }
+})
+```
+
 ### Request Reducer
 
 `useRequest` also ships with an optional reducer and actions that help with
