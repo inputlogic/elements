@@ -8,6 +8,8 @@ Manage Preact, React, and React Native forms with a simple hook.
 
 ## Usage
 
+Setting the `action` prop to a URL will tell `useForm` to submit the formData to that URL (if validations pass):
+
 ```javascript
 import { useForm } from '@app-elements/use-form'
 
@@ -47,6 +49,24 @@ const MyComponent = (props) => {
   )
 }
 ```
+
+If you need to make multiple requests on form submit, or want more control for some other reason, you can omit the `action` prop:
+
+```javascript
+const { clear, field, submit, isSubmitting } = useForm({
+  validations: {
+    email: s => !s && 'Please provide your email address.',
+    password: s => (!s || s.length < 6) && 'Password must be at least 6 characters'
+  },
+  onSuccess: ({ formData }) => {
+    console.log('validated', formData)
+    // Here you can do whatever you need with the validated formData
+  },
+  onFailure: (errors) => console.log('onFailure', errors)
+})
+```
+
+If you solely want to alter the formData before it's sent to the server, you can also specify the `preProcess` function in conjunction with `action`. See the props table below for more details.
 
 ## Props
 
