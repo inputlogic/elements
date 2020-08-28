@@ -94,11 +94,12 @@ export const getAllRoutes = routes =>
     {}
   )
 
-export const getHref = ({ rule, args, queries }) => {
+export const getHref = ({ rule, args, queries, hash }) => {
   const replaced = Object.keys(args).reduce(
     (acc, k) => acc.replace(`:${k}`, args[k]),
     rule.path
   )
   const hasQueries = Object.keys(queries).length > 0
-  return `${replaced}${!hasQueries ? '' : '?' + stringify(queries)}`
+  const hashStr = hash != null ? `#${hash}` : ''
+  return `${replaced}${!hasQueries ? '' : '?' + stringify(queries)}${hashStr}`
 }

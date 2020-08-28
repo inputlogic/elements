@@ -79,6 +79,7 @@ export function Link ({
   activeClass,
   args = {},
   queries = {},
+  hash,
   children,
   ...props
 }) {
@@ -94,7 +95,7 @@ export function Link ({
     return
   }
 
-  const href = getHref({ rule, args, queries })
+  const href = getHref({ rule, args, queries, hash })
 
   return (
     <Context.Consumer>
@@ -119,7 +120,7 @@ export function Link ({
   )
 }
 
-export function RouteTo ({ to, name, url, args = {}, queries = {} }) {
+export function RouteTo ({ to, name, url, args = {}, queries = {}, hash }) {
   let href
 
   to = to || name
@@ -136,7 +137,7 @@ export function RouteTo ({ to, name, url, args = {}, queries = {} }) {
       throw new Error('No route found for name: ' + to)
     }
 
-    href = getHref({ rule, args, queries })
+    href = getHref({ rule, args, queries, hash })
   }
 
   return (
