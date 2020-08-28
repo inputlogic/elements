@@ -1,6 +1,6 @@
 {
   "name": "@app-elements/with-request",
-  "version": "3.0.16",
+  "version": "3.0.17",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -26,7 +26,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@app-elements/router": "^3.2.3",
+    "@app-elements/router": "^3.3.0",
     "@wasmuth/map": "2.1.1",
     "check-arg-types": "1.1.2"
   },
