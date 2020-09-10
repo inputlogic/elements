@@ -3,6 +3,7 @@ import { getRouteComponent, getAllRoutes, getHref } from './util'
 
 const Context = createContext('Router')
 let allRoutes
+let skipScroll
 
 function useRouterState () {
   const [path, setPath] = useState(null)
@@ -59,11 +60,16 @@ export function useScrollToTop () {
   const isBack = backRef && backRef.current
 
   if (!isBack && path !== pathRef.current) {
-    if (nodeRef && nodeRef.current) {
-      nodeRef.current.scrollIntoView()
+    if (path !== skipScroll) {
+      if (nodeRef && nodeRef.current) {
+        nodeRef.current.scrollIntoView()
+      } else {
+        window.scrollTo(0, 0)
+      }
     } else {
-      window.scrollTo(0, 0)
+      skipScroll = null
     }
+
     pathRef.current = path
   } else if (isBack) {
     backRef.current = false
@@ -80,6 +86,7 @@ export function Link ({
   args = {},
   queries = {},
   hash,
+  noScroll,
   children,
   ...props
 }) {
@@ -103,6 +110,9 @@ export function Link ({
         const isActive = path === href
         const onClick = ev => {
           ev.preventDefault()
+          if (noScroll) {
+            skipScroll = href
+          }
           routeTo(href)
         }
         return (
