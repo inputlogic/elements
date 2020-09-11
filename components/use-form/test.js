@@ -51,3 +51,24 @@ test('useForm should submit clear with new data', (done) => {
 
   render(<MyComp />, document.body)
 })
+
+test('useForm should submit to API endpoint', (done) => {
+  const MyComp = () => {
+    const { submit } = useForm({
+      action: 'https://www.mocky.io/v2/5d28e8362c000068003edca8',
+      initialData: {
+        email: 'test@example.org',
+        password: 'testpassword'
+      },
+      onSuccess: ({ response }) => {
+        expect(response).toHaveProperty('userId')
+        expect(response).toHaveProperty('token')
+        done()
+      }
+    })
+    submit(null)
+    return null
+  }
+
+  render(<MyComp />, document.body)
+})
