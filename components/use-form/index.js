@@ -1,5 +1,5 @@
-/* global fetch */
 import { useEffect, useRef, useState } from 'react' // alias to 'preact/compat'
+import { request } from '@app-elements/use-request/request'
 
 const id = val => val
 const hasProp = Object.prototype.hasOwnProperty
@@ -8,8 +8,7 @@ const getVal = valOrEvent =>
     ? valOrEvent.target.value
     : valOrEvent
 const defaultOpts = {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' }
+  method: 'post'
 }
 const INIT = 'INIT'
 const SUBMIT = 'SUBMIT'
@@ -118,39 +117,24 @@ export const useForm = ({
       if (!action) {
         onSuccess && onSuccess({ formData: dataRef.current })
       } else {
-        const fetchOpts = Object.assign(
-          { body: JSON.stringify(preProcess(dataRef.current)) },
+        const reqOpts = Object.assign(
+          {},
           defaultOpts,
-          opts
+          opts,
+          {
+            endpoint: action,
+            data: preProcess(dataRef.current)
+          }
         )
-        const handleRes = body => body
+        const { xhr, promise } = request(reqOpts)
+        promise
           .then(response => {
             onSuccess && onSuccess({ response })
           })
-          .catch(err => console.error('handleRes', err))
-
-        const handleErrRes = body => body
-          .then(errors => {
+          .catch(errors => {
             dataRef.current = {}
-            errorsRef.current = Object.assign({}, errors)
+            errorsRef.current = Object.assign({}, { xhr }, errors)
             setFormState(FAILURE)
-          })
-          .catch(err => console.error('handleErrRes', err))
-
-        fetch(action, fetchOpts)
-          .then(res => {
-            if (!res.ok) {
-              handleErrRes(res.json())
-            } else {
-              if (res.status === 204) {
-                handleRes(Promise.resolve({}))
-              } else {
-                handleRes(res.json())
-              }
-            }
-          })
-          .catch(err => {
-            console.log('catch', err, err.message)
           })
       }
     },

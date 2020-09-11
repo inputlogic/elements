@@ -25,6 +25,9 @@
     "hook",
     "ui"
   ],
+  "peerDependencies": {
+    "@app-elements/use-request": "^2.1.4"
+  },
   "author": "Input Logic Team",
   "license": "ISC",
   "publishConfig": {

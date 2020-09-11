@@ -10,7 +10,7 @@
     "publish": "lerna publish",
     "fix": "standard --fix --parser babel-eslint",
     "pretest": "standard --verbose --parser babel-eslint | snazzy",
-    "test": "jest"
+    "test": "jest --detectOpenHandles"
   },
   "devDependencies": {
     "@babel/core": "7.10.3",
