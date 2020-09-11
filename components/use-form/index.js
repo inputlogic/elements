@@ -132,7 +132,6 @@ export const useForm = ({
             onSuccess && onSuccess({ response })
           })
           .catch(errors => {
-            dataRef.current = {}
             errorsRef.current = Object.assign({}, { xhr }, errors)
             setFormState(FAILURE)
           })
