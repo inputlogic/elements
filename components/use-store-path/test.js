@@ -5,7 +5,10 @@ import { createContext, render } from 'preact'
 import { useContext } from 'preact/hooks'
 import { useStorePath } from './use-store-path'
 
-const store = createStore([], { count: 0, nested: { other: 'a' } })
+const store = createStore([], {
+  count: 0,
+  nested: { items: { value: 'a', untouched: 'b' } }
+})
 const Context = createContext(store)
 
 afterEach(() => {
@@ -47,12 +50,14 @@ test('useStorePath should return value, set value, and update', (done) => {
 })
 
 test('useStorePath can be used more than once per Component', (done) => {
+  let setter
   const Stateful = () => {
     const store = useContext(Context)
     const [count] = useStorePath(store, 'count')
-    const [other] = useStorePath(store, 'nested.other')
+    const [value, setValue] = useStorePath(store, 'nested.items.value')
+    setter = () => setValue('changed')
     return (
-      <p>{count}/{other}</p>
+      <p>{count}/{value}</p>
     )
   }
 
@@ -61,7 +66,10 @@ test('useStorePath can be used more than once per Component', (done) => {
     // Wait for React to re-render with updated state
     render(<Context.Provider value={store}><Stateful /></Context.Provider>, document.body)
     setTimeout(() => {
-      expect(document.body.innerHTML).toBe('<p>1/a</p>')
+      expect(document.body.innerHTML).toBe('<p>1/changed</p>')
+      expect(store.getState().nested.items.untouched).toBe('b')
+      expect(store.getState().nested.items.value).toBe('changed')
+      expect(store.getState().count).toBe(1)
       done()
     }, 2000)
     store.unsubscribe(listener)
@@ -72,4 +80,5 @@ test('useStorePath can be used more than once per Component', (done) => {
   expect(document.body.innerHTML).toBe('<p>0/a</p>')
 
   store.setState({ count: 1 })
+  setter()
 })
