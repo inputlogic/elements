@@ -75,7 +75,7 @@ export class Helmet extends Component {
         const node = metaNodes[x]
         const key = node.getAttribute('name') || node.getAttribute('property')
         const metaVal = meta.find(x => (x.name || x.property) === key)
-        if (node.getAttribute('content') !== metaVal.content) {
+        if (metaVal && node.getAttribute('content') !== metaVal.content) {
           document.head.removeChild(node)
         }
       }
