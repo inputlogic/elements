@@ -67,9 +67,22 @@ export class Helmet extends Component {
   }
 
   _getMeta ({ meta = [] }) {
+    // We need to clean up old metas manually, as Preact will not reconcile
+    // direct children of <head>
+    const metaNodes = document.head.querySelectorAll('[data-helmet]')
+    if (metaNodes.length > meta.length) {
+      for (let x = 0; x < metaNodes.length; x++) {
+        const node = metaNodes[x]
+        const key = node.getAttribute('name') || node.getAttribute('property')
+        const metaVal = meta.find(x => (x.name || x.property) === key)
+        if (node.getAttribute('content') !== metaVal.content) {
+          document.head.removeChild(node)
+        }
+      }
+    }
     return meta.map(({ name, property, content }) =>
       <meta
-        key={name}
+        key={name || property}
         name={name}
         property={property}
         content={content}
