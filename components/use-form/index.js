@@ -109,14 +109,7 @@ export const useForm = ({
       if (hasError) {
         errorsRef.current = errors
         setFormState(FAILURE)
-      } else {
-        setFormState(SUCCESS)
-      }
-    },
-    [SUCCESS]: () => {
-      if (!action) {
-        onSuccess && onSuccess({ formData: dataRef.current })
-      } else {
+      } else if (action) {
         const reqOpts = Object.assign(
           {},
           defaultOpts,
@@ -129,12 +122,20 @@ export const useForm = ({
         const { xhr, promise } = request(reqOpts)
         promise
           .then(response => {
+            setFormState(SUCCESS)
             onSuccess && onSuccess({ response })
           })
           .catch(errors => {
             errorsRef.current = Object.assign({}, { xhr }, errors)
             setFormState(FAILURE)
           })
+      } else {
+        setFormState(SUCCESS)
+      }
+    },
+    [SUCCESS]: () => {
+      if (!action) {
+        onSuccess && onSuccess({ formData: dataRef.current })
       }
     },
     [FAILURE]: () => {
