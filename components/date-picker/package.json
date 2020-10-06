@@ -1,6 +1,6 @@
 {
   "name": "@app-elements/date-picker",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Simple calendar-style date-picker.",
   "main": "dist/date-picker.js",
   "module": "dist/date-picker.m.js",
