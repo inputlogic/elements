@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 import { buildCalendar, monthNames, addMonths, subMonths } from './util'
 
-const DAYS = ['S', 'M', 'T', 'W', 'T', 'F', 'S']
+const DAYS = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']
 
 export function BaseDatePicker ({
   weekStartDay,
@@ -54,11 +54,9 @@ export function BaseDatePicker ({
   return (
     <div className='ae-date-picker'>
       <div className='ae-date-picker-level'>
+        <button className='ae-month-nav ae-date-picker-prev' onClick={onClickPreviousMonth}>{'<'}</button>
         <h5>{monthNames[date.getMonth()]} <span>{date.getFullYear()}</span></h5>
-        <div className='ae-date-picker-controls'>
-          <button className='ae-month-nav ae-date-picker-prev' onClick={onClickPreviousMonth}>{'<'}</button>
-          <button className='ae-month-nav ae-date-picker-next' onClick={onClickNextMonth}>{'>'}</button>
-        </div>
+        <button className='ae-month-nav ae-date-picker-next' onClick={onClickNextMonth}>{'>'}</button>
       </div>
       <div className='ae-date-picker-table-wrap'>
         <table>
