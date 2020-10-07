@@ -18,18 +18,36 @@ import Interval from '@app-elements/interval'
 
 ### Real-word Example
 
-Very crude example, where all messages are hidden while fetching new ones:
-
 ```javascript
-// Inside a component using useRequest hook
-const { result, clear, isLoading } = useRequest(store, 'api/messages')
+const Messages = () => {
+  // We will combine the results from each API response into a single array.
+  // This way we can append new messages, without triggering react to re-render
+  // the whole list.
+  const messages = useRef([])
+  
+  // We'll use the last message to tell the API to return only messages posted since it.
+  // If no last message, then get the initial messages response.
+  const [queries, setQueries] = useState({})
+ 
+  // The API will need to implement the `published_after` filter.
+  // See: https://github.com/inputlogic/django-api-starter/blob/master/apps/cms/filters.py#L11
+  const { result, isLoading } = useRequest(store, url('api.messages', { queries }))
+  
+  // Call this on an interval, to check for new messages.
+  const fetchMessages = () => {
+    const lastMsg = !messages.ref.length ? null : W.last(messages.ref)
+    if (queries.published_after !== lastMsg.createdAt) {
+      setQueries({ published_after: lastMsg.createdAt })
+    }
+  }
 
-return (
-  <Interval function={() => clear()} interval={3000}>
-    {isLoading && <div>Loading...</div>}
-    {result.results && result.results.map(message => <div>{message.body}</div>)}
-  </Interval>
-)
+  return (
+    <Interval function={fetchMessages} interval={3000}>
+      {isLoading && <LoadingIndicator />}
+      {result.results && result.results.map(({ id, body }) => <div key={`message-${id}`}>{body}</div>)}
+    </Interval>
+  )
+}
 ```
 
 ## Props
