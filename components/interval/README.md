@@ -18,13 +18,18 @@ import Interval from '@app-elements/interval'
 
 ### Real-word Example
 
+Very crude example, where all messages are hidden while fetching new ones:
+
 ```javascript
-// dispatch(invalidate('<url>')) will force <url> to be fetched again.
-<Interval function={() => dispatch(invalidate('api/messages'))} interval={3000} >
-  <ListResource endpoint='api/messages' >
-    {W.map(message => <div>{message.body}</div>)}
-  </ListResource>
-</Interval>
+// Inside a component using useRequest hook
+const { result, clear, isLoading } = useRequest(store, 'api/messages')
+
+return (
+  <Interval function={() => clear()} interval={3000}>
+    {isLoading && <div>Loading...</div>}
+    {result.results && result.results.map(message => <div>{message.body}</div>)}
+  </Interval>
+)
 ```
 
 ## Props
