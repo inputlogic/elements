@@ -35,8 +35,8 @@ const Messages = () => {
   
   // Call this on an interval, to check for new messages.
   const fetchMessages = () => {
-    const lastMsg = !messages.ref.length ? null : W.last(messages.ref)
-    if (queries.published_after !== lastMsg.createdAt) {
+    const lastMsg = W.last(messages.ref)
+    if (lastMsg != null && queries.published_after !== lastMsg.createdAt) {
       setQueries({ published_after: lastMsg.createdAt })
     }
   }
