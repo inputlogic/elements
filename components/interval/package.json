@@ -1,6 +1,6 @@
 {
   "name": "@app-elements/interval",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Call some function on an interval during the lifecycle of a component",
   "main": "dist/interval.js",
   "module": "dist/interval.m.js",
