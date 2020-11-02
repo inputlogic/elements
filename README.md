@@ -55,7 +55,10 @@ Adding a New Package
 Publishing Changes
 ------------------
 
-1. `npm run changed` to see what would be published
-2. `npm run publish`
+1. [Sign up](https://www.npmjs.com/signup) for an NPM account
+2. Login via your terminal `npm login`
+3. Get invited to `app-elements` on NPM; Cory, Mulder, and Kyle are all admins at the time of writing
+4. `npm run changed` to see what would be published
+5. `npm run publish`
 
-More details may be needed...
+Follow the terminal output and you should be good to go!
