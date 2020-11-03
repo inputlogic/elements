@@ -31,7 +31,8 @@ export class Notification extends React.Component {
     this.timeout && clearTimeout(this.timeout)
   }
 
-  render (_, { open, message, type }) {
+  render () {
+    const { open, message, type } = this.state
     if (!ref) ref = this
     if (!message) return null
     return (

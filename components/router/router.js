@@ -99,7 +99,7 @@ export function Link ({
   const rule = allRoutes[to]
   if (!rule) {
     console.error('No route found for name: ' + to)
-    return
+    return null
   }
 
   const href = getHref({ rule, args, queries, hash })
@@ -172,7 +172,7 @@ export function SyncRouterState ({ children }) {
   return (
     <Context.Consumer>
       {context => {
-        if (!context || context.route == null) return
+        if (!context || context.route == null) return null
         if (
           routeNameRef.current == null ||
           routeNameRef.current !== context.route.name
@@ -228,7 +228,7 @@ export function Router (props) {
   const { path, setRoute } = context
 
   if (path == null) {
-    return
+    return null
   }
 
   const pair = getRouteComponent(localRoutes, path)

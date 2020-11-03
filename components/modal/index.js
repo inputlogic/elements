@@ -102,7 +102,7 @@ export function Modals ({ value, syncState, children }) {
   }
 
   if (value == null) {
-    return
+    return null
   }
 
   let child
