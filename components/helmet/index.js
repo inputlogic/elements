@@ -1,4 +1,5 @@
-import React, { Component, createPortal } from 'react'
+import React, { Component } from 'react'
+import { createPortal } from 'react-dom'
 
 let refs = []
 
