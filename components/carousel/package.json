@@ -1,6 +1,6 @@
 {
   "name": "@app-elements/carousel",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Simple carousel with arrows and dot indicators.",
   "main": "dist/carousel.js",
   "module": "dist/carousel.m.js",

@@ -1,6 +1,6 @@
 {
   "name": "@app-elements/use-document-click",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A (P)React hook to handle document clicks or taps.",
   "main": "dist/use-document-click.js",
   "module": "dist/use-document-click.m.js",
