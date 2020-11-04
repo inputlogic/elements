@@ -1,6 +1,18 @@
 import React from 'react' // Can be aliased to Preact in your project
 import Level from '@app-elements/level'
 
+// https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#Improving_scrolling_performance_with_passive_listeners
+let passiveIfSupported = false
+try {
+  window.addEventListener('test', null,
+    Object.defineProperty({}, 'passive', {
+      get: function () {
+        passiveIfSupported = { passive: true }
+      }
+    })
+  )
+} catch (err) {}
+
 export class Carousel extends React.Component {
   static defaultProps = {
     tolerance: 100,
@@ -120,9 +132,9 @@ export class Carousel extends React.Component {
   }
 
   componentDidMount () {
-    this.base.addEventListener('touchstart', this.capture)
-    this.base.addEventListener('touchmove', this.capture)
-    this.base.addEventListener('touchend', this.compute)
+    this.base.addEventListener('touchstart', this.capture, passiveIfSupported)
+    this.base.addEventListener('touchmove', this.capture, passiveIfSupported)
+    this.base.addEventListener('touchend', this.compute, passiveIfSupported)
   }
 
   componentWillUnmount () {
