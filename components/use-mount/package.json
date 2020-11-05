@@ -1,6 +1,6 @@
 {
   "name": "@app-elements/use-mount",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A (P)React hook that calls a function after the component is mounted, and possibly when unmounted.",
   "main": "dist/use-mount.js",
   "module": "dist/use-mount.m.js",
