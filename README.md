@@ -24,6 +24,7 @@ Input Logic Elements
 | [useActions](components/use-actions)                  | Define actions and add their reducer to your global store from a Component.
 | [useDocumentClick](components/use-document-click)     | Handle clicks/taps outside of a given component ref.
 | [useMappedState](components/use-mapped-state)         | Map part of global state to a Component and keep it in sync.
+| [useMount](components/use-mount)                      | Invoke function when component is mounted or unmounted.
 | [useRequest](components/use-request)                  | Connect a Component to the result of an API request.
 | [useForm](components/use-form)                        | Take the pain out of forms!
 | [useStorePath](components/use-store-path)             | Syncs the value of the given path, and exposes a convenient setter.
